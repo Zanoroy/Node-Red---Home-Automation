@@ -490,7 +490,7 @@
                 "p": "payload"
             }
         ],
-        "repeat": "10",
+        "repeat": "600",
         "crontab": "",
         "once": true,
         "onceDelay": 0.1,
