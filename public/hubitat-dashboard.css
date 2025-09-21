@@ -1,0 +1,482 @@
+/* Hubitat Smart Home Dashboard Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #0f0f23, #1a1a2e, #16213e);
+  color: white;
+  min-height: 100vh;
+  padding: 20px;
+  overflow-x: hidden;
+}
+
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.dashboard-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.dashboard-title {
+  font-size: 2.5rem;
+  font-weight: 300;
+  margin-bottom: 10px;
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.dashboard-subtitle {
+  font-size: 1.1rem;
+  color: #888;
+  margin-bottom: 20px;
+}
+
+.lights-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 5px;
+  padding: 10px 0;
+  border: gray 1px solid;
+  border-radius: 16px;
+  background: #031efd3b;
+}
+
+
+/* Light tile styling - Modern Material Design Cards */
+.light-tile {
+  position: relative;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 32px 24px;
+  margin: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.12),
+    0 4px 10px rgba(0, 0, 0, 0.08);
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  border: none;
+  max-width: 200px;
+}
+
+.light-tile:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.16),
+    0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.light-tile:active {
+  transform: translateY(-2px);
+  transition: all 0.15s ease;
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.14),
+    0 6px 15px rgba(0, 0, 0, 0.10);
+}
+
+/* Remove status text indicator */
+.light-status {
+  display: none;
+}
+
+.light-tile:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    0 8px 16px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.light-tile.on {
+  background: linear-gradient(145deg, #4a5568, #2d3748);
+  border-color: #ffd700;
+  box-shadow:
+    0 10px 30px rgba(255, 215, 0, 0.2),
+    0 1px 8px rgba(255, 215, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.light-tile.on:hover {
+  box-shadow:
+    0 20px 40px rgba(255, 215, 0, 0.3),
+    0 8px 16px rgba(255, 215, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.light-bulb-container {
+  position: relative;
+  margin-bottom: 24px;
+}
+
+.light-bulb {
+  font-size: 4rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.1));
+}
+
+.light-tile.off .light-bulb {
+  color: #E8E8E8;
+  /* Light gray/white for OFF state */
+  text-shadow: none;
+}
+
+.light-tile.on .light-bulb {
+  color: #FFD700;
+  /* Bright yellow for ON state */
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+}
+
+.light-tile.unknown .light-bulb,
+.light-tile.error .light-bulb {
+  color: #BDBDBD;
+  /* Gray for unknown/error state */
+  opacity: 0.6;
+  text-shadow: none;
+}
+
+/* Remove glow animation and light rays for clean material design */
+
+/* Light label styling - Modern and clean */
+.light-label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #424242;
+  margin-top: 8px;
+  letter-spacing: 0.25px;
+  line-height: 1.4;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Battery Tile Styles */
+.battery-tile {
+  position: relative;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 32px 24px;
+  margin: 12px;
+  cursor: default;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow:
+    0 10px 30px rgba(255, 215, 0, 0.2),
+    0 1px 8px rgba(255, 215, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  background: linear-gradient(145deg, #4a5568, #2d3748);
+  border-color: #ffd700;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  border: none;
+  max-width: 200px;
+}
+
+/* .battery-tile:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 12px 30px rgba(0, 0, 0, 0.14),
+        0 6px 15px rgba(0, 0, 0, 0.10);
+} */
+
+.battery-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.battery-body {
+  position: relative;
+  width: 120px;
+  height: 50px;
+  border: 3px solid #666;
+  border-radius: 8px;
+  background: #222;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.battery-terminal {
+  position: absolute;
+  right: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 24px;
+  background: #666;
+  border-radius: 0 4px 4px 0;
+}
+
+.battery-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 50%;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 4px 0 0 4px;
+  background: #00ff00;
+}
+
+.battery-percentage {
+  position: absolute;
+  top: 50%;
+  left: 56%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  font-weight: 900;
+  color: #ffffff;
+  z-index: 10;
+}
+
+.charging-symbol {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 16px;
+  color: #ffff00;
+  font-weight: bold;
+  z-index: 10;
+  text-shadow: 0 0 8px rgba(255, 255, 0, 0.8);
+  display: none;
+}
+
+.battery-label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ffffff;
+  margin-top: 8px;
+  letter-spacing: 0.25px;
+  line-height: 1.4;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Battery state styling */
+.battery-charging .battery-body {
+  box-shadow: 5px 10px 15px rgba(0, 255, 65, 0.3);
+}
+
+.battery-discharging .battery-body {
+  box-shadow: 5px 10px 15px rgba(255, 68, 68, 0.3);
+}
+
+.battery-idle .battery-body {
+  box-shadow: 5 10px 15px rgba(0, 255, 65, 0.2);
+}
+
+/* Flash animation for charging symbol */
+.flash {
+  animation: flash 1.5s ease-in-out infinite;
+}
+
+@keyframes flash {
+
+  0%,
+  60% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  61%,
+  100% {
+    opacity: 0.4;
+    transform: scale(1.05);
+  }
+}
+
+.light-tile.on .light-label {
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.flashfont {
+  animation: flashfont 1.5s ease-in-out infinite;
+}
+
+@keyframes flashfont {
+
+  0%,
+  70% {
+    opacity: 1;
+  }
+
+  71%,
+  100% {
+    opacity: 0.5;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+
+  .flash,
+  .flashfont {
+    animation: none;
+  }
+}
+
+.status-text {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.light-status {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 0.8rem;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.light-tile.on .light-status {
+  background: rgba(255, 215, 0, 0.2);
+  color: #ffd700;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.light-tile.off .light-status {
+  background: rgba(74, 85, 104, 0.3);
+  color: #a0aec0;
+  border: 1px solid rgba(74, 85, 104, 0.5);
+}
+
+.loading-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top: 3px solid #ffd700;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  display: none;
+}
+
+.light-tile.loading .loading-spinner {
+  display: block;
+}
+
+.light-tile.loading .light-bulb-container {
+  opacity: 0.3;
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.status-bar {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(45, 55, 72, 0.9);
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  color: #a0aec0;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.status-online {
+  color: #68d391;
+}
+
+.status-offline {
+  color: #fc8181;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 10px;
+  }
+
+  .dashboard-title {
+    font-size: 2rem;
+  }
+
+  .lights-grid {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  .light-tile {
+    padding: 25px 15px;
+    min-height: 180px;
+  }
+
+  .light-bulb {
+    font-size: 3.5rem;
+  }
+
+  .light-label {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .lights-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .light-tile {
+    padding: 20px;
+    min-height: 160px;
+  }
+
+  .light-bulb {
+    font-size: 3rem;
+  }
+}
+
+/* Error states */
+.light-tile.error {
+  border-color: #fc8181;
+  background: linear-gradient(145deg, #4a2d2d, #2d1a1a);
+}
+
+.light-tile.error .light-bulb {
+  color: #fc8181;
+}
+
+.light-tile.error .light-status {
+  background: rgba(252, 129, 129, 0.2);
+  color: #fc8181;
+  border: 1px solid rgba(252, 129, 129, 0.3);
+}

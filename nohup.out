@@ -1,0 +1,922 @@
+20 Sep 20:07:54 - [info] 
+
+Welcome to Node-RED
+===================
+
+20 Sep 20:07:54 - [info] Node-RED version: v4.1.0
+20 Sep 20:07:54 - [info] Node.js  version: v20.19.2
+20 Sep 20:07:54 - [info] Linux 5.4.17-2136.344.4.1.el8uek.x86_64 x64 LE
+20 Sep 20:07:55 - [info] Loading palette nodes
+20 Sep 20:07:59 - [info] Settings file  : /root/.node-red/settings.js
+20 Sep 20:07:59 - [info] HTTP Static    : /root/.node-red/public > /public/
+20 Sep 20:07:59 - [info] Context store  : 'default' [module=memory]
+20 Sep 20:07:59 - [info] User directory : /root/.node-red
+20 Sep 20:07:59 - [warn] Projects disabled : editorTheme.projects.enabled=false
+20 Sep 20:07:59 - [info] Flows file     : /root/.node-red/flows.json
+20 Sep 20:07:59 - [info] Server now running at http://127.0.0.1:1880/
+20 Sep 20:07:59 - [info] +-----------------------------------------------------
+20 Sep 20:07:59 - [info] | 🌐 uibuilder v7.4.3 initialised
+20 Sep 20:07:59 - [info] | root folder: /root/.node-red/uibuilder
+20 Sep 20:07:59 - [info] | Using Node-RED's webserver at:
+20 Sep 20:07:59 - [info] |   http://0.0.0.0:1880/
+20 Sep 20:07:59 - [info] | Installed packages:
+20 Sep 20:07:59 - [info] +-----------------------------------------------------
+20 Sep 20:07:59 - [info] Starting flows
+20 Sep 20:08:00 - [info] Started flows
+20 Sep 20:08:00 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 20:08:04 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 41,
+  state: 'discharging',
+  time: '2025-09-20T20:08:04',
+  _msgid: '2096e4d8441d6abd'
+}
+20 Sep 20:09:05 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 40,
+  state: 'discharging',
+  time: '2025-09-20T20:09:05',
+  _msgid: '04e8192c3ac2745f'
+}
+20 Sep 20:10:07 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 40,
+  state: 'discharging',
+  time: '2025-09-20T20:10:07',
+  _msgid: '98f9adacfe8998f8'
+}
+20 Sep 20:11:06 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 40,
+  state: 'discharging',
+  time: '2025-09-20T20:11:06',
+  _msgid: '9e1e362916c78eab'
+}
+20 Sep 20:12:06 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 40,
+  state: 'discharging',
+  time: '2025-09-20T20:12:06',
+  _msgid: '9cdfd87bd56c566d'
+}
+20 Sep 20:13:09 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 40,
+  state: 'discharging',
+  time: '2025-09-20T20:13:09',
+  _msgid: '9595f27bb755e017'
+}
+20 Sep 20:14:10 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 40,
+  state: 'discharging',
+  time: '2025-09-20T20:14:10',
+  _msgid: '17eec31589030c1f'
+}
+20 Sep 20:15:13 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 40,
+  state: 'discharging',
+  time: '2025-09-20T20:15:13',
+  _msgid: '9f487ee8b5e9a69b'
+}
+20 Sep 20:16:18 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 39,
+  state: 'discharging',
+  time: '2025-09-20T20:16:18',
+  _msgid: '2aaf3f7e206d0242'
+}
+20 Sep 20:17:18 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 39,
+  state: 'discharging',
+  time: '2025-09-20T20:17:18',
+  _msgid: 'b1dedca326d3abad'
+}
+20 Sep 20:18:22 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 39,
+  state: 'discharging',
+  time: '2025-09-20T20:18:22',
+  _msgid: 'c1d5804e63662161'
+}
+20 Sep 20:19:26 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 39,
+  state: 'discharging',
+  time: '2025-09-20T20:19:26',
+  _msgid: '4bc9ee02c12f9305'
+}
+20 Sep 20:20:33 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 39,
+  state: 'discharging',
+  time: '2025-09-20T20:20:33',
+  _msgid: '08933fe6384cb497'
+}
+20 Sep 20:21:34 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 39,
+  state: 'discharging',
+  time: '2025-09-20T20:21:34',
+  _msgid: '3e9d564ff160446f'
+}
+20 Sep 20:22:35 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 38,
+  state: 'discharging',
+  time: '2025-09-20T20:22:35',
+  _msgid: '57534b8e15410552'
+}
+20 Sep 20:23:09 - [info] Stopping flows
+20 Sep 20:23:09 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 20:23:09 - [info] Stopped flows
+20 Sep 20:23:09 - [info] Updated flows
+20 Sep 20:23:09 - [info] Starting flows
+20 Sep 20:23:09 - [info] Started flows
+20 Sep 20:23:09 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 20:23:36 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 38,
+  state: 'discharging',
+  time: '2025-09-20T20:23:36',
+  _msgid: '643fa3dbe480c35d'
+}
+20 Sep 20:24:40 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 38,
+  state: 'discharging',
+  time: '2025-09-20T20:24:40',
+  _msgid: 'f00ef5853e333d4e'
+}
+20 Sep 20:25:48 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 38,
+  state: 'discharging',
+  time: '2025-09-20T20:25:48',
+  _msgid: '11d191d17a74574d'
+}
+20 Sep 20:26:48 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 38,
+  state: 'discharging',
+  time: '2025-09-20T20:26:48',
+  _msgid: '35505d5397d275d4'
+}
+20 Sep 20:27:54 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 38,
+  state: 'discharging',
+  time: '2025-09-20T20:27:54',
+  _msgid: '9b0ec2d518fcce66'
+}
+20 Sep 20:28:56 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 38,
+  state: 'discharging',
+  time: '2025-09-20T20:28:56',
+  _msgid: 'bdd517f0424bd76f'
+}
+20 Sep 20:29:56 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 37,
+  state: 'discharging',
+  time: '2025-09-20T20:29:56',
+  _msgid: 'd4c65bf2822b547e'
+}
+20 Sep 20:29:59 - [info] Stopping flows
+20 Sep 20:30:00 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 20:30:00 - [info] Stopped flows
+20 Sep 20:30:00 - [info] Updated flows
+20 Sep 20:30:00 - [info] Starting flows
+20 Sep 20:30:00 - [info] Started flows
+20 Sep 20:30:00 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 20:30:03 - [warn] [http request:Get All Hubitat Devices] Warning: msg properties can no longer override set node properties. See bit.ly/nr-override-msg-props
+20 Sep 20:30:03 - [warn] [http request:Get All Hubitat Devices] Warning: msg properties can no longer override set node properties. See bit.ly/nr-override-msg-props
+20 Sep 20:30:09 - [warn] [http request:Get All Hubitat Devices] Warning: msg properties can no longer override set node properties. See bit.ly/nr-override-msg-props
+20 Sep 20:30:09 - [warn] [http request:Get All Hubitat Devices] Warning: msg properties can no longer override set node properties. See bit.ly/nr-override-msg-props
+20 Sep 20:30:20 - [warn] [http request:Get All Hubitat Devices] Warning: msg properties can no longer override set node properties. See bit.ly/nr-override-msg-props
+20 Sep 20:30:20 - [warn] [http request:Get All Hubitat Devices] Warning: msg properties can no longer override set node properties. See bit.ly/nr-override-msg-props
+20 Sep 20:30:32 - [warn] [http request:Get All Hubitat Devices] Warning: msg properties can no longer override set node properties. See bit.ly/nr-override-msg-props
+20 Sep 20:30:32 - [warn] [http request:Get All Hubitat Devices] Warning: msg properties can no longer override set node properties. See bit.ly/nr-override-msg-props
+20 Sep 20:30:41 - [warn] [http request:Get All Hubitat Devices] Warning: msg properties can no longer override set node properties. See bit.ly/nr-override-msg-props
+20 Sep 20:30:41 - [warn] [http request:Get All Hubitat Devices] Warning: msg properties can no longer override set node properties. See bit.ly/nr-override-msg-props
+20 Sep 20:30:48 - [warn] [http request:Get All Hubitat Devices] Warning: msg properties can no longer override set node properties. See bit.ly/nr-override-msg-props
+20 Sep 20:30:48 - [warn] [http request:Get All Hubitat Devices] Warning: msg properties can no longer override set node properties. See bit.ly/nr-override-msg-props
+20 Sep 20:31:10 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 37,
+  state: 'discharging',
+  time: '2025-09-20T20:31:10',
+  _msgid: 'cc39693abd0fb0de'
+}
+20 Sep 20:32:14 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 37,
+  state: 'discharging',
+  time: '2025-09-20T20:32:14',
+  _msgid: '87c55476d0d80dcc'
+}
+20 Sep 20:33:17 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 37,
+  state: 'discharging',
+  time: '2025-09-20T20:33:17',
+  _msgid: 'fe5e793b7477b6d3'
+}
+20 Sep 20:34:16 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 37,
+  state: 'discharging',
+  time: '2025-09-20T20:34:16',
+  _msgid: '39c3a15b0d0d7766'
+}
+20 Sep 20:35:16 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 37,
+  state: 'discharging',
+  time: '2025-09-20T20:35:16',
+  _msgid: 'dcf7c31540d47fa9'
+}
+20 Sep 20:36:18 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 36,
+  state: 'discharging',
+  time: '2025-09-20T20:36:18',
+  _msgid: 'e6a542faea4d3dbe'
+}
+20 Sep 20:37:18 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 36,
+  state: 'discharging',
+  time: '2025-09-20T20:37:18',
+  _msgid: '7099fbfa8d2f3f28'
+}
+20 Sep 20:38:08 - [info] Stopping flows
+20 Sep 20:38:08 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 20:38:08 - [info] Stopped flows
+20 Sep 20:38:08 - [info] Updated flows
+20 Sep 20:38:08 - [info] Starting flows
+20 Sep 20:38:08 - [info] Started flows
+20 Sep 20:38:08 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 20:38:18 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 36,
+  state: 'discharging',
+  time: '2025-09-20T20:38:18',
+  _msgid: '31003129dfee93b8'
+}
+20 Sep 20:39:27 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 36,
+  state: 'discharging',
+  time: '2025-09-20T20:39:27',
+  _msgid: '023e137150775aa8'
+}
+20 Sep 20:40:26 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 36,
+  state: 'discharging',
+  time: '2025-09-20T20:40:26',
+  _msgid: '0e0169111eddbcc8'
+}
+20 Sep 20:41:28 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 36,
+  state: 'discharging',
+  time: '2025-09-20T20:41:28',
+  _msgid: '3ea30a643f3e07f4'
+}
+20 Sep 20:42:33 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 36,
+  state: 'discharging',
+  time: '2025-09-20T20:42:33',
+  _msgid: 'f5c261d9ed7a4db3'
+}
+20 Sep 20:43:38 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 36,
+  state: 'discharging',
+  time: '2025-09-20T20:43:38',
+  _msgid: '74b628fc0ecfae85'
+}
+20 Sep 20:44:40 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 35,
+  state: 'discharging',
+  time: '2025-09-20T20:44:40',
+  _msgid: '10426731669e8664'
+}
+20 Sep 20:45:43 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 35,
+  state: 'discharging',
+  time: '2025-09-20T20:45:42',
+  _msgid: '9b996210eb8037f7'
+}
+20 Sep 20:46:42 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 35,
+  state: 'discharging',
+  time: '2025-09-20T20:46:42',
+  _msgid: '28ce4eed807e2640'
+}
+20 Sep 20:47:02 - [warn] [http request:Get All Hubitat Devices] Warning: msg properties can no longer override set node properties. See bit.ly/nr-override-msg-props
+20 Sep 20:47:02 - [warn] [http request:Get All Hubitat Devices] Warning: msg properties can no longer override set node properties. See bit.ly/nr-override-msg-props
+20 Sep 20:47:09 - [warn] [http request:Get All Hubitat Devices] Warning: msg properties can no longer override set node properties. See bit.ly/nr-override-msg-props
+20 Sep 20:47:09 - [warn] [http request:Get All Hubitat Devices] Warning: msg properties can no longer override set node properties. See bit.ly/nr-override-msg-props
+20 Sep 20:47:48 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 35,
+  state: 'discharging',
+  time: '2025-09-20T20:47:48',
+  _msgid: '01574990c342846f'
+}
+20 Sep 20:48:51 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 35,
+  state: 'discharging',
+  time: '2025-09-20T20:48:51',
+  _msgid: '16a78fc5d540f05f'
+}
+20 Sep 20:49:51 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 35,
+  state: 'discharging',
+  time: '2025-09-20T20:49:51',
+  _msgid: '54724a6defd86964'
+}
+20 Sep 20:50:51 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 35,
+  state: 'discharging',
+  time: '2025-09-20T20:50:51',
+  _msgid: 'f24774c8ee606e04'
+}
+20 Sep 20:51:39 - [info] Stopping flows
+20 Sep 20:51:39 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 20:51:39 - [info] Stopped flows
+20 Sep 20:51:41 - [info] 
+
+Welcome to Node-RED
+===================
+
+20 Sep 20:51:41 - [info] Node-RED version: v4.1.0
+20 Sep 20:51:41 - [info] Node.js  version: v20.19.2
+20 Sep 20:51:41 - [info] Linux 5.4.17-2136.344.4.1.el8uek.x86_64 x64 LE
+20 Sep 20:51:41 - [info] Loading palette nodes
+20 Sep 20:51:46 - [info] Settings file  : /root/.node-red/settings.js
+20 Sep 20:51:46 - [info] HTTP Static    : /root/.node-red/public > /public/
+20 Sep 20:51:46 - [info] Context store  : 'default' [module=memory]
+20 Sep 20:51:46 - [info] User directory : /root/.node-red
+20 Sep 20:51:46 - [warn] Projects disabled : editorTheme.projects.enabled=false
+20 Sep 20:51:46 - [info] Flows file     : /root/.node-red/flows.json
+20 Sep 20:51:46 - [info] Server now running at http://127.0.0.1:1880/
+20 Sep 20:51:46 - [info] +-----------------------------------------------------
+20 Sep 20:51:46 - [info] | 🌐 uibuilder v7.4.3 initialised
+20 Sep 20:51:46 - [info] | root folder: /root/.node-red/uibuilder
+20 Sep 20:51:46 - [info] | Using Node-RED's webserver at:
+20 Sep 20:51:46 - [info] |   http://0.0.0.0:1880/
+20 Sep 20:51:46 - [info] | Installed packages:
+20 Sep 20:51:46 - [info] +-----------------------------------------------------
+20 Sep 20:51:46 - [info] Starting flows
+20 Sep 20:51:46 - [info] Started flows
+20 Sep 20:51:46 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 20:51:52 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 34,
+  state: 'discharging',
+  time: '2025-09-20T20:51:52',
+  _msgid: 'd1de197677dbaa73'
+}
+20 Sep 20:52:52 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 34,
+  state: 'discharging',
+  time: '2025-09-20T20:52:52',
+  _msgid: 'ebbde9ef90568085'
+}
+20 Sep 20:53:53 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 34,
+  state: 'discharging',
+  time: '2025-09-20T20:53:53',
+  _msgid: '8e1f0eddc4053f08'
+}
+20 Sep 20:54:07 - [info] Stopping flows
+20 Sep 20:54:07 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 20:54:07 - [info] Stopped flows
+20 Sep 20:54:27 - [info] 
+
+Welcome to Node-RED
+===================
+
+20 Sep 20:54:27 - [info] Node-RED version: v4.1.0
+20 Sep 20:54:27 - [info] Node.js  version: v20.19.2
+20 Sep 20:54:27 - [info] Linux 5.4.17-2136.344.4.1.el8uek.x86_64 x64 LE
+20 Sep 20:54:28 - [info] Loading palette nodes
+20 Sep 20:54:32 - [info] Settings file  : /root/.node-red/settings.js
+20 Sep 20:54:32 - [info] HTTP Static    : /root/.node-red/public > /public/
+20 Sep 20:54:32 - [info] Context store  : 'default' [module=memory]
+20 Sep 20:54:32 - [info] User directory : /root/.node-red
+20 Sep 20:54:32 - [warn] Projects disabled : editorTheme.projects.enabled=false
+20 Sep 20:54:32 - [info] Flows file     : /root/.node-red/flows.json
+20 Sep 20:54:32 - [info] Server now running at http://127.0.0.1:1880/
+20 Sep 20:54:32 - [info] +-----------------------------------------------------
+20 Sep 20:54:32 - [info] | 🌐 uibuilder v7.4.3 initialised
+20 Sep 20:54:32 - [info] | root folder: /root/.node-red/uibuilder
+20 Sep 20:54:32 - [info] | Using Node-RED's webserver at:
+20 Sep 20:54:32 - [info] |   http://0.0.0.0:1880/
+20 Sep 20:54:32 - [info] | Installed packages:
+20 Sep 20:54:32 - [info] +-----------------------------------------------------
+20 Sep 20:54:32 - [info] Starting flows
+20 Sep 20:54:32 - [info] Started flows
+20 Sep 20:54:32 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 20:54:57 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 34,
+  state: 'discharging',
+  time: '2025-09-20T20:54:57',
+  _msgid: 'a74429815c5740f5'
+}
+20 Sep 20:56:01 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 34,
+  state: 'discharging',
+  time: '2025-09-20T20:56:01',
+  _msgid: '889da0ddb2a6daed'
+}
+20 Sep 20:57:02 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 34,
+  state: 'discharging',
+  time: '2025-09-20T20:57:02',
+  _msgid: '2d086ccbd44ebe15'
+}
+20 Sep 20:57:59 - [info] Stopping flows
+20 Sep 20:57:59 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 20:57:59 - [info] Stopped flows
+20 Sep 20:57:59 - [info] Updated flows
+20 Sep 20:57:59 - [info] Starting flows
+20 Sep 20:57:59 - [info] Started flows
+20 Sep 20:57:59 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 20:58:06 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 33,
+  state: 'discharging',
+  time: '2025-09-20T20:58:06',
+  _msgid: 'ee4cec3fe77c9065'
+}
+20 Sep 20:59:09 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 33,
+  state: 'discharging',
+  time: '2025-09-20T20:59:09',
+  _msgid: '535b8ba9055fdc8a'
+}
+20 Sep 20:59:12 - [info] Stopping flows
+20 Sep 20:59:12 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 20:59:12 - [info] Stopped flows
+20 Sep 20:59:12 - [info] Updated flows
+20 Sep 20:59:12 - [info] Starting flows
+20 Sep 20:59:12 - [info] Started flows
+20 Sep 20:59:12 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 21:00:11 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 33,
+  state: 'discharging',
+  time: '2025-09-20T21:00:11',
+  _msgid: '355b6de81da42995'
+}
+20 Sep 21:01:19 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 33,
+  state: 'discharging',
+  time: '2025-09-20T21:01:19',
+  _msgid: 'f43f530165b15e04'
+}
+20 Sep 21:02:19 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 33,
+  state: 'discharging',
+  time: '2025-09-20T21:02:19',
+  _msgid: '0176841e49f1bb04'
+}
+20 Sep 21:02:34 - [info] Stopping flows
+20 Sep 21:02:34 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 21:02:34 - [info] Stopped flows
+20 Sep 21:02:34 - [info] Updated flows
+20 Sep 21:02:34 - [info] Starting flows
+20 Sep 21:02:34 - [info] Started flows
+20 Sep 21:02:34 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 21:02:38 - [error] [template:Battery Display Template] Unclosed section "timestamp" at 11328
+20 Sep 21:02:43 - [error] [template:Battery Display Template] Unclosed section "timestamp" at 11328
+20 Sep 21:02:47 - [error] [template:Battery Display Template] Unclosed section "timestamp" at 11328
+20 Sep 21:02:53 - [info] Stopping flows
+20 Sep 21:02:53 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 21:02:53 - [info] Stopped flows
+20 Sep 21:02:57 - [info] 
+
+Welcome to Node-RED
+===================
+
+20 Sep 21:02:57 - [info] Node-RED version: v4.1.0
+20 Sep 21:02:57 - [info] Node.js  version: v20.19.2
+20 Sep 21:02:57 - [info] Linux 5.4.17-2136.344.4.1.el8uek.x86_64 x64 LE
+20 Sep 21:02:57 - [info] Loading palette nodes
+20 Sep 21:03:01 - [info] Settings file  : /root/.node-red/settings.js
+20 Sep 21:03:01 - [info] HTTP Static    : /root/.node-red/public > /public/
+20 Sep 21:03:01 - [info] Context store  : 'default' [module=memory]
+20 Sep 21:03:01 - [info] User directory : /root/.node-red
+20 Sep 21:03:01 - [warn] Projects disabled : editorTheme.projects.enabled=false
+20 Sep 21:03:01 - [info] Flows file     : /root/.node-red/flows.json
+20 Sep 21:03:01 - [info] Server now running at http://127.0.0.1:1880/
+20 Sep 21:03:01 - [info] +-----------------------------------------------------
+20 Sep 21:03:01 - [info] | 🌐 uibuilder v7.4.3 initialised
+20 Sep 21:03:01 - [info] | root folder: /root/.node-red/uibuilder
+20 Sep 21:03:01 - [info] | Using Node-RED's webserver at:
+20 Sep 21:03:01 - [info] |   http://0.0.0.0:1880/
+20 Sep 21:03:01 - [info] | Installed packages:
+20 Sep 21:03:01 - [info] +-----------------------------------------------------
+20 Sep 21:03:01 - [info] Starting flows
+20 Sep 21:03:02 - [info] Started flows
+20 Sep 21:03:02 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 21:03:12 - [error] [template:Battery Display Template] Unclosed section "timestamp" at 11328
+20 Sep 21:03:15 - [error] [template:Battery Display Template] Unclosed section "timestamp" at 11328
+20 Sep 21:03:21 - [error] [template:Battery Display Template] Unclosed section "timestamp" at 11328
+20 Sep 21:03:24 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 33,
+  state: 'discharging',
+  time: '2025-09-20T21:03:24',
+  _msgid: '3ca42136bc45a92d'
+}
+20 Sep 21:03:28 - [error] [template:Battery Display Template] Unclosed section "timestamp" at 11328
+20 Sep 21:03:46 - [error] [template:Battery Display Template] Unclosed section "timestamp" at 11328
+20 Sep 21:03:49 - [error] [template:Battery Display Template] Unclosed section "timestamp" at 11328
+20 Sep 21:04:06 - [error] [template:Battery Display Template] Unclosed section "timestamp" at 11328
+20 Sep 21:04:25 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 33,
+  state: 'discharging',
+  time: '2025-09-20T21:04:25',
+  _msgid: '2b68c9dba1ac6b19'
+}
+20 Sep 21:05:25 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 33,
+  state: 'discharging',
+  time: '2025-09-20T21:05:25',
+  _msgid: '04d751ce3f0c0639'
+}
+20 Sep 21:06:25 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 32,
+  state: 'discharging',
+  time: '2025-09-20T21:06:25',
+  _msgid: '96b2c6d45d815d3d'
+}
+20 Sep 21:07:12 - [info] Stopping flows
+20 Sep 21:07:12 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 21:07:12 - [info] Stopped flows
+20 Sep 21:07:12 - [info] Updated flows
+20 Sep 21:07:12 - [info] Starting flows
+20 Sep 21:07:12 - [info] Started flows
+20 Sep 21:07:12 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 21:07:25 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 32,
+  state: 'discharging',
+  time: '2025-09-20T21:07:25',
+  _msgid: '7ea52d243546c1c0'
+}
+20 Sep 21:08:30 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 32,
+  state: 'discharging',
+  time: '2025-09-20T21:08:30',
+  _msgid: '51a3860df17f0f6f'
+}
+20 Sep 21:09:32 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 32,
+  state: 'discharging',
+  time: '2025-09-20T21:09:32',
+  _msgid: '635fb3f4cb3a6886'
+}
+20 Sep 21:10:35 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 32,
+  state: 'discharging',
+  time: '2025-09-20T21:10:35',
+  _msgid: 'ad9e52d7117323be'
+}
+20 Sep 21:11:36 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 32,
+  state: 'discharging',
+  time: '2025-09-20T21:11:36',
+  _msgid: 'd14775b60cc2323c'
+}
+20 Sep 21:12:36 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 32,
+  state: 'discharging',
+  time: '2025-09-20T21:12:36',
+  _msgid: '3563fc1413d27abc'
+}
+20 Sep 21:12:40 - [info] Stopping flows
+20 Sep 21:12:40 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 21:12:40 - [info] Stopped flows
+20 Sep 21:12:46 - [info] 
+
+Welcome to Node-RED
+===================
+
+20 Sep 21:12:46 - [info] Node-RED version: v4.1.0
+20 Sep 21:12:46 - [info] Node.js  version: v20.19.2
+20 Sep 21:12:46 - [info] Linux 5.4.17-2136.344.4.1.el8uek.x86_64 x64 LE
+20 Sep 21:12:47 - [info] Loading palette nodes
+20 Sep 21:12:52 - [info] Settings file  : /root/.node-red/settings.js
+20 Sep 21:12:52 - [info] HTTP Static    : /root/.node-red/public > /public/
+20 Sep 21:12:52 - [info] Context store  : 'default' [module=memory]
+20 Sep 21:12:52 - [info] User directory : /root/.node-red
+20 Sep 21:12:52 - [warn] Projects disabled : editorTheme.projects.enabled=false
+20 Sep 21:12:52 - [info] Flows file     : /root/.node-red/flows.json
+20 Sep 21:12:52 - [info] Server now running at http://127.0.0.1:1880/
+20 Sep 21:12:52 - [info] +-----------------------------------------------------
+20 Sep 21:12:52 - [info] | 🌐 uibuilder v7.4.3 initialised
+20 Sep 21:12:52 - [info] | root folder: /root/.node-red/uibuilder
+20 Sep 21:12:52 - [info] | Using Node-RED's webserver at:
+20 Sep 21:12:52 - [info] |   http://0.0.0.0:1880/
+20 Sep 21:12:52 - [info] | Installed packages:
+20 Sep 21:12:52 - [info] +-----------------------------------------------------
+20 Sep 21:12:52 - [info] Starting flows
+20 Sep 21:12:52 - [info] Started flows
+20 Sep 21:12:52 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 21:13:35 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 32,
+  state: 'discharging',
+  time: '2025-09-20T21:13:35',
+  _msgid: '0a190f515215da7e'
+}
+20 Sep 21:14:49 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 31,
+  state: 'discharging',
+  time: '2025-09-20T21:14:49',
+  _msgid: '58e670e8abb874f7'
+}
+20 Sep 21:15:06 - [info] Stopping flows
+20 Sep 21:15:06 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 21:15:06 - [info] Stopped flows
+20 Sep 21:15:06 - [info] Updated flows
+20 Sep 21:15:06 - [info] Starting flows
+20 Sep 21:15:06 - [info] Started flows
+20 Sep 21:15:06 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 21:15:10 - [info] Stopping flows
+20 Sep 21:15:10 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 21:15:10 - [info] Stopped flows
+20 Sep 21:15:12 - [info] 
+
+Welcome to Node-RED
+===================
+
+20 Sep 21:15:12 - [info] Node-RED version: v4.1.0
+20 Sep 21:15:12 - [info] Node.js  version: v20.19.2
+20 Sep 21:15:12 - [info] Linux 5.4.17-2136.344.4.1.el8uek.x86_64 x64 LE
+20 Sep 21:15:12 - [info] Loading palette nodes
+20 Sep 21:15:17 - [info] Settings file  : /root/.node-red/settings.js
+20 Sep 21:15:17 - [info] HTTP Static    : /root/.node-red/public > /public/
+20 Sep 21:15:17 - [info] Context store  : 'default' [module=memory]
+20 Sep 21:15:17 - [info] User directory : /root/.node-red
+20 Sep 21:15:17 - [warn] Projects disabled : editorTheme.projects.enabled=false
+20 Sep 21:15:17 - [info] Flows file     : /root/.node-red/flows.json
+20 Sep 21:15:17 - [info] Server now running at http://127.0.0.1:1880/
+20 Sep 21:15:17 - [info] +-----------------------------------------------------
+20 Sep 21:15:17 - [info] | 🌐 uibuilder v7.4.3 initialised
+20 Sep 21:15:17 - [info] | root folder: /root/.node-red/uibuilder
+20 Sep 21:15:17 - [info] | Using Node-RED's webserver at:
+20 Sep 21:15:17 - [info] |   http://0.0.0.0:1880/
+20 Sep 21:15:17 - [info] | Installed packages:
+20 Sep 21:15:17 - [info] +-----------------------------------------------------
+20 Sep 21:15:17 - [info] Starting flows
+20 Sep 21:15:17 - [info] Started flows
+20 Sep 21:15:17 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 21:15:49 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 31,
+  state: 'discharging',
+  time: '2025-09-20T21:15:49',
+  _msgid: '9866b5a6f865ae5d'
+}
+20 Sep 21:16:04 - [info] Stopping flows
+20 Sep 21:16:04 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 21:16:04 - [info] Stopped flows
+20 Sep 21:16:04 - [info] Updated flows
+20 Sep 21:16:04 - [info] Starting flows
+20 Sep 21:16:05 - [info] Started flows
+20 Sep 21:16:05 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 21:16:50 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 31,
+  state: 'discharging',
+  time: '2025-09-20T21:16:50',
+  _msgid: 'b10e0deb6ee630ac'
+}
+20 Sep 21:17:50 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 31,
+  state: 'discharging',
+  time: '2025-09-20T21:17:50',
+  _msgid: '308f6885c9837bdf'
+}
+20 Sep 21:18:50 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 31,
+  state: 'discharging',
+  time: '2025-09-20T21:18:50',
+  _msgid: '109ec14a2e5cf4d0'
+}
+20 Sep 21:19:50 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 31,
+  state: 'discharging',
+  time: '2025-09-20T21:19:50',
+  _msgid: 'e5776ce013d27dea'
+}
+20 Sep 21:20:50 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 31,
+  state: 'discharging',
+  time: '2025-09-20T21:20:50',
+  _msgid: '46fe6fe0669075bd'
+}
+20 Sep 21:21:12 - [info] Stopping flows
+20 Sep 21:21:12 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 21:21:12 - [info] Stopped flows
+20 Sep 21:21:12 - [info] Updated flows
+20 Sep 21:21:12 - [info] Starting flows
+20 Sep 21:21:12 - [info] Started flows
+20 Sep 21:21:12 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 21:21:12 - [error] [template:Battery Display Template] Unopened section "payload.SOC" at 7552
+20 Sep 21:21:20 - [error] [template:Battery Display Template] Unopened section "payload.SOC" at 7552
+20 Sep 21:21:50 - [error] [template:Battery Display Template] Unopened section "payload.SOC" at 7552
+20 Sep 21:21:52 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 30,
+  state: 'discharging',
+  time: '2025-09-20T21:21:52',
+  _msgid: '4dae55e822177cea'
+}
+20 Sep 21:22:15 - [info] Stopping flows
+20 Sep 21:22:15 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 21:22:15 - [info] Stopped flows
+20 Sep 21:22:16 - [info] 
+
+Welcome to Node-RED
+===================
+
+20 Sep 21:22:16 - [info] Node-RED version: v4.1.0
+20 Sep 21:22:16 - [info] Node.js  version: v20.19.2
+20 Sep 21:22:16 - [info] Linux 5.4.17-2136.344.4.1.el8uek.x86_64 x64 LE
+20 Sep 21:22:16 - [info] Loading palette nodes
+20 Sep 21:22:21 - [info] Settings file  : /root/.node-red/settings.js
+20 Sep 21:22:21 - [info] HTTP Static    : /root/.node-red/public > /public/
+20 Sep 21:22:21 - [info] Context store  : 'default' [module=memory]
+20 Sep 21:22:21 - [info] User directory : /root/.node-red
+20 Sep 21:22:21 - [warn] Projects disabled : editorTheme.projects.enabled=false
+20 Sep 21:22:21 - [info] Flows file     : /root/.node-red/flows.json
+20 Sep 21:22:21 - [info] Server now running at http://127.0.0.1:1880/
+20 Sep 21:22:21 - [info] +-----------------------------------------------------
+20 Sep 21:22:21 - [info] | 🌐 uibuilder v7.4.3 initialised
+20 Sep 21:22:21 - [info] | root folder: /root/.node-red/uibuilder
+20 Sep 21:22:21 - [info] | Using Node-RED's webserver at:
+20 Sep 21:22:21 - [info] |   http://0.0.0.0:1880/
+20 Sep 21:22:21 - [info] | Installed packages:
+20 Sep 21:22:21 - [info] +-----------------------------------------------------
+20 Sep 21:22:21 - [info] Starting flows
+20 Sep 21:22:21 - [info] Started flows
+20 Sep 21:22:21 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 21:22:21 - [error] [template:Battery Display Template] Unopened section "payload.SOC" at 7552
+20 Sep 21:22:23 - [error] [template:Battery Display Template] Unopened section "payload.SOC" at 7552
+20 Sep 21:22:34 - [error] [template:Battery Display Template] Unopened section "payload.SOC" at 7552
+20 Sep 21:22:36 - [error] [template:Battery Display Template] Unopened section "payload.SOC" at 7552
+20 Sep 21:22:38 - [error] [template:Battery Display Template] Unopened section "payload.SOC" at 7552
+20 Sep 21:22:41 - [error] [template:Battery Display Template] Unopened section "payload.SOC" at 7552
+20 Sep 21:22:52 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 30,
+  state: 'discharging',
+  time: '2025-09-20T21:22:52',
+  _msgid: 'f59a04c75f2289fd'
+}
+20 Sep 21:22:54 - [warn] [http request:Get All Hubitat Devices] Warning: msg properties can no longer override set node properties. See bit.ly/nr-override-msg-props
+20 Sep 21:22:54 - [warn] [http request:Get All Hubitat Devices] Warning: msg properties can no longer override set node properties. See bit.ly/nr-override-msg-props
+20 Sep 21:22:59 - [warn] [http request:Get All Hubitat Devices] Warning: msg properties can no longer override set node properties. See bit.ly/nr-override-msg-props
+20 Sep 21:22:59 - [warn] [http request:Get All Hubitat Devices] Warning: msg properties can no longer override set node properties. See bit.ly/nr-override-msg-props
+20 Sep 21:23:20 - [error] [template:Battery Display Template] Unopened section "payload.SOC" at 7552
+20 Sep 21:23:31 - [error] [template:Battery Display Template] Unopened section "payload.SOC" at 7552
+20 Sep 21:23:39 - [error] [template:Battery Display Template] Unopened section "payload.SOC" at 7552
+20 Sep 21:23:52 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 30,
+  state: 'discharging',
+  time: '2025-09-20T21:23:52',
+  _msgid: 'e5dbfc6c8098dc8b'
+}
+20 Sep 21:24:52 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 30,
+  state: 'discharging',
+  time: '2025-09-20T21:24:52',
+  _msgid: '117396804346e8b0'
+}
+20 Sep 21:26:07 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 30,
+  state: 'discharging',
+  time: '2025-09-20T21:26:07',
+  _msgid: 'ca81f985a1089157'
+}
+20 Sep 21:26:48 - [error] [template:Battery Display Template] Unopened section "payload.SOC" at 7552
+20 Sep 21:26:49 - [error] [template:Battery Display Template] Unopened section "payload.SOC" at 7552
+20 Sep 21:27:09 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 30,
+  state: 'discharging',
+  time: '2025-09-20T21:27:09',
+  _msgid: '21f15cd248fd94ad'
+}
+20 Sep 21:28:11 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 30,
+  state: 'discharging',
+  time: '2025-09-20T21:28:11',
+  _msgid: '0c1a9ec86a314056'
+}
+20 Sep 21:28:29 - [info] Stopping flows
+20 Sep 21:28:29 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 21:28:29 - [info] Stopped flows
+20 Sep 21:34:14 - [info] 
+
+Welcome to Node-RED
+===================
+
+20 Sep 21:34:14 - [info] Node-RED version: v4.1.0
+20 Sep 21:34:14 - [info] Node.js  version: v20.19.2
+20 Sep 21:34:14 - [info] Linux 5.4.17-2136.344.4.1.el8uek.x86_64 x64 LE
+20 Sep 21:34:14 - [info] Loading palette nodes
+20 Sep 21:34:19 - [info] Settings file  : /root/.node-red/settings.js
+20 Sep 21:34:19 - [info] HTTP Static    : /root/.node-red/public > /public/
+20 Sep 21:34:19 - [info] Context store  : 'default' [module=memory]
+20 Sep 21:34:19 - [info] User directory : /root/.node-red
+20 Sep 21:34:19 - [warn] Projects disabled : editorTheme.projects.enabled=false
+20 Sep 21:34:19 - [info] Flows file     : /root/.node-red/flows.json
+20 Sep 21:34:19 - [info] Server now running at http://127.0.0.1:1880/
+20 Sep 21:34:19 - [info] +-----------------------------------------------------
+20 Sep 21:34:19 - [info] | 🌐 uibuilder v7.4.3 initialised
+20 Sep 21:34:19 - [info] | root folder: /root/.node-red/uibuilder
+20 Sep 21:34:19 - [info] | Using Node-RED's webserver at:
+20 Sep 21:34:19 - [info] |   http://0.0.0.0:1880/
+20 Sep 21:34:19 - [info] | Installed packages:
+20 Sep 21:34:19 - [info] +-----------------------------------------------------
+20 Sep 21:34:19 - [info] Starting flows
+20 Sep 21:34:19 - [info] Started flows
+20 Sep 21:34:19 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 21:34:40 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 29,
+  state: 'discharging',
+  time: '2025-09-20T21:34:40',
+  _msgid: 'c9eb62d99ddb017d'
+}
+20 Sep 21:35:42 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 29,
+  state: 'discharging',
+  time: '2025-09-20T21:35:42',
+  _msgid: 'd32adfdc7f7c4d0a'
+}
+20 Sep 21:36:41 - [info] [debug:Battery Data Debug] 
+{
+  SOC: 29,
+  state: 'discharging',
+  time: '2025-09-20T21:36:41',
+  _msgid: '0612150d8dc7f33a'
+}
+20 Sep 21:36:49 - [info] Stopping flows
+20 Sep 21:36:49 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 21:36:49 - [info] Stopped flows
+20 Sep 21:38:16 - [info] 
+
+Welcome to Node-RED
+===================
+
+20 Sep 21:38:16 - [info] Node-RED version: v4.1.0
+20 Sep 21:38:16 - [info] Node.js  version: v20.19.2
+20 Sep 21:38:16 - [info] Linux 5.4.17-2136.344.4.1.el8uek.x86_64 x64 LE
+20 Sep 21:38:16 - [info] Loading palette nodes
