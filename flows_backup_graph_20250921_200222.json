@@ -68,10 +68,11 @@
         "rh": 0,
         "inputs": 0,
         "x": 140,
-        "y": 40,
+        "y": 60,
         "wires": [
             [
-                "9d504389e63c252b"
+                "9d504389e63c252b",
+                "f7a94d266b716497"
             ]
         ]
     },
@@ -87,7 +88,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 590,
+        "x": 490,
         "y": 40,
         "wires": [
             []
@@ -104,8 +105,8 @@
         "syntax": "mustache",
         "template": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\n    <title>Battery Status Monitor</title>\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css\">\n    <style>\n        /* Reset and base styles */\n        * {\n            box-sizing: border-box;\n        }\n        \n        body {\n            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;\n            background: linear-gradient(135deg, #1a1a2e, #16213e);\n            color: white;\n            margin: 0;\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            overflow-x: hidden;\n        }\n        \n        .battery-container {\n            text-align: center;\n            background: rgba(45, 45, 45, 0.95);\n            padding: clamp(20px, 5vw, 40px);\n            border-radius: 20px;\n            box-shadow: 0 15px 35px rgba(0,0,0,0.6);\n            backdrop-filter: blur(10px);\n            border: 1px solid rgba(255,255,255,0.1);\n            width: 100%;\n            max-width: 200px;\n        }\n        \n        .battery-wrapper {\n            position: relative;\n            display: flex;\n            justify-content: center;\n            align-items: center;\n            margin: clamp(15px, 4vw, 30px) 0;\n        }\n        \n        .battery-body {\n            position: relative;\n            width: clamp(150px, 40vw, 200px);\n            height: clamp(60px, 15vw, 80px);\n            border: clamp(3px, 1vw, 5px) solid #666;\n            border-radius: 12px;\n            background: #222;\n            overflow: hidden;\n            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);\n            display: flex;\n            align-items: center;\n            justify-content: center;\n        }\n        \n        .battery-terminal {\n            position: absolute;\n            right: calc(-1 * clamp(8px, 2vw, 12px));\n            top: 50%;\n            transform: translateY(-50%);\n            width: clamp(8px, 2vw, 12px);\n            height: clamp(30px, 8vw, 50px);\n            background: #666;\n            border-radius: 0 8px 8px 0;\n        }\n        \n        .battery-fill {\n            position: absolute;\n            top: 0;\n            left: 0;\n            height: 100%;\n            width: {{#payload.SOC}}{{payload.SOC}}{{/payload.SOC}}{{^payload.SOC}}50{{/payload.SOC}}%;\n            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);\n            border-radius: 8px 0 0 8px;\n            background: var(--battery-color, #00ff00);\n        }\n        \n        .battery-percentage {\n            position: absolute;\n            top: 50%;\n            left: 50%;\n            transform: translate(-50%, -50%);\n            font-size: clamp(18px, 5vw, 28px);\n            font-weight: 700;\n            color: white;\n            text-shadow: 2px 2px 8px rgba(0,0,0,0.9);\n            z-index: 10;\n        }\n        \n        .charging-symbol {\n            position: absolute;\n            top: clamp(8px, 2vw, 15px);\n            right: clamp(8px, 2vw, 15px);\n            font-size: clamp(16px, 4vw, 24px);\n            color: #ffff00;\n            font-weight: bold;\n            z-index: 10;\n            text-shadow: 0 0 10px rgba(255, 255, 0, 0.8);\n            display: none;\n        }\n        \n        /* State-based styling */\n        .battery-charging .battery-body {\n            box-shadow: \n                inset 0 0 20px rgba(0,0,0,0.5),\n                0 0 20px rgba(0, 255, 65, 0.4);\n        }\n        \n        .battery-discharging .battery-body {\n            box-shadow: \n                inset 0 0 20px rgba(0,0,0,0.5),\n                0 0 20px rgba(255, 68, 68, 0.4);\n        }\n        \n        .battery-idle .battery-body {\n            box-shadow: \n                inset 0 0 20px rgba(0,0,0,0.5),\n                0 0 15px rgba(0, 255, 65, 0.2);\n        }\n        \n        /* Animations */\n        .flash {\n            animation: flash 1.5s ease-in-out infinite;\n        }\n        \n        .flashfont {\n            animation: flashfont 1.5s ease-in-out infinite;\n        }\n        \n        @keyframes flash {\n            0%, 60% { opacity: 1; transform: scale(1); }\n            61%, 100% { opacity: 0.4; transform: scale(1.05); }\n        }\n        \n        @keyframes flashfont {\n            0%, 70% { opacity: 1; }\n            71%, 100% { opacity: 0.5; }\n        }\n        \n        /* Typography */\n        h2 {\n            margin: 0 0 clamp(20px, 5vw, 30px) 0;\n            color: #fff;\n            font-size: clamp(20px, 5vw, 28px);\n            font-weight: 600;\n        }\n        \n        .status-text {\n            font-size: clamp(16px, 4vw, 20px);\n            font-weight: 600;\n            margin: clamp(15px, 4vw, 20px) 0 clamp(8px, 2vw, 10px) 0;\n            text-transform: uppercase;\n            letter-spacing: 1px;\n        }\n        \n        .timestamp {\n            font-size: clamp(12px, 3vw, 14px);\n            color: #aaa;\n            margin-top: clamp(10px, 3vw, 15px);\n            opacity: 0.8;\n        }\n        \n        .error-message {\n            color: #ff6b6b;\n            font-size: clamp(14px, 3.5vw, 16px);\n            margin: 10px 0;\n            padding: 10px;\n            background: rgba(255, 107, 107, 0.1);\n            border-radius: 8px;\n            border: 1px solid rgba(255, 107, 107, 0.3);\n        }\n        \n        /* Responsive breakpoints */\n        @media (max-width: 480px) {\n            body { padding: 15px; }\n            .battery-container { padding: 20px 15px; }\n        }\n        \n        @media (max-width: 320px) {\n            body { padding: 10px; }\n            .battery-container { padding: 15px 10px; }\n        }\n        \n        @media (min-width: 1200px) {\n            .battery-container { max-width: 200px; }\n        }\n        \n        /* High DPI display support */\n        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {\n            .battery-body { border-width: 4px; }\n        }\n        \n        /* Reduced motion support */\n        @media (prefers-reduced-motion: reduce) {\n            .battery-fill { transition: width 0.3s ease; }\n            .flash, .flashfont { animation: none; }\n        }\n    </style>\n</head>\n<body>\n    <div class=\"battery-container\">\n        <h2>Battery Status</h2>\n        \n        <div class=\"battery-wrapper\">\n            <div class=\"battery-body battery-{{#payload.state}}{{payload.state}}{{/payload.state}}{{^payload.state}}idle{{/payload.state}}\" id=\"batteryIcon\">\n                <div class=\"battery-fill\" id=\"batteryFill\"></div>\n                <div class=\"battery-percentage\">{{#payload.SOC}}{{payload.SOC}}{{/payload.SOC}}{{^payload.SOC}}--{{/payload.SOC}}%</div>\n                <div class=\"charging-symbol flash\" id=\"chargingSymbol\">⚡</div>\n            </div>\n            <div class=\"battery-terminal\"></div>\n        </div>\n        \n        <div class=\"status-text\">\n            <span id=\"stateFont\">{{#payload.state}}{{payload.state}}{{/payload.state}}{{^payload.state}}Unknown{{/payload.state}}</span>\n        </div>\n        \n        <div class=\"timestamp\">\n            Last Update: <span id=\"lastUpdate\">{{#timestamp}}{{timestamp}}{{/timestamp}}{{^timestamp}}{{#payload.time}}{{payload.time}}{{/payload.time}}{{^payload.time}}Unknown{{/payload.time}}{{/timestamp}}</span>\n        </div>\n    </div>\n\n    <script>\n        // Robust error handling and data validation\n        try {\n            const state = '{{#payload.state}}{{payload.state}}{{/payload.state}}{{^payload.state}}idle{{/payload.state}}'.toLowerCase();\n            const socValue = {{#payload.SOC}}{{payload.SOC}}{{/payload.SOC}}{{^payload.SOC}}50{{/payload.SOC}};\n            \n            const chargingSymbol = document.getElementById('chargingSymbol');\n            const batteryIcon = document.getElementById('batteryIcon');\n            const stateFont = document.getElementById('stateFont');\n            const batteryFill = document.getElementById('batteryFill');\n            \n            // Validate SOC value\n            const validSOC = Math.max(0, Math.min(100, socValue || 0));\n            \n            // Set battery color based on SOC level\n            let batteryColor;\n            if (validSOC < 20) batteryColor = '#ff4444';\n            else if (validSOC < 40) batteryColor = '#ff9100';\n            else if (validSOC < 60) batteryColor = '#fff200';\n            else if (validSOC < 80) batteryColor = '#d7fc03';\n            else batteryColor = '#00ff00';\n            \n            document.documentElement.style.setProperty('--battery-color', batteryColor);\n            \n            // Handle different states\n            if (state === 'charging') {\n                stateFont.style.color = '#00ff00';\n                chargingSymbol.style.display = 'block';\n                batteryIcon.classList.add('battery-charging');\n                stateFont.classList.add('flashfont');\n            } else if (state === 'discharging') {\n                stateFont.style.color = '#ff6b6b';\n                batteryIcon.classList.add('battery-discharging');\n                stateFont.classList.add('flashfont');\n            } else {\n                stateFont.style.color = '#ffffff';\n                batteryIcon.classList.add('battery-idle');\n            }\n            \n            // Format timestamp if available\n            const lastUpdate = document.getElementById('lastUpdate');\n            const timeStr = lastUpdate.textContent;\n            if (timeStr && timeStr !== 'Unknown') {\n                try {\n                    const date = new Date(timeStr);\n                    if (!isNaN(date.getTime())) {\n                        lastUpdate.textContent = date.toLocaleString();\n                    }\n                } catch (e) {\n                    console.warn('Could not parse timestamp:', timeStr);\n                }\n            }\n            \n            // Smart refresh with exponential backoff on errors\n            let refreshAttempts = 0;\n            const maxAttempts = 5;\n            \n            function scheduleRefresh() {\n                const baseDelay = 15000; // 15 seconds base\n                const delay = refreshAttempts > 0 ? baseDelay * Math.pow(2, refreshAttempts) : baseDelay;\n                const maxDelay = 60000; // Max 1 minute\n                \n                setTimeout(() => {\n                    try {\n                        window.location.reload();\n                    } catch (e) {\n                        refreshAttempts = Math.min(refreshAttempts + 1, maxAttempts);\n                        if (refreshAttempts < maxAttempts) {\n                            scheduleRefresh();\n                        }\n                    }\n                }, Math.min(delay, maxDelay));\n            }\n            \n            scheduleRefresh();\n            \n        } catch (error) {\n            console.error('Battery display error:', error);\n            // Show error message to user\n            const container = document.querySelector('.battery-container');\n            if (container) {\n                const errorDiv = document.createElement('div');\n                errorDiv.className = 'error-message';\n                errorDiv.textContent = 'Display error: Please refresh the page';\n                container.appendChild(errorDiv);\n            }\n        }\n    </script>\n</body>\n</html>",
         "output": "str",
-        "x": 770,
-        "y": 140,
+        "x": 730,
+        "y": 180,
         "wires": [
             [
                 "f7f04a3f477ab654"
@@ -121,8 +122,8 @@
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 140,
-        "y": 140,
+        "x": 120,
+        "y": 180,
         "wires": [
             [
                 "466161e1adb6b7c7"
@@ -141,8 +142,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 480,
-        "y": 140,
+        "x": 420,
+        "y": 180,
         "wires": [
             [
                 "40b109e65a39f680"
@@ -158,9 +159,27 @@
         "headers": {
             "Content-Type": "text/html"
         },
-        "x": 1040,
-        "y": 140,
+        "x": 1000,
+        "y": 180,
         "wires": []
+    },
+    {
+        "id": "f7a94d266b716497",
+        "type": "function",
+        "z": "797d03fafe67193c",
+        "name": "Power Data",
+        "func": "// Extract values\nlet payload = msg.payload;\n\nconst response = {\n    pv1watt:     payload.values.pv1watt,     // power being produced\n    pactogridr:  payload.values.pactogridr,  // Power exported to grid\n    pactouserr:  payload.values.pactouserr,  // Power being drawn from grid\n    p1charge1:   payload.values.p1charge1,   // battery charging\n    pdischarge1: payload.values.pdischarge1, // battery discharging \n    lastupdated: payload.time                // last time date was received from the invertor\n};\n\n// Store in global context for HTTP requests\nglobal.set('powerGraphData', response);\n\nreturn response;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "// const response = {\n//     pv1watt:     0,     // power being produced\n//     pactogridr:  0,  // Power exported to grid\n//     pactouserr:  0,  // Power being drawn from grid\n//     p1charge1:   0,   // battery charging\n//     pdischarge1: 0, // battery discharging \n//     lastupdated: '2025-01-01 00:00:00' // last time date was received from the invertor\n// };\n\n// // Store in global context for HTTP requests\n// global.set('powerGraphData', response);\n\n// return response;",
+        "finalize": "",
+        "libs": [],
+        "x": 490,
+        "y": 100,
+        "wires": [
+            []
+        ]
     },
     {
         "id": "h1a2b3c4d5e6f7g8",
