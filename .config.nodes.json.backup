@@ -707,7 +707,7 @@
                 "types": [
                     "ui-audio"
                 ],
-                "enabled": false,
+                "enabled": true,
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
