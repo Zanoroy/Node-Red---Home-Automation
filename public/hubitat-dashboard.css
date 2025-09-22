@@ -614,16 +614,52 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   flex-wrap: wrap;
-  gap: 15px;
+  gap: 10px;
 }
 
 .chart-header h3 {
+  margin: 0;
   color: #ffffff;
   font-size: 1.5rem;
   font-weight: 600;
-  margin: 0;
+}
+
+.chart-controls {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.time-range-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.time-range-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.time-range-btn.active {
+  background: #007bff;
+  border-color: #007bff;
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+}
+
+.time-range-btn:active {
+  transform: translateY(0);
 }
 
 .chart-legend {
@@ -683,20 +719,32 @@ body {
   .chart-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .chart-controls {
+    order: 1;
+    align-self: center;
   }
   
   .chart-legend {
+    order: 2;
     justify-content: center;
     width: 100%;
   }
   
   .power-chart-tile {
     padding: 15px;
-    min-height: 350px;
+    min-height: 400px;
   }
   
   .chart-container {
     height: 250px;
+  }
+  
+  .time-range-btn {
+    padding: 8px 14px;
+    font-size: 0.9rem;
   }
 }
 
