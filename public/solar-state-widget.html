@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar State Widget</title>
+    <link rel="stylesheet" href="solar-state-widget.css">
+</head>
+<body>
+    <div id="solarStateWidget" class="solar-widget-container">
+        <!-- Priority Mode (top left) -->
+        <div class="priority-mode">
+            <span class="value" id="priorityMode">Load First</span>
+        </div>
+        
+        <!-- Solar Panel (top center) -->
+        <div class="icon-wrapper solar-position">
+            <div class="icon state_solor"></div>
+        </div>
+        
+        <!-- System Status (below solar) -->
+        <div class="status-text">
+            <span class="label">System Status:</span>
+            <span class="value" id="systemStatus">On-Grid mode</span>
+        </div>
+        
+        <!-- PV Power (below status) -->
+        <div class="power-display pv-power">
+            <span class="label">PV Power:</span>
+            <span class="value" id="pvPower">0.00kW</span>
+        </div>
+        
+        <!-- System/Inverter (middle center) -->
+        <div class="icon-wrapper system-position">
+            <div class="icon state_system"></div>
+        </div>
+        
+        <!-- Battery (middle left) -->
+        <div class="icon-wrapper battery-position">
+            <div class="icon state_bat_null"></div>
+        </div>
+        
+        <!-- Battery Info -->
+        <div class="battery-info">
+            <div class="battery-power">
+                <span class="label">Discharging:</span>
+                <span class="value" id="batteryPower">0.00kW</span>
+            </div>
+            <div class="battery-soc">
+                <span class="label">SoC:</span>
+                <span class="value" id="batterySoc">0%</span>
+            </div>
+        </div>
+        
+        <!-- Load (middle right) -->
+        <div class="icon-wrapper load-position">
+            <div class="icon state_load"></div>
+        </div>
+        
+        <!-- Load Info -->
+        <div class="load-info">
+            <span class="label">Consumption:</span>
+            <span class="value" id="loadPower">0.00kW</span>
+        </div>
+        
+        <!-- Grid (bottom center) -->
+        <div class="icon-wrapper grid-position">
+            <div class="icon state_grid"></div>
+        </div>
+        
+        <!-- Grid Info -->
+        <div class="grid-info">
+            <span class="label" id="gridLabel">Import:</span>
+            <span class="value" id="gridPower">0.00kW</span>
+        </div>
+        
+        <!-- Animated Flow Lines -->
+        <!-- Solar to System -->
+        <div class="flow-line vertical solar-to-system">
+            <i class="flow-dot dot1"></i>
+            <i class="flow-dot dot2"></i>
+            <i class="flow-dot dot3"></i>
+        </div>
+        
+        <!-- Battery to System -->
+        <div class="flow-line horizontal battery-to-system">
+            <i class="flow-dot dot1"></i>
+            <i class="flow-dot dot2"></i>
+            <i class="flow-dot dot3"></i>
+        </div>
+        
+        <!-- System to Grid -->
+        <div class="flow-line vertical system-to-grid">
+            <i class="flow-dot dot1"></i>
+            <i class="flow-dot dot2"></i>
+            <i class="flow-dot dot3"></i>
+        </div>
+        
+        <!-- System to Load -->
+        <div class="flow-line horizontal system-to-load">
+            <i class="flow-dot dot1"></i>
+            <i class="flow-dot dot2"></i>
+            <i class="flow-dot dot3"></i>
+        </div>
+    </div>
+    
+    <script src="solar-state-widget.js"></script>
+</body>
+</html>

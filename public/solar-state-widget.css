@@ -1,0 +1,343 @@
+/* Solar State Widget Styles */
+.solar-widget-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 200px;
+    background: rgba(0, 0, 0, 0.16);
+    border-radius: 8px;
+    color: #adb1c5;
+    padding: 2%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* Common Icon Wrapper */
+.icon-wrapper {
+    position: absolute;
+    text-align: center;
+    width: 14%;
+    max-width: 160px;
+    min-width: 60px;
+    opacity: 1;
+    transition: all 0.3s ease;
+}
+
+.icon-wrapper .icon {
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%; /* Maintain aspect ratio */
+    background-size: 88% !important;
+    background-repeat: no-repeat;
+    background-position: center;
+    position: relative;
+}
+
+/* Icon Positions - Aligned with flow lines */
+.solar-position {
+    top: 12%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.system-position {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.battery-position {
+    top: 50%;
+    left: 20%;
+    transform: translate(-50%, -50%);
+}
+
+.load-position {
+    top: 50%;
+    left: 80%;
+    transform: translate(-50%, -50%);
+}
+
+.grid-position {
+    top: 88%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Icon Images */
+.icon.state_solor {
+    background-image: url('images/state_solor.png');
+}
+
+.icon.state_system {
+    background-image: url('images/state_system.png');
+}
+
+.icon.state_bat_null {
+    background-image: url('images/state_bat_null.png');
+}
+
+.icon.state_load {
+    background-image: url('images/state_loadS.png');
+}
+
+.icon.state_grid {
+    background-image: url('images/state_grid.png');
+}
+
+/* Text Elements */
+.status-text,
+.power-display,
+.battery-info,
+.load-info,
+.grid-info,
+.priority-mode {
+    position: absolute;
+    text-align: center;
+    white-space: nowrap;
+    z-index: 10;
+    line-height: 1.4em;
+}
+
+.status-text {
+    top: 23%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.power-display.pv-power {
+    top: 27%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.priority-mode {
+    top: 3%;
+    left: 3%;
+    transform: none;
+}
+
+/* Battery Info */
+.battery-info {
+    top: 62%;
+    left: 20%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+.battery-info > div {
+    margin: 0.3em 0;
+}
+
+/* Load Info */
+.load-info {
+    top: 62%;
+    left: 80%;
+    transform: translateX(-50%);
+    text-align: center;
+}
+
+/* Grid Info */
+.grid-info {
+    top: 95%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* Label and Value Styling */
+.label {
+    color: #adb1c5;
+    font-size: 0.9em;
+}
+
+.value {
+    color: #FFF;
+    font-size: 1em;
+    font-weight: bold;
+    margin-left: 0.3em;
+}
+
+/* Flow Lines */
+.flow-line {
+    position: absolute;
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.flow-line.active {
+    opacity: 1;
+}
+
+/* Vertical Flow Lines */
+.flow-line.vertical {
+    width: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(to bottom, rgba(74, 244, 147, 0) 0%, #4af493 50%, rgba(74, 244, 147, 0) 100%);
+}
+
+.solar-to-system {
+    top: 19%;
+    height: 22%;
+}
+
+.system-to-grid {
+    top: 59%;
+    height: 20%;
+}
+
+/* Horizontal Flow Lines */
+.flow-line.horizontal {
+    height: 3px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: linear-gradient(to right, rgba(74, 244, 147, 0) 0%, #4af493 50%, rgba(74, 244, 147, 0) 100%);
+}
+
+.battery-to-system {
+    left: 27%;
+    width: 16%;
+}
+
+.system-to-load {
+    left: 57%;
+    width: 16%;
+}
+
+/* Flow Dots Animation */
+.flow-dot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #4af493;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #4af493;
+    opacity: 0;
+}
+
+.flow-line.vertical .flow-dot {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.flow-line.horizontal .flow-dot {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.flow-line.active .dot1 {
+    animation: flowVertical 2s ease-in-out infinite;
+}
+
+.flow-line.active .dot2 {
+    animation: flowVertical 2s ease-in-out infinite 0.66s;
+}
+
+.flow-line.active .dot3 {
+    animation: flowVertical 2s ease-in-out infinite 1.33s;
+}
+
+.flow-line.horizontal.active .dot1 {
+    animation: flowHorizontal 2s ease-in-out infinite;
+}
+
+.flow-line.horizontal.active .dot2 {
+    animation: flowHorizontal 2s ease-in-out infinite 0.66s;
+}
+
+.flow-line.horizontal.active .dot3 {
+    animation: flowHorizontal 2s ease-in-out infinite 1.33s;
+}
+
+@keyframes flowVertical {
+    0% {
+        top: 0%;
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        top: 100%;
+        opacity: 0;
+    }
+}
+
+@keyframes flowHorizontal {
+    0% {
+        left: 0%;
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        left: 100%;
+        opacity: 0;
+    }
+}
+
+/* Responsive font sizing */
+@media (max-width: 768px) {
+    .status-text,
+    .power-display,
+    .priority-mode {
+        font-size: 0.85em;
+    }
+}
+
+@media (max-width: 480px) {
+    .status-text,
+    .power-display,
+    .priority-mode {
+        font-size: 0.7em;
+    }
+    
+    .solar-icon-wrapper {
+        width: 30%;
+    }
+}
+
+/* Light color theme support */
+.lightColor .icon.state_solor {
+    background-image: url('images/lightColor/state_solor.png');
+}
+
+.lightColor .icon.state_system {
+    background-image: url('images/lightColor/state_system.png');
+}
+
+.lightColor .icon.state_bat_null {
+    background-image: url('images/lightColor/state_bat_null.png');
+}
+
+.lightColor .icon.state_load {
+    background-image: url('images/lightColor/state_loadS.png');
+}
+
+.lightColor .icon.state_grid {
+    background-image: url('images/lightColor/state_grid.png');
+}
+
+/* Animation for active state */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+}
+
+.icon-wrapper.active .icon {
+    animation: pulse 2s ease-in-out infinite;
+}

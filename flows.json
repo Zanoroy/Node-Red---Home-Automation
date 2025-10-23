@@ -32,6 +32,13 @@
         "env": []
     },
     {
+        "id": "uibuilder_dashboard_tab",
+        "type": "tab",
+        "label": "UIBuilder Dashboard",
+        "disabled": false,
+        "info": "UIBuilder-based Home Automation Dashboard\nIntegrates: Solar widget, Lights, Battery, Weather"
+    },
+    {
         "id": "d4045e31a39c5762",
         "type": "mqtt-broker",
         "name": "",
@@ -1511,5 +1518,385 @@
         "x": 1170,
         "y": 500,
         "wires": []
+    },
+    {
+        "id": "uibuilder_node",
+        "type": "uibuilder",
+        "z": "uibuilder_dashboard_tab",
+        "name": "Home Dashboard",
+        "topic": "",
+        "url": "dashboard",
+        "okToGo": true,
+        "fwdInMessages": false,
+        "allowScripts": false,
+        "allowStyles": false,
+        "copyIndex": true,
+        "templateFolder": "blank",
+        "extTemplate": "",
+        "showfolder": false,
+        "oldUrl": "",
+        "reload": true,
+        "sourceFolder": "src",
+        "deployedVersion": "7.4.3",
+        "showMsgUib": false,
+        "title": "",
+        "descr": "",
+        "editurl": "",
+        "x": 390,
+        "y": 660,
+        "wires": [
+            [
+                "handle_ui_output"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "handle_ui_output",
+        "type": "switch",
+        "z": "uibuilder_dashboard_tab",
+        "name": "Route UI Commands",
+        "property": "topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "control",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "request",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 720,
+        "y": 660,
+        "wires": [
+            [
+                "handle_control"
+            ],
+            [
+                "send_initial_data"
+            ]
+        ]
+    },
+    {
+        "id": "handle_control",
+        "type": "function",
+        "z": "uibuilder_dashboard_tab",
+        "name": "Handle Light Control",
+        "func": "// Extract control payload\nconst control = msg.payload;\n\nif (control.type === 'light') {\n    // Prepare Hubitat API URL\n    const baseUrl = 'http://172.17.98.214/apps/api/93/devices';\n    const accessToken = 'c978917f-7089-4041-937f-414a0bb2ab6d';\n    \n    msg.url = `${baseUrl}/${control.deviceId}/${control.command}?access_token=${accessToken}`;\n    msg.method = 'GET';\n    msg.deviceId = control.deviceId;\n    msg.command = control.command;\n    \n    return msg;\n}\n\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 980,
+        "y": 620,
+        "wires": [
+            [
+                "send_to_hubitat"
+            ]
+        ]
+    },
+    {
+        "id": "send_to_hubitat",
+        "type": "http request",
+        "z": "uibuilder_dashboard_tab",
+        "name": "Send to Hubitat",
+        "method": "use",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1220,
+        "y": 620,
+        "wires": [
+            [
+                "trigger_lights_update"
+            ]
+        ]
+    },
+    {
+        "id": "trigger_lights_update",
+        "type": "function",
+        "z": "uibuilder_dashboard_tab",
+        "name": "Trigger Update",
+        "func": "msg.payload = new Date().getTime();\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1420,
+        "y": 620,
+        "wires": [
+            [
+                "fetch_lights"
+            ]
+        ]
+    },
+    {
+        "id": "send_initial_data",
+        "type": "function",
+        "z": "uibuilder_dashboard_tab",
+        "name": "Request All Data",
+        "func": "// Trigger all data fetches\nreturn [\n    {payload: 'lights'},\n    {payload: 'battery'},\n    {payload: 'weather'},\n    {payload: 'solar'}\n];",
+        "outputs": 4,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 970,
+        "y": 760,
+        "wires": [
+            [
+                "fetch_lights"
+            ],
+            [
+                "fetch_battery"
+            ],
+            [
+                "fetch_weather"
+            ],
+            [
+                "fetch_solar"
+            ]
+        ]
+    },
+    {
+        "id": "poll_lights",
+        "type": "inject",
+        "z": "uibuilder_dashboard_tab",
+        "name": "Poll Lights (5s)",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 80,
+        "wires": [
+            [
+                "fetch_hubitat_devices"
+            ]
+        ]
+    },
+    {
+        "id": "fetch_hubitat_devices",
+        "type": "http request",
+        "z": "uibuilder_dashboard_tab",
+        "name": "Get Hubitat Devices",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://172.17.98.214/apps/api/93/devices/all?access_token=c978917f-7089-4041-937f-414a0bb2ab6d",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 390,
+        "y": 80,
+        "wires": [
+            [
+                "filter_lights"
+            ]
+        ]
+    },
+    {
+        "id": "filter_lights",
+        "type": "function",
+        "z": "uibuilder_dashboard_tab",
+        "name": "Filter & Format Lights",
+        "func": "// Target light device IDs\nconst targetIds = [17, 1, 2, 3, 4, 20, 5];\n\n// Filter devices\nconst allDevices = msg.payload;\nconst lightDevices = allDevices.filter(device => targetIds.includes(parseInt(device.id)));\n\n// Format for UI\nconst formattedLights = lightDevices.map(device => {\n    let isOn = false;\n    if (device.attributes) {\n        if (Array.isArray(device.attributes)) {\n            const switchAttr = device.attributes.find(attr => attr.name === 'switch');\n            isOn = switchAttr && switchAttr.currentValue === 'on';\n        } else if (device.attributes.switch) {\n            isOn = device.attributes.switch === 'on';\n        }\n    }\n    \n    return {\n        id: device.id,\n        name: device.label || device.name,\n        state: isOn ? 'on' : 'off',\n        type: device.type || 'Light'\n    };\n});\n\n// Store in global\nglobal.set('hubitatLights', lightDevices);\nflow.set('lights', formattedLights);\n\n// Send to UI\nmsg.topic = 'lights';\nmsg.payload = formattedLights;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 680,
+        "y": 80,
+        "wires": [
+            [
+                "uibuilder_node"
+            ]
+        ]
+    },
+    {
+        "id": "fetch_lights",
+        "type": "function",
+        "z": "uibuilder_dashboard_tab",
+        "name": "Get Lights from Flow",
+        "func": "const lights = flow.get('lights') || [];\nmsg.topic = 'lights';\nmsg.payload = lights;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1240,
+        "y": 320,
+        "wires": [
+            [
+                "uibuilder_node"
+            ]
+        ]
+    },
+    {
+        "id": "poll_battery",
+        "type": "inject",
+        "z": "uibuilder_dashboard_tab",
+        "name": "Poll Battery (5s)",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.5,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 140,
+        "wires": [
+            [
+                "fetch_battery"
+            ]
+        ]
+    },
+    {
+        "id": "fetch_battery",
+        "type": "function",
+        "z": "uibuilder_dashboard_tab",
+        "name": "Get Battery from Global",
+        "func": "const batteryData = global.get('batteryData') || {\n    SOC: 0,\n    state: 'unknown',\n    time: new Date().toISOString()\n};\n\nmsg.topic = 'battery';\nmsg.payload = batteryData;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1230,
+        "y": 380,
+        "wires": [
+            [
+                "uibuilder_node"
+            ]
+        ]
+    },
+    {
+        "id": "poll_weather",
+        "type": "inject",
+        "z": "uibuilder_dashboard_tab",
+        "name": "Poll Weather (30s)",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "30",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 200,
+        "wires": [
+            [
+                "fetch_weather"
+            ]
+        ]
+    },
+    {
+        "id": "fetch_weather",
+        "type": "function",
+        "z": "uibuilder_dashboard_tab",
+        "name": "Get Weather from Global",
+        "func": "const weatherData = global.get('weather_data') || {\n    temperature: null,\n    apparent_temperature: null,\n    min_temperature: null,\n    max_temperature: null,\n    humidity: null,\n    wind_speed: null,\n    wind_direction: '',\n    cloud_description: 'No data available'\n};\n\nmsg.topic = 'weather';\nmsg.payload = weatherData;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1230,
+        "y": 420,
+        "wires": [
+            [
+                "uibuilder_node"
+            ]
+        ]
+    },
+    {
+        "id": "poll_solar",
+        "type": "inject",
+        "z": "uibuilder_dashboard_tab",
+        "name": "Poll Solar (2s)",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 1.5,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 130,
+        "y": 260,
+        "wires": [
+            [
+                "fetch_solar"
+            ]
+        ]
+    },
+    {
+        "id": "fetch_solar",
+        "type": "function",
+        "z": "uibuilder_dashboard_tab",
+        "name": "Get Solar Data from Global",
+        "func": "// Get power data from global context\nconst powerData = global.get('powerGraphData') || {};\nconst batteryData = global.get('batteryData') || {};\n\n// Format for solar widget\nconst solarData = {\n    systemStatus: 'online',\n    pvPower: (powerData.pv1watt || 0) / 1000,\n    batteryPower: ((powerData.p1charge1 || 0) - (powerData.pdischarge1 || 0)) / 1000,\n    batterySoc: batteryData.SOC || 0,\n    loadPower: (powerData.pactouserr || 0) / 1000,\n    gridPower: ((powerData.pactouserr || 0) - (powerData.pactogridr || 0)) / 1000,\n    priorityMode: 'Battery First'\n};\n\nmsg.topic = 'solar';\nmsg.payload = solarData;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1250,
+        "y": 460,
+        "wires": [
+            [
+                "uibuilder_node"
+            ]
+        ]
     }
 ]

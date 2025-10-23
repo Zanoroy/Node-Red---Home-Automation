@@ -1,0 +1,180 @@
+<!-- 
+    Node-RED Dashboard Template Node
+    Copy this into a Template node in Node-RED Dashboard
+-->
+
+<style>
+    /* Inline widget styles for dashboard */
+    #dashboardSolarWidget {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        min-height: 300px;
+        background: rgba(0, 0, 0, 0.16);
+        border-radius: 8px;
+        color: #adb1c5;
+        padding: 2%;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    
+    #dashboardSolarWidget .solar-icon-wrapper {
+        position: absolute;
+        text-align: center;
+        width: 20%;
+        max-width: 160px;
+        min-width: 80px;
+        top: 30%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    
+    #dashboardSolarWidget .icon {
+        width: 100%;
+        padding-bottom: 100%;
+        background: url('images/state_solor.png') no-repeat center;
+        background-size: 100%;
+    }
+    
+    #dashboardSolarWidget .status-text,
+    #dashboardSolarWidget .power-display,
+    #dashboardSolarWidget .priority-mode {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        white-space: nowrap;
+    }
+    
+    #dashboardSolarWidget .status-text { top: 12%; }
+    #dashboardSolarWidget .power-display { top: 18%; font-weight: bold; }
+    #dashboardSolarWidget .priority-mode { top: 60%; }
+    
+    #dashboardSolarWidget .value { color: #FFF; margin-left: 0.5em; }
+    #dashboardSolarWidget .label { color: #adb1c5; }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.05); }
+    }
+    
+    #dashboardSolarWidget .active .icon {
+        animation: pulse 2s ease-in-out infinite;
+    }
+</style>
+
+<div id="dashboardSolarWidget">
+    <div class="solar-icon-wrapper" id="iconWrapper">
+        <div class="icon"></div>
+    </div>
+    
+    <div class="status-text">
+        <span class="label">System Status:</span>
+        <span class="value" id="status">--</span>
+    </div>
+    
+    <div class="power-display">
+        <span class="label">PV Power:</span>
+        <span class="value" id="power">0.00 kW</span>
+    </div>
+    
+    <div class="priority-mode">
+        <span class="value" id="priority">--</span>
+    </div>
+</div>
+
+<script>
+(function(scope) {
+    // Wait for element to be available
+    function initWidget() {
+        const container = document.getElementById('dashboardSolarWidget');
+        if (!container) {
+            console.warn('Solar widget container not found, retrying...');
+            setTimeout(initWidget, 100);
+            return;
+        }
+        
+        // Dynamic resizing function
+        function resizeWidget() {
+            const container = document.getElementById('dashboardSolarWidget');
+            if (!container) return;
+            
+            const width = container.offsetWidth;
+            const height = container.offsetHeight;
+            
+            // Calculate responsive font size
+            const baseFontSize = Math.min(width, height) * 0.025;
+            const fontSize = Math.max(10, Math.min(baseFontSize, 24));
+            container.style.fontSize = fontSize + 'px';
+            
+            // Adjust icon size
+            const iconWrapper = document.getElementById('iconWrapper');
+            if (iconWrapper) {
+                const iconSize = Math.min(width * 0.25, height * 0.35, 200);
+                iconWrapper.style.width = iconSize + 'px';
+                iconWrapper.style.height = iconSize + 'px';
+            }
+        }
+        
+        // Resize on load and window resize
+        window.addEventListener('resize', resizeWidget);
+        setTimeout(resizeWidget, 100);
+        
+        // Watch for incoming messages
+        scope.$watch('msg', function(msg) {
+            if (!msg || !msg.payload) return;
+            
+            const data = msg.payload;
+            
+            // Update status
+            if (data.systemStatus || data.status) {
+                const statusEl = document.getElementById('status');
+                if (statusEl) {
+                    statusEl.textContent = data.systemStatus || data.status;
+                }
+            }
+            
+            // Update power
+            if (data.pvPower !== undefined || data.power !== undefined) {
+                const power = data.pvPower !== undefined ? data.pvPower : data.power;
+                const powerEl = document.getElementById('power');
+                if (powerEl) {
+                    powerEl.textContent = power.toFixed(2) + ' kW';
+                }
+                
+                // Activate animation if generating power
+                const iconWrapper = document.getElementById('iconWrapper');
+                if (iconWrapper) {
+                    if (power > 0) {
+                        iconWrapper.classList.add('active');
+                    } else {
+                        iconWrapper.classList.remove('active');
+                    }
+                }
+            }
+            
+            // Update priority mode
+            if (data.priorityMode || data.priority) {
+                const priorityEl = document.getElementById('priority');
+                if (priorityEl) {
+                    priorityEl.textContent = data.priorityMode || data.priority;
+                }
+            }
+            
+            // Trigger resize to ensure proper display
+            resizeWidget();
+        });
+        
+        // Initial resize
+        resizeWidget();
+    }
+    
+    // Start initialization
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initWidget);
+    } else {
+        initWidget();
+    }
+    
+})(scope);
+</script>

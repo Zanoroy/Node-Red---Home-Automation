@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Widget Test</title>
+    <link rel="stylesheet" href="solar-state-widget.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(90deg, #302b6b 0%, #2e5a90 100%);
+            font-family: Arial, sans-serif;
+        }
+        
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #fff;
+            text-align: center;
+        }
+        
+        .widget-wrapper {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .controls {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .controls button {
+            background: #336ce6;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        .controls button:hover {
+            background: #2558c7;
+        }
+        
+        .status {
+            color: #fff;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Solar Widget - Simple Test</h1>
+        
+        <div class="widget-wrapper">
+            <div id="solarStateWidget" class="solar-widget-container" style="height: 500px;"></div>
+        </div>
+        
+        <script>
+            // Insert complete widget HTML
+            document.getElementById('solarStateWidget').innerHTML = `
+                <div class="priority-mode">
+                    <span class="value" id="priorityMode">Load First</span>
+                </div>
+                <div class="icon-wrapper solar-position">
+                    <div class="icon state_solor"></div>
+                </div>
+                <div class="status-text">
+                    <span class="label">System Status:</span>
+                    <span class="value" id="systemStatus">Initializing...</span>
+                </div>
+                <div class="power-display pv-power">
+                    <span class="label">PV Power:</span>
+                    <span class="value" id="pvPower">0.00kW</span>
+                </div>
+                <div class="icon-wrapper system-position">
+                    <div class="icon state_system"></div>
+                </div>
+                <div class="icon-wrapper battery-position">
+                    <div class="icon state_bat_null"></div>
+                </div>
+                <div class="battery-info">
+                    <div class="battery-power">
+                        <span class="label">Discharging:</span>
+                        <span class="value" id="batteryPower">0.00kW</span>
+                    </div>
+                    <div class="battery-soc">
+                        <span class="label">SoC:</span>
+                        <span class="value" id="batterySoc">0%</span>
+                    </div>
+                </div>
+                <div class="icon-wrapper load-position">
+                    <div class="icon state_load"></div>
+                </div>
+                <div class="load-info">
+                    <span class="label">Consumption:</span>
+                    <span class="value" id="loadPower">0.00kW</span>
+                </div>
+                <div class="icon-wrapper grid-position">
+                    <div class="icon state_grid"></div>
+                </div>
+                <div class="grid-info">
+                    <span class="label" id="gridLabel">Import:</span>
+                    <span class="value" id="gridPower">0.00kW</span>
+                </div>
+                <div class="flow-line vertical solar-to-system">
+                    <i class="flow-dot dot1"></i>
+                    <i class="flow-dot dot2"></i>
+                    <i class="flow-dot dot3"></i>
+                </div>
+                <div class="flow-line horizontal battery-to-system">
+                    <i class="flow-dot dot1"></i>
+                    <i class="flow-dot dot2"></i>
+                    <i class="flow-dot dot3"></i>
+                </div>
+                <div class="flow-line vertical system-to-grid">
+                    <i class="flow-dot dot1"></i>
+                    <i class="flow-dot dot2"></i>
+                    <i class="flow-dot dot3"></i>
+                </div>
+                <div class="flow-line horizontal system-to-load">
+                    <i class="flow-dot dot1"></i>
+                    <i class="flow-dot dot2"></i>
+                    <i class="flow-dot dot3"></i>
+                </div>
+            `;
+        </script>
+        
+        <div class="controls">
+            <h2 style="color: #fff; margin-top: 0;">Controls</h2>
+            <button onclick="testWidget()">Test Widget</button>
+            <button onclick="updatePower()">Update Power</button>
+            <button onclick="simulateDay()">Simulate Day Cycle</button>
+            <button onclick="stopSimulation()">Stop Simulation</button>
+            <div class="status" id="statusMessage">Widget loaded. Click buttons to test.</div>
+        </div>
+    </div>
+    
+    <script src="solar-state-widget.js"></script>
+    <script>
+        let simulationInterval = null;
+        
+        function testWidget() {
+            if (window.solarStateWidget) {
+                window.solarStateWidget.updateData({
+                    systemStatus: 'On-Grid mode',
+                    pvPower: 3.5,
+                    priorityMode: 'Load First',
+                    batteryPower: 1.2,  // Discharging
+                    batterySoc: 75,
+                    loadPower: 4.5,
+                    gridPower: 0.2  // Importing
+                });
+                document.getElementById('statusMessage').textContent = 'Widget updated with test data!';
+            } else {
+                document.getElementById('statusMessage').textContent = 'Error: Widget not initialized!';
+            }
+        }
+        
+        function updatePower() {
+            if (window.solarStateWidget) {
+                const pvPower = Math.random() * 5;
+                const batteryPower = (Math.random() - 0.5) * 3; // Can be positive or negative
+                const loadPower = Math.random() * 6;
+                const gridPower = loadPower - pvPower - batteryPower; // Calculate grid import/export
+                
+                window.solarStateWidget.updateData({
+                    systemStatus: pvPower > 0.5 ? 'On-Grid mode' : 'Standby',
+                    pvPower: pvPower,
+                    priorityMode: 'Load First',
+                    batteryPower: batteryPower,
+                    batterySoc: 50 + Math.random() * 40,
+                    loadPower: loadPower,
+                    gridPower: gridPower
+                });
+                document.getElementById('statusMessage').textContent = 
+                    `PV: ${pvPower.toFixed(2)}kW, Battery: ${batteryPower.toFixed(2)}kW, Load: ${loadPower.toFixed(2)}kW`;
+            }
+        }
+        
+        function simulateDay() {
+            if (simulationInterval) return;
+            
+            let hour = 6; // Start at 6 AM
+            document.getElementById('statusMessage').textContent = 'Simulating daily solar cycle...';
+            
+            simulationInterval = setInterval(() => {
+                const distanceFromNoon = Math.abs(12 - hour);
+                let pvPower = Math.max(0, 5 - (distanceFromNoon * 0.4));
+                
+                if (hour < 6 || hour > 18) {
+                    pvPower = 0;
+                }
+                
+                // Simulate battery behavior
+                let batteryPower = 0;
+                let batterySoc = 50;
+                if (pvPower > 3) {
+                    // High solar, charge battery
+                    batteryPower = -1.5;
+                    batterySoc = 70 + (pvPower / 5) * 30;
+                } else if (pvPower < 1) {
+                    // Low/no solar, discharge battery
+                    batteryPower = 2.0;
+                    batterySoc = 90 - (hour * 3);
+                }
+                
+                // Base load + variable usage
+                const loadPower = 2.5 + Math.random() * 2;
+                
+                // Calculate grid (positive = import, negative = export)
+                const gridPower = loadPower - pvPower - batteryPower;
+                
+                if (window.solarStateWidget) {
+                    window.solarStateWidget.updateData({
+                        systemStatus: pvPower > 0 ? 'On-Grid mode' : 'Standby',
+                        pvPower: pvPower,
+                        priorityMode: 'Load First',
+                        batteryPower: batteryPower,
+                        batterySoc: Math.max(10, Math.min(100, batterySoc)),
+                        loadPower: loadPower,
+                        gridPower: gridPower
+                    });
+                }
+                
+                document.getElementById('statusMessage').textContent = 
+                    `Hour ${hour}:00 - PV: ${pvPower.toFixed(1)}kW, Batt: ${batteryPower.toFixed(1)}kW, ` +
+                    `Load: ${loadPower.toFixed(1)}kW, Grid: ${gridPower > 0 ? 'Import' : 'Export'} ${Math.abs(gridPower).toFixed(1)}kW`;
+                
+                hour++;
+                if (hour > 23) hour = 0;
+            }, 1500);
+        }
+        
+        function stopSimulation() {
+            if (simulationInterval) {
+                clearInterval(simulationInterval);
+                simulationInterval = null;
+                document.getElementById('statusMessage').textContent = 'Simulation stopped.';
+            }
+        }
+        
+        // Test on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                if (window.solarStateWidget) {
+                    document.getElementById('statusMessage').textContent = 
+                        '✓ Widget initialized successfully! Try the buttons above.';
+                    testWidget();
+                } else {
+                    document.getElementById('statusMessage').textContent = 
+                        '✗ Widget failed to initialize. Check console for errors.';
+                }
+            }, 500);
+        });
+    </script>
+</body>
+</html>

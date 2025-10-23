@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar State Widget Demo</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(90deg, #302b6b 0%, #2e5a90 100%);
+            font-family: Arial, sans-serif;
+        }
+        
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .widget-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .widget-wrapper {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 10px;
+        }
+        
+        .widget-size-label {
+            color: #fff;
+            font-size: 12px;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        
+        /* Different sizes for demo */
+        .small-widget {
+            height: 200px;
+        }
+        
+        .medium-widget {
+            height: 350px;
+        }
+        
+        .large-widget {
+            height: 500px;
+        }
+        
+        .controls {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .controls h2 {
+            color: #fff;
+            margin-top: 0;
+        }
+        
+        .control-group {
+            margin: 15px 0;
+        }
+        
+        .control-group label {
+            color: #fff;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .control-group input,
+        .control-group select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: none;
+            box-sizing: border-box;
+        }
+        
+        .control-group button {
+            background: #336ce6;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        
+        .control-group button:hover {
+            background: #2558c7;
+        }
+    </style>
+    <link rel="stylesheet" href="solar-state-widget.css">
+</head>
+<body>
+    <div class="demo-container">
+        <h1>🌞 Solar Energy Flow Widget - Responsive Demo</h1>
+        <p style="color: #adb1c5; text-align: center; margin-top: -20px; margin-bottom: 30px;">
+            Complete energy system visualization with Solar, Battery, System, Load, and Grid components
+        </p>
+        
+        <div class="widget-grid">
+            <!-- Small Widget -->
+            <div class="widget-wrapper">
+                <div class="widget-size-label">Small (200px height) - Compact View</div>
+                <div id="solarWidgetSmall" class="solar-widget-container small-widget"></div>
+            </div>
+            
+            <!-- Medium Widget -->
+            <div class="widget-wrapper">
+                <div class="widget-size-label">Medium (350px height) - Standard View</div>
+                <div id="solarWidgetMedium" class="solar-widget-container medium-widget"></div>
+            </div>
+            
+            <!-- Large Widget -->
+            <div class="widget-wrapper">
+                <div class="widget-size-label">Large (500px height) - Full Details</div>
+                <div id="solarWidgetLarge" class="solar-widget-container large-widget"></div>
+            </div>
+        </div>
+        
+        <!-- Controls -->
+        <div class="controls">
+            <h2>Widget Controls</h2>
+            
+            <div class="control-group">
+                <label for="pvPowerInput">☀️ PV Power (kW):</label>
+                <input type="number" id="pvPowerInput" value="3.5" step="0.1" min="0" max="10">
+            </div>
+            
+            <div class="control-group">
+                <label for="batteryPowerInput">🔋 Battery Power (kW) [- = charging]:</label>
+                <input type="number" id="batteryPowerInput" value="1.2" step="0.1" min="-5" max="5">
+            </div>
+            
+            <div class="control-group">
+                <label for="batterySocInput">🔋 Battery SoC (%):</label>
+                <input type="number" id="batterySocInput" value="75" step="1" min="0" max="100">
+            </div>
+            
+            <div class="control-group">
+                <label for="loadPowerInput">🏠 Load Power (kW):</label>
+                <input type="number" id="loadPowerInput" value="4.5" step="0.1" min="0" max="15">
+            </div>
+            
+            <div class="control-group">
+                <label for="systemStatusInput">System Status:</label>
+                <select id="systemStatusInput">
+                    <option value="On-Grid mode">On-Grid mode</option>
+                    <option value="Off-Grid mode">Off-Grid mode</option>
+                    <option value="Standby">Standby</option>
+                    <option value="Fault">Fault</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="priorityModeInput">Priority Mode:</label>
+                <select id="priorityModeInput">
+                    <option value="Load First">Load First</option>
+                    <option value="Battery First">Battery First</option>
+                    <option value="Grid First">Grid First</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <button onclick="updateAllWidgets()">Update Widgets</button>
+                <button onclick="toggleTheme()">Toggle Theme</button>
+                <button onclick="simulateData()">Simulate Data</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="solar-state-widget.js"></script>
+    <script>
+        // Create complete widget HTML structure
+        function createWidgetHTML() {
+            return `
+                <div class="priority-mode">
+                    <span class="value">Load First</span>
+                </div>
+                <div class="icon-wrapper solar-position">
+                    <div class="icon state_solor"></div>
+                </div>
+                <div class="status-text">
+                    <span class="label">System Status:</span>
+                    <span class="value">On-Grid mode</span>
+                </div>
+                <div class="power-display pv-power">
+                    <span class="label">PV Power:</span>
+                    <span class="value">0.00kW</span>
+                </div>
+                <div class="icon-wrapper system-position">
+                    <div class="icon state_system"></div>
+                </div>
+                <div class="icon-wrapper battery-position">
+                    <div class="icon state_bat_null"></div>
+                </div>
+                <div class="battery-info">
+                    <div class="battery-power">
+                        <span class="label">Discharging:</span>
+                        <span class="value">0.00kW</span>
+                    </div>
+                    <div class="battery-soc">
+                        <span class="label">SoC:</span>
+                        <span class="value">0%</span>
+                    </div>
+                </div>
+                <div class="icon-wrapper load-position">
+                    <div class="icon state_load"></div>
+                </div>
+                <div class="load-info">
+                    <span class="label">Consumption:</span>
+                    <span class="value">0.00kW</span>
+                </div>
+                <div class="icon-wrapper grid-position">
+                    <div class="icon state_grid"></div>
+                </div>
+                <div class="grid-info">
+                    <span class="label">Import:</span>
+                    <span class="value">0.00kW</span>
+                </div>
+                <div class="flow-line vertical solar-to-system">
+                    <i class="flow-dot dot1"></i>
+                    <i class="flow-dot dot2"></i>
+                    <i class="flow-dot dot3"></i>
+                </div>
+                <div class="flow-line horizontal battery-to-system">
+                    <i class="flow-dot dot1"></i>
+                    <i class="flow-dot dot2"></i>
+                    <i class="flow-dot dot3"></i>
+                </div>
+                <div class="flow-line vertical system-to-grid">
+                    <i class="flow-dot dot1"></i>
+                    <i class="flow-dot dot2"></i>
+                    <i class="flow-dot dot3"></i>
+                </div>
+                <div class="flow-line horizontal system-to-load">
+                    <i class="flow-dot dot1"></i>
+                    <i class="flow-dot dot2"></i>
+                    <i class="flow-dot dot3"></i>
+                </div>
+            `;
+        }
+        
+        // Initialize widgets
+        let widgets = {};
+        let isLightTheme = false;
+        let simulationInterval = null;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Insert widget HTML into containers
+            document.getElementById('solarWidgetSmall').innerHTML = createWidgetHTML();
+            document.getElementById('solarWidgetMedium').innerHTML = createWidgetHTML();
+            document.getElementById('solarWidgetLarge').innerHTML = createWidgetHTML();
+            
+            // Small delay to let DOM settle
+            setTimeout(() => {
+                widgets.small = new SolarStateWidget('solarWidgetSmall');
+                widgets.medium = new SolarStateWidget('solarWidgetMedium');
+                widgets.large = new SolarStateWidget('solarWidgetLarge');
+                
+                // Initial data
+                updateAllWidgets();
+            }, 100);
+        });
+        
+        function updateAllWidgets() {
+            const pvPower = parseFloat(document.getElementById('pvPowerInput').value);
+            const batteryPower = parseFloat(document.getElementById('batteryPowerInput').value);
+            const batterySoc = parseInt(document.getElementById('batterySocInput').value);
+            const loadPower = parseFloat(document.getElementById('loadPowerInput').value);
+            const systemStatus = document.getElementById('systemStatusInput').value;
+            const priorityMode = document.getElementById('priorityModeInput').value;
+            
+            // Calculate grid power (positive = import, negative = export)
+            const gridPower = loadPower - pvPower - batteryPower;
+            
+            const data = {
+                systemStatus: systemStatus,
+                pvPower: pvPower,
+                priorityMode: priorityMode,
+                batteryPower: batteryPower,
+                batterySoc: batterySoc,
+                loadPower: loadPower,
+                gridPower: gridPower
+            };
+            
+            Object.values(widgets).forEach(widget => {
+                if (widget) widget.updateData(data);
+            });
+        }
+        
+        function toggleTheme() {
+            isLightTheme = !isLightTheme;
+            Object.values(widgets).forEach(widget => {
+                if (widget) widget.setLightTheme(isLightTheme);
+            });
+        }
+        
+        function simulateData() {
+            if (simulationInterval) {
+                clearInterval(simulationInterval);
+                simulationInterval = null;
+                return;
+            }
+            
+            let hour = 6;
+            simulationInterval = setInterval(() => {
+                const distanceFromNoon = Math.abs(12 - hour);
+                let pvPower = 0;
+                
+                if (hour >= 6 && hour <= 18) {
+                    pvPower = Math.max(0, 5 - (distanceFromNoon * 0.4));
+                }
+                
+                let batteryPower = 0;
+                let batterySoc = 50;
+                
+                if (pvPower > 3) {
+                    // Charging battery
+                    batteryPower = -Math.min(2, pvPower - 2);
+                    batterySoc = 60 + ((pvPower / 5) * 30);
+                } else if (pvPower < 0.5) {
+                    // Discharging battery
+                    batteryPower = 2.5;
+                    batterySoc = Math.max(20, 80 - ((24 - hour) * 2));
+                }
+                
+                const loadPower = 2.5 + Math.random() * 2;
+                const gridPower = loadPower - pvPower - batteryPower;
+                
+                const data = {
+                    systemStatus: pvPower > 0 ? 'On-Grid mode' : 'Standby',
+                    pvPower: pvPower,
+                    priorityMode: 'Load First',
+                    batteryPower: batteryPower,
+                    batterySoc: Math.max(10, Math.min(100, batterySoc)),
+                    loadPower: loadPower,
+                    gridPower: gridPower
+                };
+                
+                Object.values(widgets).forEach(widget => {
+                    if (widget) widget.updateData(data);
+                });
+                
+                hour = (hour + 1) % 24;
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

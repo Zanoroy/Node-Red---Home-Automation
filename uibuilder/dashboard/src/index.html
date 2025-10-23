@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Automation Dashboard</title>
+    
+    <!-- uibuilder client library v7 -->
+    <script src="./uibuilder.iife.min.js"></script>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Solar State Widget -->
+    <link rel="stylesheet" href="../public/solar-state-widget.css">
+    <script src="../public/solar-state-widget.js"></script>
+    
+    <!-- Dashboard Styles -->
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <h1 class="dashboard-title">
+                <i class="fas fa-home"></i>
+                Home Automation Dashboard
+            </h1>
+            <div class="connection-status">
+                <span id="connectionStatus" class="status-indicator offline">
+                    <i class="fas fa-circle"></i> Connecting...
+                </span>
+                <span id="lastUpdate" class="last-update">--:--</span>
+            </div>
+        </header>
+
+        <!-- Main Grid Layout -->
+        <main class="dashboard-main">
+            
+            <!-- Solar State Widget Section -->
+            <section class="widget-card solar-widget-section">
+                <h2 class="widget-title">
+                    <i class="fas fa-solar-panel"></i>
+                    Energy Flow
+                </h2>
+                <div id="solarWidget" class="solar-widget-container">
+                    <!-- Priority Mode (top left) -->
+                    <div class="priority-mode">
+                        <span class="value" id="priorityMode">Load First</span>
+                    </div>
+                    
+                    <!-- Solar Panel (top center) -->
+                    <div class="icon-wrapper solar-position">
+                        <div class="icon state_solor"></div>
+                    </div>
+                    
+                    <!-- System Status (below solar) -->
+                    <div class="status-text">
+                        <span class="label">System Status:</span>
+                        <span class="value" id="systemStatus">On-Grid mode</span>
+                    </div>
+                    
+                    <!-- PV Power (below status) -->
+                    <div class="power-display pv-power">
+                        <span class="label">PV Power:</span>
+                        <span class="value" id="pvPower">0.00kW</span>
+                    </div>
+                    
+                    <!-- System/Inverter (middle center) -->
+                    <div class="icon-wrapper system-position">
+                        <div class="icon state_system"></div>
+                    </div>
+                    
+                    <!-- Battery (middle left) -->
+                    <div class="icon-wrapper battery-position">
+                        <div class="icon state_bat_null"></div>
+                    </div>
+                    
+                    <!-- Battery Info -->
+                    <div class="battery-info">
+                        <div class="battery-power">
+                            <span class="label">Discharging:</span>
+                            <span class="value" id="batteryPower">0.00kW</span>
+                        </div>
+                        <div class="battery-soc">
+                            <span class="label">SoC:</span>
+                            <span class="value" id="batterySoc">0%</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Load (middle right) -->
+                    <div class="icon-wrapper load-position">
+                        <div class="icon state_load"></div>
+                    </div>
+                    
+                    <!-- Load Info -->
+                    <div class="load-info">
+                        <span class="label">Consumption:</span>
+                        <span class="value" id="loadPower">0.00kW</span>
+                    </div>
+                    
+                    <!-- Grid (bottom center) -->
+                    <div class="icon-wrapper grid-position">
+                        <div class="icon state_grid"></div>
+                    </div>
+                    
+                    <!-- Grid Info -->
+                    <div class="grid-info">
+                        <span class="label" id="gridLabel">Import:</span>
+                        <span class="value" id="gridPower">0.00kW</span>
+                    </div>
+                    
+                    <!-- Animated Flow Lines -->
+                    <!-- Solar to System -->
+                    <div class="flow-line vertical solar-to-system">
+                        <i class="flow-dot dot1"></i>
+                        <i class="flow-dot dot2"></i>
+                        <i class="flow-dot dot3"></i>
+                    </div>
+                    
+                    <!-- Battery to System -->
+                    <div class="flow-line horizontal battery-to-system">
+                        <i class="flow-dot dot1"></i>
+                        <i class="flow-dot dot2"></i>
+                        <i class="flow-dot dot3"></i>
+                    </div>
+                    
+                    <!-- System to Grid -->
+                    <div class="flow-line vertical system-to-grid">
+                        <i class="flow-dot dot1"></i>
+                        <i class="flow-dot dot2"></i>
+                        <i class="flow-dot dot3"></i>
+                    </div>
+                    
+                    <!-- System to Load -->
+                    <div class="flow-line horizontal system-to-load">
+                        <i class="flow-dot dot1"></i>
+                        <i class="flow-dot dot2"></i>
+                        <i class="flow-dot dot3"></i>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Weather Widget Section -->
+            <section class="widget-card weather-section">
+                <h2 class="widget-title">
+                    <i class="fas fa-cloud-sun"></i>
+                    Weather
+                </h2>
+                <div id="weatherWidget" class="weather-widget">
+                    <div class="weather-main">
+                        <img id="weatherIcon" class="weather-icon" src="" alt="" style="display:none;">
+                        <div class="weather-temp-group">
+                            <div class="weather-temp-large" id="currentTemp">--°C</div>
+                            <div class="weather-description" id="weatherDesc">Loading...</div>
+                        </div>
+                    </div>
+                    <div class="weather-details">
+                        <div class="weather-detail-item">
+                            <span class="weather-label">Feels Like</span>
+                            <span class="weather-value" id="feelsLike">--°C</span>
+                        </div>
+                        <div class="weather-detail-item">
+                            <span class="weather-label">Min / Max</span>
+                            <span class="weather-value" id="minMax">--° / --°</span>
+                        </div>
+                        <div class="weather-detail-item">
+                            <span class="weather-label">Humidity</span>
+                            <span class="weather-value" id="humidity">--%</span>
+                        </div>
+                        <div class="weather-detail-item">
+                            <span class="weather-label">Wind</span>
+                            <span class="weather-value" id="wind">-- km/h</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Light Controls Section -->
+            <section class="widget-card lights-section">
+                <h2 class="widget-title">
+                    <i class="fas fa-lightbulb"></i>
+                    Lights
+                </h2>
+                <div id="lightsGrid" class="lights-grid">
+                    <!-- Lights will be populated here -->
+                </div>
+            </section>
+
+            <!-- Battery Status Section -->
+            <section class="widget-card battery-section">
+                <h2 class="widget-title">
+                    <i class="fas fa-battery-three-quarters"></i>
+                    Battery
+                </h2>
+                <div id="batteryWidget" class="battery-widget">
+                    <div class="battery-visual">
+                        <div class="battery-body">
+                            <div class="battery-fill" id="batteryFill"></div>
+                            <div class="battery-percentage" id="batteryPercentage">--%</div>
+                            <div class="charging-symbol" id="chargingSymbol">⚡</div>
+                        </div>
+                        <div class="battery-terminal"></div>
+                    </div>
+                    <div class="battery-status">
+                        <span id="batteryState" class="battery-state-text">Unknown</span>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Dashboard JavaScript -->
+    <script src="./index.js"></script>
+</body>
+</html>

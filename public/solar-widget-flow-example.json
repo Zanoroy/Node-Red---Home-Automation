@@ -1,0 +1,85 @@
+{
+  "description": "Example Node-RED flow for Solar State Widget",
+  "flow": [
+    {
+      "id": "solar_inject",
+      "type": "inject",
+      "name": "Simulate Solar Data",
+      "props": [
+        {
+          "p": "payload"
+        }
+      ],
+      "repeat": "5",
+      "crontab": "",
+      "once": true,
+      "onceDelay": 0.1,
+      "topic": "",
+      "payload": "",
+      "payloadType": "date"
+    },
+    {
+      "id": "solar_function",
+      "type": "function",
+      "name": "Format Solar Data",
+      "func": "// Simulate solar data\n// Replace this with actual data from your solar inverter\n\nconst hour = new Date().getHours();\nconst isDaytime = hour >= 6 && hour <= 18;\n\n// Calculate power based on time of day\nlet basePower = 0;\nif (isDaytime) {\n    // Peak at noon\n    const distanceFromNoon = Math.abs(12 - hour);\n    basePower = Math.max(0, 5 - (distanceFromNoon * 0.5));\n    basePower += (Math.random() - 0.5) * 0.5; // Add some variation\n}\n\nmsg.payload = {\n    systemStatus: basePower > 0 ? \"On-Grid mode\" : \"Standby\",\n    pvPower: parseFloat(basePower.toFixed(2)),\n    priorityMode: \"Load First\",\n    vPv1: basePower > 0 ? 350 + Math.random() * 50 : 0,\n    pPv1: basePower > 0 ? basePower * 400 : 0,\n    vPv2: basePower > 0 ? 320 + Math.random() * 40 : 0,\n    pPv2: basePower > 0 ? basePower * 350 : 0\n};\n\nreturn msg;",
+      "outputs": 1,
+      "noerr": 0,
+      "initialize": "",
+      "finalize": "",
+      "libs": []
+    },
+    {
+      "id": "solar_template",
+      "type": "ui_template",
+      "name": "Solar Widget Display",
+      "group": "solar_group",
+      "order": 1,
+      "width": "6",
+      "height": "6",
+      "format": "<!-- PASTE CONTENT FROM solar-widget-dashboard-template.html HERE -->",
+      "storeOutMessages": false,
+      "fwdInMessages": true,
+      "resendOnRefresh": false,
+      "templateScope": "local"
+    }
+  ],
+  "instructions": [
+    "1. Import this flow into Node-RED",
+    "2. Edit the 'Solar Widget Display' template node",
+    "3. Copy content from solar-widget-dashboard-template.html",
+    "4. Create a dashboard group named 'solar_group' or update the group ID",
+    "5. Deploy the flow",
+    "6. Open Node-RED Dashboard to see the widget",
+    "7. Replace the function node with your actual solar data source"
+  ],
+  "dataSource": {
+    "description": "Replace the function node with your actual data source",
+    "examples": [
+      {
+        "name": "MQTT Input",
+        "description": "If your solar inverter publishes to MQTT",
+        "nodes": "mqtt-in → json → template"
+      },
+      {
+        "name": "HTTP Request",
+        "description": "If your inverter has a REST API",
+        "nodes": "inject → http request → json → template"
+      },
+      {
+        "name": "Modbus TCP",
+        "description": "If your inverter uses Modbus",
+        "nodes": "modbus-read → function (format) → template"
+      },
+      {
+        "name": "Serial Connection",
+        "description": "If your inverter has RS485/RS232",
+        "nodes": "serial-in → function (parse) → template"
+      }
+    ]
+  },
+  "dataMapping": {
+    "description": "Map your inverter data to widget format",
+    "example": "// Example for Growatt inverter\nmsg.payload = {\n    systemStatus: msg.payload.status,\n    pvPower: msg.payload.Ppv / 1000,  // Convert W to kW\n    priorityMode: msg.payload.Priority,\n    vPv1: msg.payload.Vpv1,\n    pPv1: msg.payload.Ppv1,\n    vPv2: msg.payload.Vpv2,\n    pPv2: msg.payload.Ppv2\n};\nreturn msg;"
+  }
+}

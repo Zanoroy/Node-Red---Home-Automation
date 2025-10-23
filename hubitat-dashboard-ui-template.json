@@ -1,0 +1,327 @@
+[
+    {
+        "id": "new_hubitat_tab",
+        "type": "tab",
+        "label": "Hubitat Dashboard (UI Template)",
+        "disabled": false,
+        "info": "Optimized Hubitat Dashboard using ui_template with best practices\nIncludes: Light controls, Battery status, Power chart, Weather display",
+        "env": []
+    },
+    {
+        "id": "ui_group_lights",
+        "type": "ui_group",
+        "name": "Light Controls",
+        "tab": "ui_tab_main",
+        "order": 1,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "ui_group_solar",
+        "type": "ui_group",
+        "name": "Energy & Battery",
+        "tab": "ui_tab_main",
+        "order": 2,
+        "disp": true,
+        "width": "12",
+        "collapse": false
+    },
+    {
+        "id": "ui_group_weather",
+        "type": "ui_group",
+        "name": "Weather",
+        "tab": "ui_tab_main",
+        "order": 3,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "ui_tab_main",
+        "type": "ui_tab",
+        "name": "Home Dashboard",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "fetch_devices_inject",
+        "type": "inject",
+        "z": "new_hubitat_tab",
+        "name": "Fetch Devices (Every 5s)",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 170,
+        "y": 80,
+        "wires": [
+            [
+                "fetch_hubitat_devices"
+            ]
+        ]
+    },
+    {
+        "id": "fetch_hubitat_devices",
+        "type": "http request",
+        "z": "new_hubitat_tab",
+        "name": "Get Hubitat Devices",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "http://172.17.98.214/apps/api/93/devices/all?access_token=c978917f-7089-4041-937f-414a0bb2ab6d",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 430,
+        "y": 80,
+        "wires": [
+            [
+                "filter_light_devices"
+            ]
+        ]
+    },
+    {
+        "id": "filter_light_devices",
+        "type": "function",
+        "z": "new_hubitat_tab",
+        "name": "Filter & Format Lights",
+        "func": "// Target light device IDs\nconst targetIds = [17, 1, 2, 3, 4, 20, 5];\n\n// Filter devices to only include our target lights\nconst allDevices = msg.payload;\nconst lightDevices = allDevices.filter(device => targetIds.includes(parseInt(device.id)));\n\n// Format for UI display\nconst formattedLights = lightDevices.map(device => {\n    let isOn = false;\n    if (device.attributes) {\n        if (Array.isArray(device.attributes)) {\n            const switchAttr = device.attributes.find(attr => attr.name === 'switch');\n            isOn = switchAttr && switchAttr.currentValue === 'on';\n        } else if (device.attributes.switch) {\n            isOn = device.attributes.switch === 'on';\n        }\n    }\n    \n    return {\n        id: device.id,\n        name: device.label || device.name,\n        state: isOn ? 'on' : 'off',\n        type: device.type || 'Light'\n    };\n});\n\n// Store in global and flow context\nglobal.set('hubitatLights', lightDevices);\nflow.set('lights', formattedLights);\n\n// Send to UI\nmsg.payload = formattedLights;\nmsg.topic = 'lights';\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 680,
+        "y": 80,
+        "wires": [
+            [
+                "lights_ui_template"
+            ]
+        ]
+    },
+    {
+        "id": "lights_ui_template",
+        "type": "ui_template",
+        "z": "new_hubitat_tab",
+        "group": "ui_group_lights",
+        "name": "Light Controls UI",
+        "order": 1,
+        "width": "12",
+        "height": "6",
+        "format": "<style>\n    .light-grid {\n        display: grid;\n        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));\n        gap: 15px;\n        padding: 10px;\n    }\n    \n    .light-tile {\n        background: linear-gradient(145deg, #2d3748, #1a202c);\n        border-radius: 16px;\n        padding: 24px;\n        cursor: pointer;\n        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);\n        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);\n        border: 2px solid rgba(255, 255, 255, 0.1);\n        text-align: center;\n        position: relative;\n        overflow: hidden;\n    }\n    \n    .light-tile:hover {\n        transform: translateY(-4px);\n        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);\n        border-color: rgba(255, 255, 255, 0.2);\n    }\n    \n    .light-tile.on {\n        background: linear-gradient(145deg, #4a5568, #2d3748);\n        border-color: #ffd700;\n        box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);\n    }\n    \n    .light-tile.loading {\n        opacity: 0.6;\n        pointer-events: none;\n    }\n    \n    .light-bulb {\n        font-size: 3rem;\n        color: #666;\n        transition: all 0.3s ease;\n    }\n    \n    .light-tile.on .light-bulb {\n        color: #ffd700;\n        text-shadow: 0 0 20px rgba(255, 215, 0, 0.8),\n                     0 0 40px rgba(255, 215, 0, 0.5);\n        animation: glow 2s ease-in-out infinite;\n    }\n    \n    @keyframes glow {\n        0%, 100% { transform: scale(1); opacity: 1; }\n        50% { transform: scale(1.05); opacity: 0.9; }\n    }\n    \n    .light-label {\n        margin-top: 12px;\n        font-size: 0.9rem;\n        color: #cbd5e0;\n        font-weight: 500;\n    }\n    \n    .loading-spinner {\n        display: none;\n        position: absolute;\n        top: 50%;\n        left: 50%;\n        transform: translate(-50%, -50%);\n        width: 30px;\n        height: 30px;\n        border: 3px solid rgba(255, 255, 255, 0.3);\n        border-top-color: #ffd700;\n        border-radius: 50%;\n        animation: spin 1s linear infinite;\n    }\n    \n    .light-tile.loading .loading-spinner {\n        display: block;\n    }\n    \n    @keyframes spin {\n        to { transform: translate(-50%, -50%) rotate(360deg); }\n    }\n</style>\n\n<div class=\"light-grid\" id=\"lightGrid\">\n    <!-- Lights will be populated here -->\n</div>\n\n<script>\n(function(scope) {\n    scope.$watch('msg', function(msg) {\n        if (msg && msg.payload) {\n            updateLights(msg.payload);\n        }\n    });\n    \n    function updateLights(lights) {\n        const grid = document.getElementById('lightGrid');\n        if (!grid) return;\n        \n        // Clear existing lights\n        grid.innerHTML = '';\n        \n        // Add each light\n        lights.forEach(light => {\n            const tile = document.createElement('div');\n            tile.className = `light-tile ${light.state}`;\n            tile.setAttribute('data-device-id', light.id);\n            tile.onclick = () => toggleLight(light.id, light.state);\n            \n            tile.innerHTML = `\n                <div class=\"loading-spinner\"></div>\n                <div class=\"light-bulb-container\">\n                    <i class=\"fa fa-lightbulb light-bulb\"></i>\n                </div>\n                <div class=\"light-label\">${light.name}</div>\n            `;\n            \n            grid.appendChild(tile);\n        });\n    }\n    \n    function toggleLight(deviceId, currentState) {\n        const tile = document.querySelector(`[data-device-id=\"${deviceId}\"]`);\n        const newState = currentState === 'on' ? 'off' : 'on';\n        \n        // Add loading state\n        tile.classList.add('loading');\n        \n        // Send command to Node-RED\n        scope.send({payload: {deviceId: deviceId, command: newState}});\n        \n        // Optimistic UI update\n        setTimeout(() => {\n            tile.classList.remove('on', 'off', 'loading');\n            tile.classList.add(newState);\n            tile.onclick = () => toggleLight(deviceId, newState);\n        }, 500);\n    }\n})(scope);\n</script>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "x": 930,
+        "y": 80,
+        "wires": [
+            [
+                "control_light"
+            ]
+        ]
+    },
+    {
+        "id": "control_light",
+        "type": "function",
+        "z": "new_hubitat_tab",
+        "name": "Control Light",
+        "func": "// Extract device ID and command\nconst deviceId = msg.payload.deviceId;\nconst command = msg.payload.command;\n\n// Prepare Hubitat API URL\nconst baseUrl = 'http://172.17.98.214/apps/api/93/devices';\nconst accessToken = 'c978917f-7089-4041-937f-414a0bb2ab6d';\n\nmsg.url = `${baseUrl}/${deviceId}/${command}?access_token=${accessToken}`;\nmsg.method = 'GET';\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 170,
+        "y": 180,
+        "wires": [
+            [
+                "send_to_hubitat"
+            ]
+        ]
+    },
+    {
+        "id": "send_to_hubitat",
+        "type": "http request",
+        "z": "new_hubitat_tab",
+        "name": "Send to Hubitat",
+        "method": "use",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 400,
+        "y": 180,
+        "wires": [
+            [
+                "trigger_refresh"
+            ]
+        ]
+    },
+    {
+        "id": "trigger_refresh",
+        "type": "function",
+        "z": "new_hubitat_tab",
+        "name": "Trigger Device Refresh",
+        "func": "// Trigger immediate refresh after control\nmsg.payload = new Date().getTime();\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 180,
+        "wires": [
+            [
+                "fetch_hubitat_devices"
+            ]
+        ]
+    },
+    {
+        "id": "battery_ui_template",
+        "type": "ui_template",
+        "z": "new_hubitat_tab",
+        "group": "ui_group_solar",
+        "name": "Battery Status UI",
+        "order": 1,
+        "width": "4",
+        "height": "5",
+        "format": "<style>\n    .battery-container {\n        display: flex;\n        flex-direction: column;\n        align-items: center;\n        justify-content: center;\n        padding: 20px;\n        min-height: 300px;\n    }\n    \n    .battery-wrapper {\n        position: relative;\n        display: flex;\n        align-items: center;\n    }\n    \n    .battery-body {\n        position: relative;\n        width: 120px;\n        height: 60px;\n        border: 3px solid #666;\n        border-radius: 6px;\n        background: rgba(255, 255, 255, 0.1);\n        overflow: hidden;\n    }\n    \n    .battery-terminal {\n        width: 8px;\n        height: 24px;\n        background: #666;\n        border-radius: 0 4px 4px 0;\n        margin-left: 2px;\n    }\n    \n    .battery-fill {\n        position: absolute;\n        left: 0;\n        top: 0;\n        bottom: 0;\n        width: 0%;\n        background: #00ff00;\n        transition: width 0.5s ease, background 0.5s ease;\n    }\n    \n    .battery-percentage {\n        position: absolute;\n        top: 50%;\n        left: 50%;\n        transform: translate(-50%, -50%);\n        font-size: 1.2rem;\n        font-weight: bold;\n        color: #fff;\n        text-shadow: 0 0 3px rgba(0,0,0,0.8);\n        z-index: 10;\n    }\n    \n    .charging-symbol {\n        position: absolute;\n        top: 50%;\n        right: 10px;\n        transform: translateY(-50%);\n        font-size: 1.5rem;\n        color: #ffd700;\n        display: none;\n        z-index: 10;\n    }\n    \n    .charging-symbol.active {\n        display: block;\n        animation: flash 1s infinite;\n    }\n    \n    @keyframes flash {\n        0%, 100% { opacity: 1; }\n        50% { opacity: 0.3; }\n    }\n    \n    .status-text {\n        margin-top: 20px;\n        font-size: 1.1rem;\n        font-weight: 600;\n        text-transform: capitalize;\n    }\n    \n    .status-text.charging { color: #00ff00; }\n    .status-text.discharging { color: #ff6b6b; animation: flash 1.5s infinite; }\n    .status-text.idle { color: #ffffff; }\n    \n    .battery-label {\n        margin-top: 10px;\n        font-size: 0.9rem;\n        color: #999;\n    }\n</style>\n\n<div class=\"battery-container\">\n    <div class=\"battery-wrapper\">\n        <div class=\"battery-body\">\n            <div class=\"battery-fill\" id=\"batteryFill\"></div>\n            <div class=\"battery-percentage\" id=\"batteryPercentage\">---%</div>\n            <div class=\"charging-symbol\" id=\"chargingSymbol\">⚡</div>\n        </div>\n        <div class=\"battery-terminal\"></div>\n    </div>\n    <div class=\"status-text\" id=\"batteryStatus\">Unknown</div>\n    <div class=\"battery-label\">Battery Status</div>\n</div>\n\n<script>\n(function(scope) {\n    scope.$watch('msg', function(msg) {\n        if (msg && msg.payload) {\n            updateBattery(msg.payload);\n        }\n    });\n    \n    function updateBattery(data) {\n        const fill = document.getElementById('batteryFill');\n        const percentage = document.getElementById('batteryPercentage');\n        const status = document.getElementById('batteryStatus');\n        const chargingSymbol = document.getElementById('chargingSymbol');\n        \n        if (!fill || !percentage || !status) return;\n        \n        // Update percentage\n        const soc = Math.max(0, Math.min(100, data.SOC || 0));\n        percentage.textContent = soc + '%';\n        fill.style.width = soc + '%';\n        \n        // Update color based on level\n        let color;\n        if (soc < 20) color = '#ff4444';\n        else if (soc < 40) color = '#ff9100';\n        else if (soc < 60) color = '#fff200';\n        else if (soc < 80) color = '#d7fc03';\n        else color = '#00ff00';\n        fill.style.background = color;\n        \n        // Update status\n        const state = (data.state || 'idle').toLowerCase();\n        status.textContent = state;\n        status.className = 'status-text ' + state;\n        \n        // Handle charging indicator\n        if (state === 'charging') {\n            chargingSymbol.classList.add('active');\n        } else {\n            chargingSymbol.classList.remove('active');\n        }\n    }\n})(scope);\n</script>",
+        "storeOutMessages": false,
+        "fwdInMessages": false,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "x": 930,
+        "y": 280,
+        "wires": [[]]
+    },
+    {
+        "id": "fetch_battery_inject",
+        "type": "inject",
+        "z": "new_hubitat_tab",
+        "name": "Get Battery (Every 5s)",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.5,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 170,
+        "y": 280,
+        "wires": [
+            [
+                "get_battery_data"
+            ]
+        ]
+    },
+    {
+        "id": "get_battery_data",
+        "type": "function",
+        "z": "new_hubitat_tab",
+        "name": "Get Battery from Global",
+        "func": "// Get battery data from global context\nconst batteryData = global.get('batteryData') || {\n    SOC: 0,\n    state: 'unknown',\n    time: new Date().toISOString()\n};\n\nmsg.payload = batteryData;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 280,
+        "wires": [
+            [
+                "battery_ui_template"
+            ]
+        ]
+    },
+    {
+        "id": "weather_ui_template",
+        "type": "ui_template",
+        "z": "new_hubitat_tab",
+        "group": "ui_group_weather",
+        "name": "Weather Display UI",
+        "order": 1,
+        "width": "6",
+        "height": "5",
+        "format": "<style>\n    .weather-container {\n        padding: 15px;\n        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n        border-radius: 12px;\n        color: white;\n    }\n    \n    .weather-header {\n        display: flex;\n        align-items: center;\n        justify-content: space-between;\n        margin-bottom: 15px;\n    }\n    \n    .weather-icon {\n        width: 80px;\n        height: 80px;\n    }\n    \n    .weather-temp-main {\n        font-size: 3rem;\n        font-weight: 300;\n        line-height: 1;\n    }\n    \n    .weather-grid {\n        display: grid;\n        grid-template-columns: repeat(2, 1fr);\n        gap: 10px;\n        margin-top: 15px;\n    }\n    \n    .weather-item {\n        background: rgba(255, 255, 255, 0.1);\n        padding: 10px;\n        border-radius: 8px;\n    }\n    \n    .weather-label {\n        font-size: 0.8rem;\n        opacity: 0.8;\n        margin-bottom: 5px;\n    }\n    \n    .weather-value {\n        font-size: 1.2rem;\n        font-weight: 600;\n    }\n    \n    .weather-description {\n        text-align: center;\n        margin-top: 10px;\n        font-size: 1rem;\n        opacity: 0.9;\n    }\n</style>\n\n<div class=\"weather-container\">\n    <div class=\"weather-header\">\n        <div>\n            <div class=\"weather-temp-main\" id=\"tempMain\">--°</div>\n            <div id=\"weatherDesc\">Loading...</div>\n        </div>\n        <img id=\"weatherIcon\" class=\"weather-icon\" src=\"\" alt=\"\" style=\"display:none;\">\n    </div>\n    \n    <div class=\"weather-grid\">\n        <div class=\"weather-item\">\n            <div class=\"weather-label\">Feels Like</div>\n            <div class=\"weather-value\" id=\"feelsLike\">--°</div>\n        </div>\n        <div class=\"weather-item\">\n            <div class=\"weather-label\">Humidity</div>\n            <div class=\"weather-value\" id=\"humidity\">--%</div>\n        </div>\n        <div class=\"weather-item\">\n            <div class=\"weather-label\">Min / Max</div>\n            <div class=\"weather-value\" id=\"minMax\">--° / --°</div>\n        </div>\n        <div class=\"weather-item\">\n            <div class=\"weather-label\">Wind</div>\n            <div class=\"weather-value\" id=\"wind\">-- km/h</div>\n        </div>\n    </div>\n</div>\n\n<script>\n(function(scope) {\n    scope.$watch('msg', function(msg) {\n        if (msg && msg.payload) {\n            updateWeather(msg.payload);\n        }\n    });\n    \n    function updateWeather(data) {\n        document.getElementById('tempMain').textContent = \n            (data.temperature !== null && data.temperature !== undefined) ? data.temperature + '°C' : '--°';\n        document.getElementById('weatherDesc').textContent = data.cloud_description || 'No data';\n        document.getElementById('feelsLike').textContent = \n            (data.apparent_temperature !== null && data.apparent_temperature !== undefined) ? data.apparent_temperature + '°C' : '--°';\n        document.getElementById('humidity').textContent = \n            (data.humidity !== null && data.humidity !== undefined) ? data.humidity + '%' : '--%';\n        \n        const minMax = ((data.min_temperature !== null && data.min_temperature !== undefined) ? data.min_temperature : '--') + '° / ' +\n                       ((data.max_temperature !== null && data.max_temperature !== undefined) ? data.max_temperature : '--') + '°';\n        document.getElementById('minMax').textContent = minMax;\n        \n        const windSpeed = (data.wind_speed !== null && data.wind_speed !== undefined) ? data.wind_speed : '--';\n        const windDir = data.wind_direction || '';\n        document.getElementById('wind').textContent = windSpeed + ' km/h ' + windDir;\n        \n        // Handle icon\n        const icon = document.getElementById('weatherIcon');\n        if (data.cloud_description) {\n            const hour = new Date().getHours();\n            const isDayTime = hour >= 6 && hour < 18;\n            let iconUrl = '';\n            \n            if (data.cloud_description.startsWith('Mostly ')) {\n                iconUrl = isDayTime ? \n                    'http://reg.bom.gov.au/weather-services/images/symbols/large/partly-cloudy.png' :\n                    'http://reg.bom.gov.au/weather-services/images/symbols/large/partly-cloudy-night.png';\n            } else {\n                const iconName = data.cloud_description.toLowerCase().replace(/\\s+/g, '-');\n                iconUrl = `http://reg.bom.gov.au/weather-services/images/symbols/large/${iconName}.png`;\n            }\n            \n            icon.src = iconUrl;\n            icon.style.display = 'block';\n            icon.onerror = function() { this.style.display = 'none'; };\n        }\n    }\n})(scope);\n</script>",
+        "storeOutMessages": false,
+        "fwdInMessages": false,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "x": 930,
+        "y": 380,
+        "wires": [[]]
+    },
+    {
+        "id": "fetch_weather_inject",
+        "type": "inject",
+        "z": "new_hubitat_tab",
+        "name": "Get Weather (Every 30s)",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "30",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 380,
+        "wires": [
+            [
+                "get_weather_data"
+            ]
+        ]
+    },
+    {
+        "id": "get_weather_data",
+        "type": "function",
+        "z": "new_hubitat_tab",
+        "name": "Get Weather from Global",
+        "func": "// Get weather data from global context\nconst weatherData = global.get('weather_data') || {\n    temperature: null,\n    apparent_temperature: null,\n    min_temperature: null,\n    max_temperature: null,\n    humidity: null,\n    wind_speed: null,\n    wind_direction: '',\n    cloud_description: 'No data available'\n};\n\nmsg.payload = weatherData;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 380,
+        "wires": [
+            [
+                "weather_ui_template"
+            ]
+        ]
+    }
+]

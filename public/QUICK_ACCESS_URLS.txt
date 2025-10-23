@@ -1,0 +1,113 @@
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                    SOLAR WIDGET - QUICK ACCESS URLS                          ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+📍 YOUR SERVER: http://172.17.254.10:1880
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🎯 DEMO PAGES (Direct Links)
+
+  ⭐ COMPLETE DEMO (Best - All Features)
+  http://172.17.254.10:1880/public/solar-widget-complete-demo.html
+  
+  📊 Features:
+  - 3 widget instances
+  - Live controls for all parameters
+  - Scenario presets (Peak Solar, Night Mode, Export)
+  - 24-hour simulation
+  - Real-time energy flow visualization
+  
+  ─────────────────────────────────────────────────────────────────────────────
+  
+  🧪 SIMPLE TEST
+  http://172.17.254.10:1880/public/solar-widget-test.html
+  
+  📊 Features:
+  - Single widget
+  - Basic test buttons
+  - Day cycle simulation
+  
+  ─────────────────────────────────────────────────────────────────────────────
+  
+  📱 ORIGINAL DEMO
+  http://172.17.254.10:1880/public/solar-state-widget-demo.html
+  
+  📊 Features:
+  - Multiple widget sizes
+  - Interactive controls
+  - Theme switching
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📂 FILE PATHS
+
+  Widget Files:
+  - HTML:  /root/.node-red/public/solar-state-widget.html
+  - CSS:   /root/.node-red/public/solar-state-widget.css
+  - JS:    /root/.node-red/public/solar-state-widget.js
+  
+  Images:
+  - Solar: /root/.node-red/public/images/state_solor.png
+  - System: /root/.node-red/public/images/state_system.png
+  - Battery: /root/.node-red/public/images/state_bat_null.png
+  - Load: /root/.node-red/public/images/state_loadS.png
+  - Grid: /root/.node-red/public/images/state_grid.png
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 QUICK START
+
+  1. Open Complete Demo:
+     http://172.17.254.10:1880/public/solar-widget-complete-demo.html
+  
+  2. Try the scenarios:
+     - Click "☀️ Peak Solar"
+     - Click "🌙 Night Mode"
+     - Click "⚡ Exporting"
+  
+  3. Run 24h simulation:
+     - Click "🌅 Simulate 24h Cycle"
+     - Watch energy flow change throughout the day
+  
+  4. Adjust live controls:
+     - Change PV Power
+     - Change Battery Power
+     - Change Load Power
+     - Click "📊 Update All Widgets"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+💡 URL PATTERN
+
+  All public files are accessed via:
+  http://172.17.254.10:1880/public/<filename>
+  
+  Examples:
+  ✓ http://172.17.254.10:1880/public/solar-widget-test.html
+  ✓ http://172.17.254.10:1880/public/solar-state-widget.css
+  ✓ http://172.17.254.10:1880/public/images/state_solor.png
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ VERIFICATION CHECKLIST
+
+  Before testing:
+  - [ ] Clear browser cache (Ctrl + F5)
+  - [ ] Check JavaScript console (F12)
+  - [ ] Verify images load in browser
+  - [ ] Test on actual URL above
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📖 DOCUMENTATION
+
+  - Complete Guide: /root/.node-red/public/COMPLETE_WIDGET_UPDATE.md
+  - Quick Start: /root/.node-red/public/SOLAR_WIDGET_QUICKSTART.md
+  - Error Fixes: /root/.node-red/public/ERROR_FIX_NOTES.md
+  - Summary: /root/.node-red/public/WIDGET_SUMMARY.txt
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Created: October 24, 2025
+Note: All URLs require /public/ in the path
