@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Weather Widget - Banksia Park</title>
+    <link rel="stylesheet" href="google-weather-widget.css">
+</head>
+<body>
+    <div class="wob_wc">
+        <div id="weatherWidget" class="loading">Loading weather data...</div>
+    </div>
+
+    <script>
+        function getWeatherIcon(condition) {
+            if (!condition) return 'weather-default';
+            const c = condition.toLowerCase();
+            if (c.includes('cloudy') && c.includes('mostly')) return 'weather-partly-cloudy';
+            if (c.includes('cloudy')) return 'weather-cloudy';
+            if (c.includes('sunny') || c.includes('clear')) return 'weather-sunny';
+            if (c.includes('rain')) return 'weather-rainy';
+            if (c.includes('storm')) return 'weather-stormy';
+            return 'weather-default';
+        }
+
+        function formatWind(speed, direction) {
+            const dirs = {
+                'NORTH': 'N', 'NORTH_EAST': 'NE', 'EAST': 'E', 'SOUTH_EAST': 'SE',
+                'SOUTH': 'S', 'SOUTH_WEST': 'SW', 'WEST': 'W', 'WEST_SOUTHWEST': 'WSW',
+                'SOUTHWEST': 'SW', 'NORTH_WEST': 'NW'
+            };
+            const dir = dirs[direction] || direction || '';
+            const spd = speed ? Math.round(speed) : '';
+            return spd ? `${spd} km/h ${dir}`.trim() : 'N/A';
+        }
+
+        async function loadWeather() {
+            try {
+                const [currentRes, forecastRes] = await Promise.all([
+                    fetch('/weather/current'),
+                    fetch('/weather/forecast')
+                ]);
+
+                if (!currentRes.ok || !forecastRes.ok) throw new Error('API error');
+
+                const current = await currentRes.json();
+                const forecast = await forecastRes.json();
+
+                renderWeather(current, forecast);
+            } catch (error) {
+                document.getElementById('weatherWidget').innerHTML = 
+                    '<div class="error">Unable to load weather data</div>';
+            }
+        }
+
+        function renderWeather(current, forecast) {
+            const temp = Math.round(current.temperature || 0);
+            const condition = current.condition || 'Unknown';
+            const humidity = current.humidity || 'N/A';
+            const wind = formatWind(current.wind_speed, current.wind_cardinal);
+            const pressure = current.pressure ? `${Math.round(current.pressure)} hPa` : 'N/A';
+            const precipitation = current.precipitation_prob ? `${current.precipitation_prob}%` : '0%';
+
+            const forecastDays = forecast.slice(0, 7);
+            const updated = new Date(current.timestamp).toLocaleString('en-AU', {
+                hour: '2-digit',
+                minute: '2-digit',
+                day: '2-digit',
+                month: '2-digit'
+            });
+
+            const updatedBreif = new Date(current.timestamp).toLocaleString('en-AU', { 
+                weekday: 'long',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            document.getElementById('weatherWidget').innerHTML = `
+                <div class="wob_container">
+                    <div class="wob_dcp">
+                        <div class="wob_current">
+                            <div class="wob_img ${getWeatherIcon(condition)}"></div>
+                            <div class="wob_weather_container">
+                                <div class="wob_weather_info">
+                                    <div class="wob_t">${temp}<span class="wob_t_unit">°C</span></div>
+                                    <div class="wob_dc">${condition}</div>
+                                </div>
+                                <div class="wob_weather_details">
+                                    <span>Precipitation: ${precipitation}<br>
+                                    Humidity: ${humidity}%<br>
+                                    Wind: ${wind}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wob_loc">
+                        <div class="wob_loc_title">Weather</div>
+                        <div class="wob_loc_time" id="currentTime">${updatedBreif}</div>
+                    </div>
+                </div>
+                
+                <div class="wob_df">
+                    <div class="wob_forecast">
+                        ${forecastDays.map(day => {
+                            const date = new Date(day.forecast_date);
+                            const dayName = date.toLocaleDateString('en-AU', { weekday: 'short' });
+                            const high = Math.round(day.max_temp || 0);
+                            const low = Math.round(day.min_temp || 0);
+                            
+                            return `
+                                <div class="wob_forecast_day">
+                                    <div class="wob_forecast_date">${dayName}</div>
+                                    <div class="wob_forecast_icon ${getWeatherIcon(day.day_condition)}"></div>
+                                    <div class="wob_forecast_temp">
+                                        <span class="wob_forecast_high">${high}°</span>
+                                        <span class="wob_forecast_low">${low}°</span>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+                <div class="wob_tm">Banksia Park, SA • Last updated: ${updated}</div>
+            `;
+        }
+
+        // Initialize and auto-refresh
+        loadWeather();
+        setInterval(loadWeather, 300000); // Refresh every 5 minutes
+    </script>
+</body>
+</html>

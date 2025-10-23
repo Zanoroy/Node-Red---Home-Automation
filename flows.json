@@ -24,6 +24,14 @@
         "env": []
     },
     {
+        "id": "google_weather_tab",
+        "type": "tab",
+        "label": "Google Weather API",
+        "disabled": false,
+        "info": "Google Weather API integration for Banksia Park, SA\nCollects current conditions and 10-day forecast\nStores data in SQLite database",
+        "env": []
+    },
+    {
         "id": "d4045e31a39c5762",
         "type": "mqtt-broker",
         "name": "",
@@ -58,6 +66,12 @@
         "id": "s9f8e7d6c5b4a3b2",
         "type": "sqlitedb",
         "db": "/root/.node-red/power_history.db",
+        "mode": "RWC"
+    },
+    {
+        "id": "gw_db_config",
+        "type": "sqlitedb",
+        "db": "/root/.node-red/google_weather.db",
         "mode": "RWC"
     },
     {
@@ -174,7 +188,7 @@
         "type": "function",
         "z": "797d03fafe67193c",
         "name": "Power Data",
-        "func": "// Extract values\nlet payload = msg.payload;\n\nconst response = {\n    pv1watt:     payload.values.pv1watt,              // power being produced\n    pactogridr:  payload.values.pactogridr,           // Power exported to grid\n    pactouserr:  payload.values.pactouserr,           // Power being drawn from grid\n    p1charge1:   payload.values.p1charge1,            // battery charging\n    pdischarge1: payload.values.pdischarge1,          // battery discharging \n    timestamp: new Date(payload.time).toISOString() // last time date was received from the invertor\n};\n\n// Store in global context for HTTP requests\nglobal.set('powerGraphData', response);\n\nreturn response;",
+        "func": "// Extract values\nlet payload = msg.payload;\n\nconst response = {\n    pvpowerin:   payload.values.pvpowerin,            // power being produced\n    pv1watt:     payload.values.pv1watt,              // power being produced\n    pactogridr:  payload.values.pactogridr,           // Power exported to grid\n    pactouserr:  payload.values.pactouserr,           // Power being drawn from grid\n    p1charge1:   payload.values.p1charge1,            // battery charging\n    pdischarge1: payload.values.pdischarge1,          // battery discharging \n    timestamp: new Date(payload.time).toISOString() // last time date was received from the invertor\n};\n\n// Store in global context for HTTP requests\nglobal.set('powerGraphData', response);\n\nreturn response;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -194,7 +208,7 @@
         "type": "function",
         "z": "797d03fafe67193c",
         "name": "Prepare SQLite Insert",
-        "func": "// Prepare data for SQLite insertion\nconst powerData = msg;\n\n// Use current timestamp if not provided\nconst timestamp = powerData.timestamp || new Date().toISOString();\n\n// Convert to kilowatts for storage\nconst record = {\n    timestamp: timestamp,\n    pv_production: (powerData.pv1watt || 0),\n    grid_export: (powerData.pactogridr || 0),\n    grid_import: (powerData.pactouserr || 0),\n    battery_charge: (powerData.p1charge1 || 0),\n    battery_discharge: (powerData.pdischarge1 || 0)\n};\n\n// Create complete SQL statement with quoted values\nmsg.topic = `INSERT OR REPLACE INTO power_history \n    (timestamp, pv_production, grid_export, grid_import, battery_charge, battery_discharge) \n    VALUES ('${record.timestamp}', ${record.pv_production}, ${record.grid_export}, ${record.grid_import}, ${record.battery_charge}, ${record.battery_discharge})`;\n\n// Set empty payload for direct SQL execution\nmsg.payload = [];\n\nnode.status({fill:\"blue\",shape:\"dot\",text:`Storing: ${record.timestamp}`});\n\nreturn msg;",
+        "func": "// Prepare data for SQLite insertion\nconst powerData = msg;\n\n// Use current timestamp if not provided\nconst timestamp = powerData.timestamp || new Date().toISOString();\n\n// Convert to kilowatts for storage\nconst record = {\n    timestamp: timestamp,\n    pv_production: (powerData.pvpowerin || 0),\n    grid_export: (powerData.pactogridr || 0),\n    grid_import: (powerData.pactouserr || 0),\n    battery_charge: (powerData.p1charge1 || 0),\n    battery_discharge: (powerData.pdischarge1 || 0)\n};\n\n// Create complete SQL statement with quoted values\nmsg.topic = `INSERT OR REPLACE INTO power_history \n    (timestamp, pv_production, grid_export, grid_import, battery_charge, battery_discharge) \n    VALUES ('${record.timestamp}', ${record.pv_production}, ${record.grid_export}, ${record.grid_import}, ${record.battery_charge}, ${record.battery_discharge})`;\n\n// Set empty payload for direct SQL execution\nmsg.payload = [];\n\nnode.status({fill:\"blue\",shape:\"dot\",text:`Storing: ${record.timestamp}`});\n\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -205,8 +219,7 @@
         "y": 180,
         "wires": [
             [
-                "s2a3b4c5d6e7f8g9",
-                "e1af5f98b966d0d6"
+                "s2a3b4c5d6e7f8g9"
             ]
         ]
     },
@@ -221,9 +234,7 @@
         "x": 970,
         "y": 180,
         "wires": [
-            [
-                "s3a4b5c6d7e8f9g0"
-            ]
+            []
         ]
     },
     {
@@ -353,23 +364,6 @@
         "statusType": "auto",
         "x": 1160,
         "y": 40,
-        "wires": []
-    },
-    {
-        "id": "e1af5f98b966d0d6",
-        "type": "debug",
-        "z": "797d03fafe67193c",
-        "name": "SQLite Storage Debug",
-        "active": true,
-        "tosidebar": true,
-        "console": true,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 750,
-        "y": 120,
         "wires": []
     },
     {
@@ -875,8 +869,8 @@
         "property": "payload",
         "attr": "attr",
         "chr": "",
-        "x": 890,
-        "y": 80,
+        "x": 770,
+        "y": 60,
         "wires": [
             [
                 "w4a5b6c7d8e9f0g1"
@@ -895,8 +889,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1120,
-        "y": 80,
+        "x": 1000,
+        "y": 60,
         "wires": [
             [
                 "w5a6b7c8d9e0f1g2"
@@ -917,25 +911,8 @@
         "correl": "",
         "expiry": "",
         "broker": "d4045e31a39c5762",
-        "x": 1390,
+        "x": 1270,
         "y": 60,
-        "wires": []
-    },
-    {
-        "id": "w6a7b8c9d0e1f2g3",
-        "type": "debug",
-        "z": "c9f1a2b3d4e5f6g7",
-        "name": "Weather Debug",
-        "active": true,
-        "tosidebar": true,
-        "console": true,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1370,
-        "y": 120,
         "wires": []
     },
     {
@@ -948,7 +925,7 @@
         "upload": false,
         "swaggerDoc": "",
         "x": 130,
-        "y": 360,
+        "y": 140,
         "wires": [
             [
                 "w8a9b0c1d2e3f4g5"
@@ -968,7 +945,7 @@
         "finalize": "",
         "libs": [],
         "x": 380,
-        "y": 360,
+        "y": 140,
         "wires": [
             [
                 "w9a0b1c2d3e4f5g6"
@@ -983,7 +960,556 @@
         "statusCode": "",
         "headers": {},
         "x": 630,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "gw_current_inject",
+        "type": "inject",
+        "z": "google_weather_tab",
+        "name": "Current Weather (30min)",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "1800",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 10,
+        "topic": "",
+        "payload": "current",
+        "payloadType": "str",
+        "x": 410,
+        "y": 120,
+        "wires": [
+            [
+                "gw_current_request"
+            ]
+        ]
+    },
+    {
+        "id": "gw_forecast_inject",
+        "type": "inject",
+        "z": "google_weather_tab",
+        "name": "10-Day Forecast (4hr)",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "14400",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 30,
+        "topic": "",
+        "payload": "forecast",
+        "payloadType": "str",
+        "x": 410,
+        "y": 240,
+        "wires": [
+            [
+                "gw_forecast_request"
+            ]
+        ]
+    },
+    {
+        "id": "gw_current_request",
+        "type": "http request",
+        "z": "google_weather_tab",
+        "name": "Get Current Weather",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://weather.googleapis.com/v1/currentConditions:lookup?key=AIzaSyDcCgEHqXpmJrO8sxxRMxLSbZjM2n3GiWM&location.latitude=-34.8105248&location.longitude=138.7305864",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 660,
+        "y": 120,
+        "wires": [
+            [
+                "gw_current_parser"
+            ]
+        ]
+    },
+    {
+        "id": "gw_forecast_request",
+        "type": "http request",
+        "z": "google_weather_tab",
+        "name": "Get 10-Day Forecast",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://weather.googleapis.com/v1/forecast/days:lookup?key=AIzaSyDcCgEHqXpmJrO8sxxRMxLSbZjM2n3GiWM&location.latitude=-34.8105248&location.longitude=138.7305864&days=10",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 660,
+        "y": 240,
+        "wires": [
+            [
+                "gw_forecast_parser"
+            ]
+        ]
+    },
+    {
+        "id": "gw_current_parser",
+        "type": "function",
+        "z": "google_weather_tab",
+        "name": "Parse Current Weather",
+        "func": "// Parse Google Weather API current conditions response\ntry {\n    const data = msg.payload;\n    \n    if (!data || !data.temperature) {\n        node.error(\"Invalid weather data received\", msg);\n        return null;\n    }\n    \n    // Extract key weather metrics with proper null handling\n    const now = new Date();\n    now.setMinutes(0, 0, 0);\n    const timestamp = now.toISOString();\n    // const timestamp = new Date().toISOString();\n    const temperature = data.temperature?.degrees || null;\n    const feels_like = data.feelsLikeTemperature?.degrees || null;\n    const humidity = data.relativeHumidity || null;\n    const pressure = data.airPressure?.meanSeaLevelMillibars || null;\n    const wind_speed = data.wind?.speed?.value || null;\n    const wind_direction = data.wind?.direction?.degrees || null;\n    const wind_cardinal = data.wind?.direction?.cardinal || null;\n    const condition = data.weatherCondition?.description?.text || null;\n    const condition_type = data.weatherCondition?.type || null;\n    const uv_index = data.uvIndex || null;\n    const visibility = data.visibility?.distance || null;\n    const dew_point = data.dewPoint?.degrees || null;\n    const cloud_cover = data.cloudCover || null;\n    const precipitation_prob = data.precipitation?.probability?.percent || null;\n    const is_daytime = data.isDaytime ? 1 : 0;\n    \n    // Create direct SQL insert with values (not parameterized)\n    const sql = `INSERT OR REPLACE INTO weather_current \n        (timestamp, temperature, feels_like, humidity, pressure, wind_speed, \n         wind_direction, wind_cardinal, condition, condition_type, uv_index, \n         visibility, dew_point, cloud_cover, precipitation_prob, is_daytime) \n        VALUES (\n            '${timestamp}',\n            ${temperature},\n            ${feels_like},\n            ${humidity},\n            ${pressure},\n            ${wind_speed},\n            ${wind_direction},\n            '${wind_cardinal}',\n            '${condition}',\n            '${condition_type}',\n            ${uv_index},\n            ${visibility},\n            ${dew_point},\n            ${cloud_cover},\n            ${precipitation_prob},\n            ${is_daytime}\n        )`;\n    \n    msg.topic = sql;\n    msg.payload = []; // Empty array for direct SQL\n    \n    // Log successful parse\n    node.log(`Parsed current weather: ${temperature}°C, ${condition}`);\n    \n    return msg;\n    \n} catch (error) {\n    node.error(`Error parsing current weather: ${error.message}`, msg);\n    return null;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 120,
+        "wires": [
+            [
+                "gw_current_store"
+            ]
+        ]
+    },
+    {
+        "id": "gw_forecast_parser",
+        "type": "function",
+        "z": "google_weather_tab",
+        "name": "Parse 10-Day Forecast",
+        "func": "// Parse Google Weather API 10-day forecast response\ntry {\n    const data = msg.payload;\n    \n    if (!data || !data.forecastDays || !Array.isArray(data.forecastDays)) {\n        node.error(\"Invalid forecast data received\", msg);\n        return null;\n    }\n    const now = new Date();\n    now.setMinutes(0, 0, 0);\n    const timestamp = now.toISOString();    \n    // const timestamp = new Date().toISOString();\n    const messages = [];\n    \n    // Process each forecast day\n    data.forecastDays.forEach((day, index) => {\n        // Extract and prepare forecast data\n        const forecast_date = day.displayDate ? \n            `${day.displayDate.year}-${String(day.displayDate.month).padStart(2, '0')}-${String(day.displayDate.day).padStart(2, '0')}` \n            : null;\n        const day_number = index + 1;\n        const min_temp = day.minTemperature?.degrees || null;\n        const max_temp = day.maxTemperature?.degrees || null;\n        const min_feels_like = day.feelsLikeMinTemperature?.degrees || null;\n        const max_feels_like = day.feelsLikeMaxTemperature?.degrees || null;\n        const day_condition = day.daytimeForecast?.weatherCondition?.description?.text || null;\n        const day_condition_type = day.daytimeForecast?.weatherCondition?.type || null;\n        const night_condition = day.nighttimeForecast?.weatherCondition?.description?.text || null;\n        const night_condition_type = day.nighttimeForecast?.weatherCondition?.type || null;\n        const precipitation_prob_day = day.daytimeForecast?.precipitation?.probability?.percent || null;\n        const precipitation_prob_night = day.nighttimeForecast?.precipitation?.probability?.percent || null;\n        const precipitation_amount_day = day.daytimeForecast?.precipitation?.qpf?.quantity || null;\n        const precipitation_amount_night = day.nighttimeForecast?.precipitation?.qpf?.quantity || null;\n        const wind_speed_day = day.daytimeForecast?.wind?.speed?.value || null;\n        const wind_speed_night = day.nighttimeForecast?.wind?.speed?.value || null;\n        const wind_direction_day = day.daytimeForecast?.wind?.direction?.degrees || null;\n        const wind_direction_night = day.nighttimeForecast?.wind?.direction?.degrees || null;\n        const humidity_day = day.daytimeForecast?.relativeHumidity || null;\n        const humidity_night = day.nighttimeForecast?.relativeHumidity || null;\n        const uv_index = day.daytimeForecast?.uvIndex || null;\n        const sunrise_time = day.sunEvents?.sunriseTime || null;\n        const sunset_time = day.sunEvents?.sunsetTime || null;\n        const moon_phase = day.moonEvents?.moonPhase || null;\n        \n        // Create direct SQL insert\n        const sql = `INSERT OR REPLACE INTO weather_forecast \n            (timestamp, forecast_date, day_number, min_temp, max_temp, min_feels_like, max_feels_like,\n             day_condition, day_condition_type, night_condition, night_condition_type,\n             precipitation_prob_day, precipitation_prob_night, precipitation_amount_day, precipitation_amount_night,\n             wind_speed_day, wind_speed_night, wind_direction_day, wind_direction_night,\n             humidity_day, humidity_night, uv_index, sunrise_time, sunset_time, moon_phase) \n            VALUES (\n                '${timestamp}',\n                '${forecast_date}',\n                ${day_number},\n                ${min_temp},\n                ${max_temp},\n                ${min_feels_like},\n                ${max_feels_like},\n                '${day_condition}',\n                '${day_condition_type}',\n                '${night_condition}',\n                '${night_condition_type}',\n                ${precipitation_prob_day},\n                ${precipitation_prob_night},\n                ${precipitation_amount_day},\n                ${precipitation_amount_night},\n                ${wind_speed_day},\n                ${wind_speed_night},\n                ${wind_direction_day},\n                ${wind_direction_night},\n                ${humidity_day},\n                ${humidity_night},\n                ${uv_index},\n                '${sunrise_time}',\n                '${sunset_time}',\n                '${moon_phase}'\n            )`;\n        \n        const dayMsg = {\n            topic: sql,\n            payload: [] // Empty array for direct SQL\n        };\n        \n        messages.push(dayMsg);\n    });\n    \n    // Log successful parse\n    node.log(`Parsed ${messages.length}-day forecast`);\n    \n    return [messages];\n    \n} catch (error) {\n    node.error(`Error parsing forecast: ${error.message}`, msg);\n    return null;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 910,
+        "y": 240,
+        "wires": [
+            [
+                "gw_forecast_store"
+            ]
+        ]
+    },
+    {
+        "id": "gw_current_store",
+        "type": "sqlite",
+        "z": "google_weather_tab",
+        "mydb": "gw_db_config",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "Store Current Weather",
+        "x": 1150,
+        "y": 120,
+        "wires": [
+            [
+                "gw_current_debug"
+            ]
+        ]
+    },
+    {
+        "id": "gw_forecast_store",
+        "type": "sqlite",
+        "z": "google_weather_tab",
+        "mydb": "gw_db_config",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "Store Forecast",
+        "x": 1130,
+        "y": 240,
+        "wires": [
+            [
+                "gw_forecast_debug"
+            ]
+        ]
+    },
+    {
+        "id": "gw_current_debug",
+        "type": "debug",
+        "z": "google_weather_tab",
+        "name": "Current Weather Stored",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1400,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "gw_forecast_debug",
+        "type": "debug",
+        "z": "google_weather_tab",
+        "name": "Forecast Stored",
+        "active": true,
+        "tosidebar": true,
+        "console": true,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1370,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "gw_cleanup_inject",
+        "type": "inject",
+        "z": "google_weather_tab",
+        "name": "Cleanup Old Data (Daily)",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "0 2 * * *",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "cleanup",
+        "payloadType": "str",
+        "x": 400,
+        "y": 320,
+        "wires": [
+            [
+                "gw_cleanup_current",
+                "gw_cleanup_forecast"
+            ]
+        ]
+    },
+    {
+        "id": "gw_cleanup_current",
+        "type": "sqlite",
+        "z": "google_weather_tab",
+        "mydb": "gw_db_config",
+        "sqlquery": "fixed",
+        "sql": "DELETE FROM weather_current WHERE timestamp < datetime('now', '-10 days')",
+        "name": "Cleanup Current (10d)",
+        "x": 680,
+        "y": 300,
+        "wires": [
+            [
+                "gw_cleanup_debug"
+            ]
+        ]
+    },
+    {
+        "id": "gw_cleanup_forecast",
+        "type": "sqlite",
+        "z": "google_weather_tab",
+        "mydb": "gw_db_config",
+        "sqlquery": "fixed",
+        "sql": "DELETE FROM weather_forecast WHERE timestamp < datetime('now', '-30 days')",
+        "name": "Cleanup Forecast (30d)",
+        "x": 690,
         "y": 360,
+        "wires": [
+            [
+                "gw_cleanup_debug"
+            ]
+        ]
+    },
+    {
+        "id": "gw_cleanup_debug",
+        "type": "debug",
+        "z": "google_weather_tab",
+        "name": "Cleanup Complete",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 970,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "gw_manual_test",
+        "type": "inject",
+        "z": "google_weather_tab",
+        "name": "Manual Test",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "test",
+        "payloadType": "str",
+        "x": 290,
+        "y": 40,
+        "wires": [
+            [
+                "gw_current_request",
+                "gw_forecast_request"
+            ]
+        ]
+    },
+    {
+        "id": "gw_http_endpoint",
+        "type": "http in",
+        "z": "google_weather_tab",
+        "name": "Weather Collection API",
+        "url": "/weather/collect",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 100,
+        "y": 180,
+        "wires": [
+            [
+                "gw_trigger_function"
+            ]
+        ]
+    },
+    {
+        "id": "gw_trigger_function",
+        "type": "function",
+        "z": "google_weather_tab",
+        "name": "Trigger Both Collections",
+        "func": "// Function to trigger both current weather and forecast collection\n// Send immediate response instead of waiting for completion\n\n// Create messages to trigger both endpoints\nconst currentMsg = {\n    payload: \"api_trigger\",\n    type: \"current\"\n};\n\nconst forecastMsg = {\n    payload: \"api_trigger\", \n    type: \"forecast\"\n};\n\n// Create immediate response\nconst responseMsg = {\n    payload: {\n        status: \"success\",\n        message: \"Weather data collection initiated\",\n        location: \"Banksia Park, SA\",\n        timestamp: new Date().toISOString(),\n        note: \"Data collection is running in background. Check the database for results.\",\n        sessionId: \"1234\" + new Date().toISOString()\n    },\n    statusCode: 200\n};\n\n// Log the trigger\nnode.log(`Weather collection triggered via API`);\n\n// Send trigger messages and response\nreturn [[currentMsg], [forecastMsg], [responseMsg]];",
+        "outputs": 3,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 180,
+        "wires": [
+            [
+                "gw_current_request"
+            ],
+            [
+                "gw_forecast_request"
+            ],
+            [
+                "gw_http_response"
+            ]
+        ]
+    },
+    {
+        "id": "gw_http_response",
+        "type": "http response",
+        "z": "google_weather_tab",
+        "name": "Weather API Response",
+        "statusCode": "",
+        "headers": {
+            "Content-Type": "application/json"
+        },
+        "x": 950,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "gw_response_tracker",
+        "type": "function",
+        "z": "google_weather_tab",
+        "name": "Track Collection Results",
+        "func": "const response = {\n    status: \"success\",\n    message: \"Weather data collection completed\",\n    location: \"Banksia Park, SA\",\n    timestamp: new Date().toISOString()\n};\n\n// Prepare response message\nmsg.payload = response;\nmsg.statusCode = 200;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 690,
+        "y": 180,
+        "wires": [
+            [
+                "gw_http_response"
+            ]
+        ]
+    },
+    {
+        "id": "weather_current_api",
+        "type": "http in",
+        "z": "google_weather_tab",
+        "name": "Current Weather API",
+        "url": "/weather/current",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 170,
+        "y": 440,
+        "wires": [
+            [
+                "get_current_weather"
+            ]
+        ]
+    },
+    {
+        "id": "get_current_weather",
+        "type": "function",
+        "z": "google_weather_tab",
+        "name": "Get Current Weather Data",
+        "func": "// Query latest current weather data from database\nconst sql = `SELECT \n    timestamp, temperature, feels_like, humidity, pressure,\n    wind_speed, wind_direction, wind_cardinal, condition, condition_type,\n    uv_index, visibility, dew_point, cloud_cover, precipitation_prob, is_daytime\nFROM weather_current \nORDER BY timestamp DESC \nLIMIT 1`;\n\nmsg.topic = sql;\nmsg.payload = [];\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 440,
+        "wires": [
+            [
+                "current_weather_db"
+            ]
+        ]
+    },
+    {
+        "id": "current_weather_db",
+        "type": "sqlite",
+        "z": "google_weather_tab",
+        "mydb": "gw_db_config",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "Query Current Weather",
+        "x": 690,
+        "y": 440,
+        "wires": [
+            [
+                "format_current_response"
+            ]
+        ]
+    },
+    {
+        "id": "format_current_response",
+        "type": "function",
+        "z": "google_weather_tab",
+        "name": "Format Current Weather Response",
+        "func": "// Format current weather data for API response\ntry {\n    const data = msg.payload;\n    \n    if (!data || data.length === 0) {\n        msg.payload = {\n            error: \"No current weather data available\",\n            timestamp: new Date().toISOString()\n        };\n        msg.statusCode = 404;\n        return msg;\n    }\n    \n    const weather = data[0];\n    \n    msg.payload = {\n        timestamp: weather.timestamp,\n        temperature: weather.temperature,\n        feels_like: weather.feels_like,\n        condition: weather.condition,\n        condition_type: weather.condition_type,\n        humidity: weather.humidity,\n        pressure: weather.pressure,\n        wind_speed: weather.wind_speed,\n        wind_direction: weather.wind_direction,\n        wind_cardinal: weather.wind_cardinal,\n        uv_index: weather.uv_index,\n        visibility: weather.visibility,\n        dew_point: weather.dew_point,\n        cloud_cover: weather.cloud_cover,\n        precipitation_prob: weather.precipitation_prob,\n        is_daytime: weather.is_daytime,\n        location: \"Banksia Park, SA\"\n    };\n    \n    msg.statusCode = 200;\n    msg.headers = {\n        \"Content-Type\": \"application/json\",\n        \"Access-Control-Allow-Origin\": \"*\"\n    };\n    \n    return msg;\n    \n} catch (error) {\n    msg.payload = {\n        error: \"Error formatting weather data: \" + error.message,\n        timestamp: new Date().toISOString()\n    };\n    msg.statusCode = 500;\n    return msg;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 980,
+        "y": 440,
+        "wires": [
+            [
+                "current_weather_response"
+            ]
+        ]
+    },
+    {
+        "id": "current_weather_response",
+        "type": "http response",
+        "z": "google_weather_tab",
+        "name": "Current Weather Response",
+        "statusCode": "",
+        "headers": {},
+        "x": 1280,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "weather_forecast_api",
+        "type": "http in",
+        "z": "google_weather_tab",
+        "name": "Forecast API",
+        "url": "/weather/forecast",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 160,
+        "y": 500,
+        "wires": [
+            [
+                "get_forecast_weather"
+            ]
+        ]
+    },
+    {
+        "id": "get_forecast_weather",
+        "type": "function",
+        "z": "google_weather_tab",
+        "name": "Get Forecast Data",
+        "func": "// Query latest forecast data from database\nconst sql = `SELECT \n    timestamp, forecast_date, day_number, min_temp, max_temp,\n    min_feels_like, max_feels_like, day_condition, day_condition_type,\n    night_condition, night_condition_type, precipitation_prob_day,\n    precipitation_prob_night, wind_speed_day, wind_speed_night,\n    humidity_day, humidity_night, uv_index\nFROM weather_forecast \nWHERE forecast_date >= date('now')\nORDER BY forecast_date ASC \nLIMIT 10`;\n\nmsg.topic = sql;\nmsg.payload = [];\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 500,
+        "wires": [
+            [
+                "forecast_weather_db"
+            ]
+        ]
+    },
+    {
+        "id": "forecast_weather_db",
+        "type": "sqlite",
+        "z": "google_weather_tab",
+        "mydb": "gw_db_config",
+        "sqlquery": "msg.topic",
+        "sql": "",
+        "name": "Query Forecast",
+        "x": 620,
+        "y": 500,
+        "wires": [
+            [
+                "format_forecast_response"
+            ]
+        ]
+    },
+    {
+        "id": "format_forecast_response",
+        "type": "function",
+        "z": "google_weather_tab",
+        "name": "Format Forecast Response",
+        "func": "// Format forecast data for API response\ntry {\n    const data = msg.payload;\n    \n    if (!data || data.length === 0) {\n        msg.payload = {\n            error: \"No forecast data available\",\n            timestamp: new Date().toISOString()\n        };\n        msg.statusCode = 404;\n        return msg;\n    }\n    \n    // Group forecast data by date and take the most recent timestamp for each date\n    const forecastMap = new Map();\n    \n    data.forEach(forecast => {\n        const date = forecast.forecast_date;\n        if (!forecastMap.has(date) || \n            new Date(forecast.timestamp) > new Date(forecastMap.get(date).timestamp)) {\n            forecastMap.set(date, forecast);\n        }\n    });\n    \n    // Convert to array and sort by date\n    const forecasts = Array.from(forecastMap.values())\n        .sort((a, b) => new Date(a.forecast_date) - new Date(b.forecast_date))\n        .map(forecast => ({\n            forecast_date: forecast.forecast_date,\n            day_number: forecast.day_number,\n            min_temp: forecast.min_temp,\n            max_temp: forecast.max_temp,\n            min_feels_like: forecast.min_feels_like,\n            max_feels_like: forecast.max_feels_like,\n            day_condition: forecast.day_condition,\n            day_condition_type: forecast.day_condition_type,\n            night_condition: forecast.night_condition,\n            night_condition_type: forecast.night_condition_type,\n            precipitation_prob_day: forecast.precipitation_prob_day,\n            precipitation_prob_night: forecast.precipitation_prob_night,\n            wind_speed_day: forecast.wind_speed_day,\n            wind_speed_night: forecast.wind_speed_night,\n            humidity_day: forecast.humidity_day,\n            humidity_night: forecast.humidity_night,\n            uv_index: forecast.uv_index,\n            timestamp: forecast.timestamp\n        }));\n    \n    msg.payload = forecasts;\n    msg.statusCode = 200;\n    msg.headers = {\n        \"Content-Type\": \"application/json\",\n        \"Access-Control-Allow-Origin\": \"*\"\n    };\n    \n    return msg;\n    \n} catch (error) {\n    msg.payload = {\n        error: \"Error formatting forecast data: \" + error.message,\n        timestamp: new Date().toISOString()\n    };\n    msg.statusCode = 500;\n    return msg;\n}",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 880,
+        "y": 500,
+        "wires": [
+            [
+                "forecast_weather_response"
+            ]
+        ]
+    },
+    {
+        "id": "forecast_weather_response",
+        "type": "http response",
+        "z": "google_weather_tab",
+        "name": "Forecast Response",
+        "statusCode": "",
+        "headers": {},
+        "x": 1170,
+        "y": 500,
         "wires": []
     }
 ]

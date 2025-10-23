@@ -1,0 +1,188 @@
+<div class="animPan animPan3" style="">
+  <div style="top: 10%; left: 2%; width: auto;" class="abs"><span style="color:#c83535;" class="val"></span><i
+      style="visibility:hidden">&nbsp;</i></div>
+  <div style="top: 16%; left: 2%; width: auto;" class="abs"><span class="val">Data Sources</span><i class="tips w"
+      data-ishtml="true" data-bg="#4c4e83" data-fx="3" data-area="680px">
+      <table class="borderTable" style="width:650px">
+        <tbody>
+          <tr style="text-align:center;">
+            <td colspan="2">System diagram</td>
+          </tr>
+          <tr>
+            <td width="27%">Priority mode</td>
+            <td>Priority</td>
+          </tr>
+          <tr>
+            <td>System Status</td>
+            <td>Device connection status != Offline and Device connection status != Fault (UwSysWorkMode) else (Device
+              connection status)</td>
+          </tr>
+          <tr>
+            <td>PV Power</td>
+            <td>Ppv / 1000</td>
+          </tr>
+          <tr>
+            <td>PV Inverter Power</td>
+            <td>Pex / 1000</td>
+          </tr>
+          <tr>
+            <td>Charging</td>
+            <td>Pcharge1 / 1000</td>
+          </tr>
+          <tr>
+            <td>Discharging</td>
+            <td>Pdischarge1 / 1000</td>
+          </tr>
+          <tr>
+            <td>SOC</td>
+            <td>SOC</td>
+          </tr>
+          <tr>
+            <td>Import</td>
+            <td>PacToUser / 1000</td>
+          </tr>
+          <tr>
+            <td>Export</td>
+            <td>PacToGrid / 1000</td>
+          </tr>
+          <tr>
+            <td>Consumption</td>
+            <td>(Ppv + Pdischarge1 + PacToUser - PacToGrid - Pcharge1) / 1000</td>
+          </tr>
+          <tr style="text-align:center;">
+            <td colspan="2">Total</td>
+          </tr>
+          <tr>
+            <td>Photovoltaic Output</td>
+            <td>Today(Epvtoday)、Total (EpvTotal)</td>
+          </tr>
+          <tr>
+            <td>Inverter generation</td>
+            <td>Today(Eextoday)、Total (Eextotal)</td>
+          </tr>
+          <tr>
+            <td>Discharged</td>
+            <td>Today (Edischarge1Today)、Total (Edischarge1Total)</td>
+          </tr>
+          <tr>
+            <td>Exported to Grid</td>
+            <td>Today (new version (EsystemToday - EselfToday) else (EtoGridToday))、Total (new version (EsystemTotal -
+              EselfTotal) else (EtoGridTotal))</td>
+          </tr>
+          <tr>
+            <td>Load Consumption</td>
+            <td>Today (new version (ElocalLoadToday) else (TodayPhotovoltaic Output + Edischarge1Today + EtoUserToday -
+              EtoGridToday - Echarge1Today)、Total (new version (ElocalLoadTotal) else (TotalPhotovoltaic Output +
+              Edischarge1Total + EtoUserTotal - EtoGridTotal - Echarge1Total)</td>
+          </tr>
+          <tr>
+            <td>Solar Revenue</td>
+            <td>Today (TodayPhotovoltaic Output * Selling Price)、Total (TotalPhotovoltaic Output * Selling Price)</td>
+          </tr>
+        </tbody>
+      </table>
+    </i></div>
+  <div class="abs" style="top: 20%; left: 2%; width: auto;"><img src="/v3/images/priority.png"> <span
+      class="val mid">Load First</span></div>
+  <div class="abs"
+    style="text-align: center; top: 30%; left: 50%; width: 14%; max-width: 160px; margin-left: -61px; margin-top: -62px; opacity: 1;">
+    <div class="icon state_solor"></div>
+  </div>
+  <div style="height: 20px; z-index: 1; left: 434.267px; top: 83.9px; margin-left: -110.5px;" class="abs"><span
+      class="valc">System Status：</span><span class="val">On-Grid mode</span><i class="tips w" data-ishtml="true"
+      data-bg="#4c4e83" data-fx="3" data-area="280px">
+      <table style="width:280px">
+        <tbody>
+          <tr>
+            <td width="70%">The first MPPT voltage</td>
+            <td><span class="val_vPv1">368.90</span>V</td>
+          </tr>
+          <tr>
+            <td>The first MPPT power</td>
+            <td><span class="val_pPv1">3.80</span>W</td>
+          </tr>
+          <tr>
+            <td>The Second MPPT voltage</td>
+            <td><span class="val_vPv2">319.70</span>V</td>
+          </tr>
+          <tr>
+            <td>The second MPPT power</td>
+            <td><span class="val_pPv2">10.40</span>W</td>
+          </tr>
+          <tr>
+            <td>Battery Voltage</td>
+            <td><span class="val_vBat">53.00</span>V</td>
+          </tr>
+          <tr>
+            <td>Grid Voltage</td>
+            <td><span class="val_volt_grid">237.50</span>V</td>
+          </tr>
+          <tr>
+            <td>Grid Frequency</td>
+            <td><span class="val_freq_grid">50.01</span>Hz</td>
+          </tr>
+          <tr>
+            <td>Eps Voltage</td>
+            <td><span class="val_volt_eps">0.00</span>V</td>
+          </tr>
+          <tr>
+            <td>Eps Frequency</td>
+            <td><span class="val_freq_eps">0.00</span>Hz</td>
+          </tr>
+        </tbody>
+      </table>
+    </i></div>
+  <div style="height: 20px; z-index: 1; left: 434.267px; top: 111.9px; margin-left: -73px;" class="abs"><span
+      class="text">PV Power</span>：<span class="val">0.01kW</span><i class="tips w" data-ishtml="true" data-bg="#4c4e83"
+      data-fx="3" data-area="280px">
+      <table style="width:280px">
+        <tbody>
+          <tr>
+            <td width="70%">Photovoltaic power of energy storage</td>
+            <td><span class="val_storage_ppv">0.01</span>kW</td>
+          </tr>
+          <tr>
+            <td>PV Inverter Power</td>
+            <td><span class="val_pex">0.00</span>kW</td>
+          </tr>
+        </tbody>
+      </table>
+    </i></div>
+  <div class="abs"
+    style="text-align: center; top: 55%; left: 50%; width: 14%; max-width: 160px; margin-left: -61px; margin-top: -62px; opacity: 1;">
+    <div class="icon state_system"></div>
+  </div>
+  <div class="hide abs"
+    style="width: 12%; text-align: right; height: 20px; z-index: 1; left: 434.267px; top: 280.15px; margin-left: -52px;">
+    <img class="tipsT" data-bg="#4c4e83" data-fx="1" src="/v3/images/waring2.png" data-title="Inverter Failure"></div>
+  <div class="abs"
+    style="text-align: center; top: 80%; left: 50%; width: 14%; max-width: 160px; margin-left: -61px; margin-top: -62px; opacity: 1;">
+    <div class="icon state_grid"></div>
+  </div>
+  <div class="abs" style="height: 20px; z-index: 1; left: 434.267px; top: 604.4px; margin-left: -53px;"><span
+      class="text">Import</span>：<span class="val">0.09kW</span></div>
+  <div class="abs"
+    style="text-align: center; top: 55%; left: 25%; width: 14%; max-width: 160px; margin-left: -61px; margin-top: -62px; opacity: 1;">
+    <div class="icon state_bat_null"></div>
+  </div>
+  <div style="height: 20px; z-index: 1; left: 217.133px; top: 436.15px; margin-left: -69px;" class="abs"><span
+      class="text">Discharging</span>：<span class="val">1.25kW</span></div>
+  <div class="abs" style="height: 20px; z-index: 1; left: 217.133px; top: 472.15px; margin-left: -34px;"><span
+      class="text">SoC</span>：<span class="val">97%</span></div>
+  <div class="abs"
+    style="text-align: center; top: 55%; left: 75%; width: 14%; max-width: 160px; margin-left: -61px; margin-top: -62px; opacity: 1;">
+    <div class="icon state_load"></div>
+  </div>
+  <div style="height: 20px; z-index: 1; left: 651.4px; top: 436.15px; margin-left: -75px;" class="abs"><span
+      class="text">Consumption</span>：<span class="val">1.35kW</span></div>
+  <div class="abs path" style="opacity: 1; width: 50px; left: 409.267px; top: 263.9px; bottom: 364.85px;"><i
+      class="b w run b1" style="height: 50%;"></i><i class="b w run b2" style="height: 50%;"></i></div>
+  <div class="abs path" style="opacity: 1; height: 50px; top: 345.15px; left: 278.133px; right: 495.733px;"><i
+      class="r h run b1" style="width: 33.3%;"></i><i class="r h run b2" style="width: 33.3%;"></i><i class="r h run b3"
+      style="width: 33.3%;"></i></div>
+  <div class="abs path" style="opacity: 1; width: 50px; left: 409.267px; top: 432.15px; bottom: 196.6px;"><i
+      class="t w run b3" style="height: 50%;"></i><i class="t w run b2" style="height: 50%;"></i></div>
+  <div class="abs path" style="opacity: 1; height: 50px; top: 345.15px; left: 495.267px; right: 278.6px;"><i
+      class="r h run b1" style="width: 33.3%;"></i><i class="r h run b2" style="width: 33.3%;"></i><i class="r h run b3"
+      style="width: 33.3%;"></i></div>
+</div>
