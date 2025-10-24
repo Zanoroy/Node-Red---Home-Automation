@@ -192,21 +192,21 @@ class SolarStateWidget {
     }
 
     // Load Power
-    if (data.loadPower !== undefined) {
-      const loadElement = document.getElementById('loadPower');
+    if (data.consumption !== undefined) {
+      const loadElement = document.getElementById('powerConsumption');
       if (loadElement) {
-        loadElement.textContent = `${data.loadPower.toFixed(2)}kW - ${data.consumption.toFixed(2)}kW`;
+        loadElement.textContent = `${data.consumption.toFixed(2)}kW`;
       }
 
       // Activate system to load flow
-      if (this.systemToLoad && data.loadPower > 0) {
-        this.systemToLoad.classList.add('active');
+      if (this.systemToLoad && data.consumption > 0) {
+        this.systemToLoad.classList.add('active', 'consumption');
       } else if (this.systemToLoad) {
-        this.systemToLoad.classList.remove('active');
+        this.systemToLoad.classList.remove('active', 'consumption');
       }
 
       // Activate load icon
-      if (this.loadIcon && data.loadPower > 0) {
+      if (this.loadIcon && data.consumption > 0) {
         this.loadIcon.classList.add('active');
       } else if (this.loadIcon) {
         this.loadIcon.classList.remove('active');
@@ -265,7 +265,7 @@ class SolarStateWidget {
     if (this.systemIcon) {
       const anyPower = (data.pvPower && data.pvPower > 0) ||
         (data.batteryPower && Math.abs(data.batteryPower) > 0) ||
-        (data.loadPower && data.loadPower > 0) ||
+        (data.consumption && data.consumption > 0) ||
         (data.gridPower && Math.abs(data.gridPower) > 0);
 
       if (anyPower) {
