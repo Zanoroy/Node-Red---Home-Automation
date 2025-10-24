@@ -136,12 +136,12 @@ body {
 
 /* Solar Widget Section */
 .solar-widget-section {
-    grid-column: span 8;
-    min-height: 500px;
+    grid-column: span 4;
+    min-height: 350px;
 }
 
 .solar-widget-container {
-    height: 450px;
+    height: 350px;
 }
 
 /* Weather Section */

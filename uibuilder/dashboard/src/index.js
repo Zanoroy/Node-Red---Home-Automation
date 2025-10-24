@@ -100,8 +100,10 @@ function toggleLight(deviceId, currentState) {
     
     const newState = currentState === 'on' ? 'off' : 'on';
     
-    // Add loading state
-    tile.classList.add('loading');
+    // Immediate optimistic UI update - change state on click
+    tile.classList.remove('on', 'off');
+    tile.classList.add(newState, 'loading');
+    tile.onclick = () => toggleLight(deviceId, newState);
     
     // Send command to Node-RED
     uibuilder.send({
@@ -113,11 +115,9 @@ function toggleLight(deviceId, currentState) {
         }
     });
     
-    // Optimistic UI update
+    // Remove loading spinner after a short delay
     setTimeout(() => {
-        tile.classList.remove('on', 'off', 'loading');
-        tile.classList.add(newState);
-        tile.onclick = () => toggleLight(deviceId, newState);
+        tile.classList.remove('loading');
     }, 500);
 }
 
