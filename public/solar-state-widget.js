@@ -195,7 +195,7 @@ class SolarStateWidget {
     if (data.loadPower !== undefined) {
       const loadElement = document.getElementById('loadPower');
       if (loadElement) {
-        loadElement.textContent = `${data.loadPower.toFixed(2)}kW`;
+        loadElement.textContent = `${data.loadPower.toFixed(2)}kW - ${data.consumption.toFixed(2)}kW`;
       }
 
       // Activate system to load flow
