@@ -205,15 +205,16 @@
     width: 16%;
 }
 
-/* Flow Dots Animation */
+/* Flow Arrow Animation */
 .flow-dot {
     position: absolute;
-    width: 8px;
-    height: 8px;
-    background: #4af493;
-    border-radius: 50%;
-    box-shadow: 0 0 8px #4af493;
+    width: 16px;
+    height: 16px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
     opacity: 0;
+    filter: drop-shadow(0 0 3px rgba(74, 244, 147, 0.8));
 }
 
 .flow-line.vertical .flow-dot {
@@ -224,6 +225,46 @@
 .flow-line.horizontal .flow-dot {
     top: 50%;
     transform: translateY(-50%);
+}
+
+/* Vertical flow arrows - down direction (default) */
+.flow-line.vertical .flow-dot {
+    background-image: url('images/b_3.png');
+}
+
+/* Horizontal flow arrows - right direction (default) */
+.flow-line.horizontal .flow-dot {
+    background-image: url('images/r_3.png');
+}
+
+/* Reverse horizontal flow - left direction (for battery charging) */
+.flow-line.horizontal.charging .flow-dot {
+    background-image: url('images/l_3.png');
+    filter: drop-shadow(0 0 4px rgba(74, 244, 147, 0.9));
+}
+
+/* Discharging flow - right direction with red glow when SOC low */
+.flow-line.horizontal.discharging-low .flow-dot {
+    background-image: url('images/r_3.png');
+    filter: drop-shadow(0 0 4px rgba(255, 68, 68, 0.9));
+}
+
+/* Discharging flow - right direction with orange glow when SOC high */
+.flow-line.horizontal.discharging-high .flow-dot {
+    background-image: url('images/r_3.png');
+    filter: drop-shadow(0 0 4px rgba(255, 145, 0, 0.9));
+}
+
+/* Grid import - down direction with green glow */
+.flow-line.vertical.grid-import .flow-dot {
+    background-image: url('images/b_3.png');
+    filter: drop-shadow(0 0 4px rgba(74, 244, 147, 0.9));
+}
+
+/* Grid export - up direction with red glow */
+.flow-line.vertical.grid-export .flow-dot {
+    background-image: url('images/t_3.png');
+    filter: drop-shadow(0 0 4px rgba(255, 68, 68, 0.9));
 }
 
 .flow-line.active .dot1 {
@@ -267,6 +308,23 @@
     }
 }
 
+@keyframes flowVerticalReverse {
+    0% {
+        top: 100%;
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        top: 0%;
+        opacity: 0;
+    }
+}
+
 @keyframes flowHorizontal {
     0% {
         left: 0%;
@@ -282,6 +340,71 @@
         left: 100%;
         opacity: 0;
     }
+}
+
+@keyframes flowHorizontalReverse {
+    0% {
+        left: 100%;
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        left: 0%;
+        opacity: 0;
+    }
+}
+
+/* Battery flow line color variants (background line only) */
+.flow-line.horizontal.charging {
+    background: linear-gradient(to right, rgba(74, 244, 147, 0) 0%, rgba(74, 244, 147, 0.5) 50%, rgba(74, 244, 147, 0) 100%);
+}
+
+.flow-line.horizontal.discharging-low {
+    background: linear-gradient(to right, rgba(255, 68, 68, 0) 0%, rgba(255, 68, 68, 0.5) 50%, rgba(255, 68, 68, 0) 100%);
+}
+
+.flow-line.horizontal.discharging-high {
+    background: linear-gradient(to right, rgba(255, 145, 0, 0) 0%, rgba(255, 145, 0, 0.5) 50%, rgba(255, 145, 0, 0) 100%);
+}
+
+/* Grid flow line color variants (background line only) */
+.flow-line.vertical.grid-import {
+    background: linear-gradient(to bottom, rgba(74, 244, 147, 0) 0%, rgba(74, 244, 147, 0.5) 50%, rgba(74, 244, 147, 0) 100%);
+}
+
+.flow-line.vertical.grid-export {
+    background: linear-gradient(to bottom, rgba(255, 68, 68, 0) 0%, rgba(255, 68, 68, 0.5) 50%, rgba(255, 68, 68, 0) 100%);
+}
+
+/* Reverse flow animation for charging */
+.flow-line.horizontal.charging.active .dot1 {
+    animation: flowHorizontalReverse 2s ease-in-out infinite;
+}
+
+.flow-line.horizontal.charging.active .dot2 {
+    animation: flowHorizontalReverse 2s ease-in-out infinite 0.66s;
+}
+
+.flow-line.horizontal.charging.active .dot3 {
+    animation: flowHorizontalReverse 2s ease-in-out infinite 1.33s;
+}
+
+/* Reverse vertical flow animation for grid export */
+.flow-line.vertical.grid-export.active .dot1 {
+    animation: flowVerticalReverse 2s ease-in-out infinite;
+}
+
+.flow-line.vertical.grid-export.active .dot2 {
+    animation: flowVerticalReverse 2s ease-in-out infinite 0.66s;
+}
+
+.flow-line.vertical.grid-export.active .dot3 {
+    animation: flowVerticalReverse 2s ease-in-out infinite 1.33s;
 }
 
 /* Responsive font sizing */

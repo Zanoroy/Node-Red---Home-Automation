@@ -238,8 +238,8 @@
         "sqlquery": "msg.topic",
         "sql": "",
         "name": "Store Power Data",
-        "x": 970,
-        "y": 180,
+        "x": 1210,
+        "y": 160,
         "wires": [
             []
         ]
@@ -257,8 +257,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1200,
-        "y": 180,
+        "x": 1220,
+        "y": 220,
         "wires": []
     },
     {
@@ -1525,17 +1525,24 @@
         "z": "uibuilder_dashboard_tab",
         "name": "Home Dashboard",
         "topic": "",
-        "okToGo": false,
+        "url": "dashboard",
+        "okToGo": true,
         "fwdInMessages": false,
         "allowScripts": false,
         "allowStyles": false,
         "copyIndex": true,
-        "templateFolder": "defaultFull",
+        "templateFolder": "blank",
         "extTemplate": "",
         "showfolder": false,
+        "oldUrl": "",
         "reload": true,
         "sourceFolder": "src",
-        "x": 380,
+        "deployedVersion": "7.4.3",
+        "showMsgUib": false,
+        "title": "",
+        "descr": "",
+        "editurl": "vscode://vscode-remote/ssh-remote+172.17.254.10/root/.node-red/uibuilder/dashboard/?windowId=_blank",
+        "x": 390,
         "y": 660,
         "wires": [
             [
@@ -1877,7 +1884,7 @@
         "type": "function",
         "z": "uibuilder_dashboard_tab",
         "name": "Get Solar Data from Global",
-        "func": "// Get power data from global context\nconst powerData = global.get('powerGraphData') || {};\nconst batteryData = global.get('batteryData') || {};\n\n// Format for solar widget\nconst solarData = {\n    systemStatus: 'online',\n    pvPower: (powerData.pv1watt || 0) / 1000,\n    batteryPower: ((powerData.p1charge1 || 0) - (powerData.pdischarge1 || 0)) / 1000,\n    batterySoc: batteryData.SOC || 0,\n    loadPower: (powerData.pactouserr || 0) / 1000,\n    gridPower: ((powerData.pactouserr || 0) - (powerData.pactogridr || 0)) / 1000,\n    priorityMode: 'Battery First'\n};\n\nmsg.topic = 'solar';\nmsg.payload = solarData;\nreturn msg;",
+        "func": "// Get power data from global context\nconst powerData = global.get('powerGraphData') || {};\nconst batteryData = global.get('batteryData') || {};\n\n// Format for solar widget\nconst solarData = {\n    systemStatus: 'online',\n    pvPower: (powerData.pv1watt || 0) / 10000,\n    batteryPower: ((powerData.p1charge1 || 0) - (powerData.pdischarge1 || 0)) / 10000,\n    batterySoc: batteryData.SOC || 0,\n    loadPower: (powerData.pactouserr || 0) / 10000,\n    gridPower: ((powerData.pactouserr || 0) - (powerData.pactogridr || 0)) / 10000,\n    priorityMode: 'Battery First'\n};\n\nmsg.topic = 'solar';\nmsg.payload = solarData;\nreturn msg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
