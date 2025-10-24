@@ -1,3 +1,11 @@
 node_modules/
 .flows.json.backup
 flows.json
+flows_backup*.json
+flows_cred.json
+.env
+settings.js
+
+# Commit sanitized version instead
+!flows-sanitized.json
+power_history.db
