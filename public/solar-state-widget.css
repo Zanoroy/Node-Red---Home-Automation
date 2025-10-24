@@ -161,7 +161,7 @@
 .flow-line {
     position: absolute;
     z-index: 5;
-    opacity: 0;
+    /* opacity: 0; */
     transition: opacity 0.3s ease;
 }
 
@@ -192,7 +192,7 @@
     height: 3px;
     top: 50%;
     transform: translateY(-50%);
-    background: linear-gradient(to right, rgba(74, 244, 147, 0) 0%, #4af493 50%, rgba(74, 244, 147, 0) 100%);
+    background: linear-gradient(to right, rgba(74, 244, 147, 0) 0%, rgba(114, 125, 119, 1) 50%, rgba(74, 244, 147, 0) 100%);
 }
 
 .battery-to-system {
