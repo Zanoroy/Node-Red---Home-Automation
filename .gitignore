@@ -9,3 +9,4 @@ settings.js
 # Commit sanitized version instead
 !flows-sanitized.json
 power_history.db
+google_weather.db
