@@ -10,6 +10,12 @@
     padding: 2%;
     box-sizing: border-box;
     overflow: hidden;
+    transition: background 0.5s ease;
+}
+
+/* Offline state - light red background */
+.solar-widget-container.offline {
+    background: rgba(139, 0, 0, 0.15);
 }
 
 /* Common Icon Wrapper */
@@ -35,7 +41,7 @@
 
 /* Icon Positions - Aligned with flow lines */
 .solar-position {
-    top: 12%;
+    top: 18%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
@@ -100,14 +106,14 @@
 }
 
 .status-text {
-    top: 23%;
+    top: 5%;
     left: 50%;
     transform: translateX(-50%);
 }
 
 .power-display.pv-power {
-    top: 27%;
-    left: 50%;
+    top: 15%;
+    left: 65%;
     transform: translateX(-50%);
 }
 
@@ -144,6 +150,18 @@
     transform: translateX(-50%);
 }
 
+/* Timestamp Display */
+.widget-timestamp {
+    position: absolute;
+    bottom: 2%;
+    right: 2%;
+    font-size: 0.85em;
+    color: #6c757d;
+    opacity: 0.8;
+    text-align: right;
+    line-height: 1.2;
+}
+
 /* Label and Value Styling */
 .label {
     color: #adb1c5;
@@ -178,8 +196,8 @@
 }
 
 .solar-to-system {
-    top: 19%;
-    height: 22%;
+    top: 25%;
+    height: 15%;
 }
 
 .system-to-grid {

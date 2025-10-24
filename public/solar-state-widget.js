@@ -26,6 +26,9 @@ class SolarStateWidget {
     this.systemToGrid = this.container.querySelector('.system-to-grid');
     this.systemToLoad = this.container.querySelector('.system-to-load');
 
+    // Get timestamp element
+    this.timestampElement = this.container.querySelector('.widget-timestamp');
+
     this.resizeObserver = null;
     this.resizeHandler = () => this.handleResize();
     this.init();
@@ -91,10 +94,24 @@ class SolarStateWidget {
    * @param {Object} data - Object containing widget data
    */
   updateData(data) {
+    // Check if data is stale (older than 5 minutes)
+    const isOffline = this.checkDataFreshness(data.timestamp);
+    
+    // Update offline state
+    if (isOffline) {
+      this.container.classList.add('offline');
+    } else {
+      this.container.classList.remove('offline');
+    }
+    
     // System Status
-    if (data.systemStatus) {
-      const statusElement = document.getElementById('systemStatus');
-      if (statusElement) statusElement.textContent = data.systemStatus;
+    const statusElement = document.getElementById('systemStatus');
+    if (statusElement) {
+      if (isOffline) {
+        statusElement.textContent = 'OFFLINE';
+      } else if (data.systemStatus) {
+        statusElement.textContent = data.systemStatus;
+      }
     }
 
     // PV Power
@@ -239,6 +256,11 @@ class SolarStateWidget {
       if (priorityElement) priorityElement.textContent = data.priorityMode;
     }
 
+    // Update timestamp
+    if (data.timestamp && this.timestampElement) {
+      this.timestampElement.textContent = this.formatTimestamp(data.timestamp);
+    }
+
     // Activate system icon if any power flowing
     if (this.systemIcon) {
       const anyPower = (data.pvPower && data.pvPower > 0) ||
@@ -251,6 +273,51 @@ class SolarStateWidget {
       } else {
         this.systemIcon.classList.remove('active');
       }
+    }
+  }
+
+  /**
+   * Check if data timestamp is fresh (less than 5 minutes old)
+   * @param {String} isoString - ISO formatted timestamp string (UTC)
+   * @returns {Boolean} true if data is stale (offline), false if fresh
+   */
+  checkDataFreshness(isoString) {
+    if (!isoString) return true; // No timestamp = offline
+    
+    try {
+      const dataTime = new Date(isoString);
+      const now = new Date();
+      const ageMinutes = (now - dataTime) / 1000 / 60;
+      
+      // Data is stale if older than 5 minutes
+      return ageMinutes > 5;
+    } catch (error) {
+      console.error('Error checking data freshness:', error);
+      return true; // Assume offline on error
+    }
+  }
+
+  /**
+   * Format timestamp from UTC ISO string to local timezone
+   * @param {String} isoString - ISO formatted timestamp string (UTC)
+   * @returns {String} Formatted timestamp in YYYY/MM/DD HH:mm:ss
+   */
+  formatTimestamp(isoString) {
+    try {
+      const date = new Date(isoString);
+      
+      // Format as YYYY/MM/DD HH:mm:ss in local timezone
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+      const seconds = String(date.getSeconds()).padStart(2, '0');
+      
+      return `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
+    } catch (error) {
+      console.error('Error formatting timestamp:', error);
+      return '';
     }
   }
 
