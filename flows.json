@@ -474,8 +474,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 280,
-        "y": 120,
+        "x": 1350,
+        "y": 160,
         "wires": [
             [
                 "h2a3b4c5d6e7f8g9"
@@ -497,8 +497,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 540,
-        "y": 120,
+        "x": 1690,
+        "y": 200,
         "wires": [
             [
                 "h3a4b5c6d7e8f9g0"
@@ -650,7 +650,6 @@
         "y": 240,
         "wires": [
             [
-                "h3a4b5c6d7e8f9g0_response",
                 "cccde8f277d49879"
             ]
         ]
@@ -664,8 +663,8 @@
         "headers": {
             "Content-Type": "application/json"
         },
-        "x": 1690,
-        "y": 240,
+        "x": 1670,
+        "y": 280,
         "wires": []
     },
     {
@@ -730,8 +729,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 820,
-        "y": 120,
+        "x": 1970,
+        "y": 200,
         "wires": [
             []
         ]
@@ -749,8 +748,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1060,
-        "y": 120,
+        "x": 1220,
+        "y": 40,
         "wires": []
     },
     {
@@ -766,10 +765,11 @@
         "finalize": "",
         "libs": [],
         "x": 1320,
-        "y": 200,
+        "y": 240,
         "wires": [
             [
-                "h2a3b4c5d6e7f8g9"
+                "h2a3b4c5d6e7f8g9",
+                "h3a4b5c6d7e8f9g0_response"
             ]
         ]
     },
@@ -1642,9 +1642,7 @@
         "x": 1420,
         "y": 620,
         "wires": [
-            [
-                "fetch_lights"
-            ]
+            []
         ]
     },
     {
