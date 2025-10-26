@@ -191,8 +191,16 @@ function updateWeather(data) {
   tempMain.textContent = (data.temperature !== null && data.temperature !== undefined)
     ? data.temperature + '°C' : '--°C';
 
-  // Update description
-  weatherDesc.textContent = data.cloud_description || 'No data';
+  // Update description from Google Weather forecast
+  weatherDesc.textContent = data.day_condition || 'Loading...';
+
+  // Update weather icon from Google Weather
+  if (data.weather_icon && weatherIcon) {
+    weatherIcon.src = data.weather_icon;
+    weatherIcon.style.display = 'block';
+  } else if (weatherIcon) {
+    weatherIcon.style.display = 'none';
+  }
 
   // Update feels like
   feelsLike.textContent = (data.apparent_temperature !== null && data.apparent_temperature !== undefined)
@@ -209,30 +217,30 @@ function updateWeather(data) {
     ? data.max_temperature : '--';
   minMax.textContent = `${minTemp}° / ${maxTemp}°`;
 
-  // Update wind
+  // Update wind with direction arrow
   const windSpeed = (data.wind_speed !== null && data.wind_speed !== undefined)
     ? data.wind_speed : '--';
-  const windDir = data.wind_direction || '';
-  wind.textContent = `${windSpeed} km/h ${windDir}`;
+  const windDirText = data.wind_direction || '';
+  const windDirDegrees = data.wind_direction_degrees;
+  
+  // Create wind direction arrow
+  let windArrow = '';
+  if (windDirDegrees !== null && windDirDegrees !== undefined) {
+    windArrow = `<span class="wind-arrow" style="display:inline-block; transform:rotate(${windDirDegrees}deg);">↓</span> `;
+  }
+  
+  wind.innerHTML = `${windArrow}${windSpeed} km/h ${windDirText}`;
 
-  // Update icon
-  if (data.cloud_description && weatherIcon) {
-    const hour = new Date().getHours();
-    const isDayTime = hour >= 6 && hour < 18;
-    let iconUrl = '';
-
-    if (data.cloud_description.startsWith('Mostly ')) {
-      iconUrl = isDayTime ?
-        'http://reg.bom.gov.au/weather-services/images/symbols/large/partly-cloudy.png' :
-        'http://reg.bom.gov.au/weather-services/images/symbols/large/partly-cloudy-night.png';
+  // Update rain chance (from forecast data if available)
+  const rainChanceEl = document.getElementById('rainChance');
+  if (rainChanceEl) {
+    if (data.precipitation_prob_day !== null && data.precipitation_prob_day !== undefined) {
+      rainChanceEl.textContent = `${data.precipitation_prob_day}%`;
+    } else if (data.rainfall_24hr !== null && data.rainfall_24hr !== undefined) {
+      rainChanceEl.textContent = `${data.rainfall_24hr}mm (24h)`;
     } else {
-      const iconName = data.cloud_description.toLowerCase().replace(/\s+/g, '-');
-      iconUrl = `http://reg.bom.gov.au/weather-services/images/symbols/large/${iconName}.png`;
+      rainChanceEl.textContent = '--';
     }
-
-    weatherIcon.src = iconUrl;
-    weatherIcon.style.display = 'block';
-    weatherIcon.onerror = function () { this.style.display = 'none'; };
   }
 }
 
@@ -251,7 +259,8 @@ function updateTimestamp() {
     lastUpdateEl.textContent = now.toLocaleTimeString('en-AU', {
       hour: '2-digit',
       minute: '2-digit',
-      second: '2-digit'
+      second: '2-digit',
+      hour12: false
     });
   }
 }

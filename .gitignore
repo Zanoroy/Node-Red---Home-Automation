@@ -10,3 +10,4 @@ settings.js
 !flows-sanitized.json
 power_history.db
 google_weather.db
+flows.json.bak

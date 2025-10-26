@@ -1,0 +1,127 @@
+[
+    {
+        "id": "twc_weather_tab",
+        "type": "tab",
+        "label": "TWC Weather Widget",
+        "disabled": false,
+        "info": "Weather widget using The Weather Company for Banksia Park, SA 5091"
+    },
+    {
+        "id": "twc_poll_weather",
+        "type": "inject",
+        "z": "twc_weather_tab",
+        "name": "Poll Every 15 min",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "900",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "2",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 80,
+        "wires": [
+            [
+                "twc_current_conditions"
+            ]
+        ]
+    },
+    {
+        "id": "twc_current_conditions",
+        "type": "twc-weather",
+        "z": "twc_weather_tab",
+        "name": "Banksia Park Weather",
+        "apiKey": "",
+        "weatherType": "current",
+        "location": "Banksia Park, SA, AU",
+        "units": "m",
+        "language": "en-US",
+        "x": 400,
+        "y": 80,
+        "wires": [
+            [
+                "twc_format_weather"
+            ]
+        ]
+    },
+    {
+        "id": "twc_format_weather",
+        "type": "function",
+        "z": "twc_weather_tab",
+        "name": "Format Weather Data",
+        "func": "// Extract weather data from TWC response\nconst obs = msg.payload.observation || msg.payload;\n\n// Format data for your existing weather widget\nconst weatherData = {\n    temperature: obs.temp || obs.metric?.temp,\n    apparent_temperature: obs.feels_like || obs.metric?.feels_like,\n    min_temperature: obs.temp_min || obs.metric?.temp_min,\n    max_temperature: obs.temp_max || obs.metric?.temp_max,\n    humidity: obs.rh || obs.relative_humidity,\n    wind_speed: obs.wspd || obs.metric?.wspd,\n    wind_direction: obs.wdir_cardinal || obs.wind_direction_cardinal,\n    cloud_description: obs.wx_phrase || obs.phrase_32char || 'Unknown',\n    icon_code: obs.icon_code,\n    uv_index: obs.uv_index,\n    pressure: obs.pressure || obs.metric?.pressure,\n    visibility: obs.vis || obs.metric?.vis,\n    timestamp: new Date().toISOString()\n};\n\n// Store in global context\nglobal.set('weather_data', weatherData);\n\n// Send to UIBuilder\nmsg.topic = 'weather';\nmsg.payload = weatherData;\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 80,
+        "wires": [
+            [
+                "twc_to_uibuilder"
+            ]
+        ]
+    },
+    {
+        "id": "twc_to_uibuilder",
+        "type": "link out",
+        "z": "twc_weather_tab",
+        "name": "To UIBuilder Dashboard",
+        "mode": "link",
+        "links": [
+            "uibuilder_node"
+        ],
+        "x": 895,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "twc_manual_trigger",
+        "type": "inject",
+        "z": "twc_weather_tab",
+        "name": "Manual Update",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 140,
+        "wires": [
+            [
+                "twc_current_conditions"
+            ]
+        ]
+    },
+    {
+        "id": "twc_debug",
+        "type": "debug",
+        "z": "twc_weather_tab",
+        "name": "Weather Debug",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 660,
+        "y": 140,
+        "wires": []
+    }
+]

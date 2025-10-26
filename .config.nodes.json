@@ -1165,5 +1165,93 @@
                 "file": "/root/.node-red/node_modules/node-red-dashboard/nodes/ui_spacer.js"
             }
         }
+    },
+    "node-red-contrib-twc-weather": {
+        "name": "node-red-contrib-twc-weather",
+        "version": "0.7.0",
+        "local": true,
+        "user": true,
+        "nodes": {
+            "pws-observations": {
+                "name": "pws-observations",
+                "types": [
+                    "pwsapikey",
+                    "pws-observations"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-twc-weather",
+                "file": "/root/.node-red/node_modules/node-red-contrib-twc-weather/pws-current.js"
+            },
+            "pws-historical": {
+                "name": "pws-historical",
+                "types": [
+                    "pws-historical"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-twc-weather",
+                "file": "/root/.node-red/node_modules/node-red-contrib-twc-weather/pws-historical.js"
+            },
+            "pws-forecast": {
+                "name": "pws-forecast",
+                "types": [
+                    "pws-forecast"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-twc-weather",
+                "file": "/root/.node-red/node_modules/node-red-contrib-twc-weather/pws-forecast.js"
+            },
+            "pws-recent": {
+                "name": "pws-recent",
+                "types": [
+                    "pws-7day-summary",
+                    "pws-7day-hourly",
+                    "pws-1day-all"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-twc-weather",
+                "file": "/root/.node-red/node_modules/node-red-contrib-twc-weather/pws-recent.js"
+            },
+            "twc-health": {
+                "name": "twc-health",
+                "types": [
+                    "twc-health-forecast"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-twc-weather",
+                "file": "/root/.node-red/node_modules/node-red-contrib-twc-weather/twc-health.js"
+            },
+            "twc-core": {
+                "name": "twc-core",
+                "types": [
+                    "twc-daily-forecast"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-twc-weather",
+                "file": "/root/.node-red/node_modules/node-red-contrib-twc-weather/twc-core.js"
+            },
+            "twc-nowcast": {
+                "name": "twc-nowcast",
+                "types": [
+                    "twc-nowcast"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-twc-weather",
+                "file": "/root/.node-red/node_modules/node-red-contrib-twc-weather/twc-nowcast.js"
+            }
+        }
     }
 }

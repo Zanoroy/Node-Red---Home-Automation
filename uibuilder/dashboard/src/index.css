@@ -208,6 +208,12 @@ body {
     color: var(--text-primary);
 }
 
+.wind-arrow {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+    color: var(--primary-color);
+}
+
 /* Lights Section */
 .lights-section {
     grid-column: span 8;
