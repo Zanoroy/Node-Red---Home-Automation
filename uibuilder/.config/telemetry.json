@@ -1,0 +1,27 @@
+{
+  "uib_version": "7.7.4",
+  "node_version": "v20.19.4",
+  "os_platform": "linux",
+  "nr_version": "4.1.15",
+  "uib_count": 1,
+  "markweb_count": 0,
+  "uuid": "6a17f184-605a-4add-8ca8-7c1daaddb737",
+  "lastSent": 1790632856,
+  "browsers": [
+    {
+      "family": "Firefox",
+      "version": "156.0",
+      "count": 267
+    },
+    {
+      "family": "Chrome Mobile",
+      "version": "154.0",
+      "count": 28
+    },
+    {
+      "family": "Firefox",
+      "version": "157.0",
+      "count": 59
+    }
+  ]
+}

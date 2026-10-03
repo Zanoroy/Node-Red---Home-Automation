@@ -1,7 +1,7 @@
 {
     "node-red": {
         "name": "node-red",
-        "version": "4.1.0",
+        "version": "4.1.15",
         "local": false,
         "user": false,
         "nodes": {
@@ -448,9 +448,9 @@
     },
     "node-red-contrib-aedes": {
         "name": "node-red-contrib-aedes",
-        "version": "0.6.0",
+        "version": "1.3.0",
         "local": true,
-        "user": false,
+        "user": true,
         "nodes": {
             "aedes-mqtt-broker": {
                 "name": "aedes-mqtt-broker",
@@ -467,7 +467,7 @@
     },
     "@flowfuse/node-red-dashboard": {
         "name": "@flowfuse/node-red-dashboard",
-        "version": "1.27.2",
+        "version": "1.32.0",
         "local": true,
         "user": true,
         "nodes": {
@@ -772,7 +772,7 @@
     },
     "@flowfuse/node-red-dashboard-2-ui-chat": {
         "name": "@flowfuse/node-red-dashboard-2-ui-chat",
-        "version": "1.2.0",
+        "version": "1.3.0",
         "local": true,
         "user": true,
         "nodes": {
@@ -791,10 +791,21 @@
     },
     "node-red-contrib-uibuilder": {
         "name": "node-red-contrib-uibuilder",
-        "version": "7.4.3",
+        "version": "7.7.4",
         "local": true,
         "user": true,
         "nodes": {
+            "markweb": {
+                "name": "markweb",
+                "types": [
+                    "markweb"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-uibuilder",
+                "file": "/root/.node-red/node_modules/node-red-contrib-uibuilder/nodes/markweb/customNode.js"
+            },
             "uibuilder": {
                 "name": "uibuilder",
                 "types": [

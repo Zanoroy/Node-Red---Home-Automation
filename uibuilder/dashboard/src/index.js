@@ -10,28 +10,18 @@ const recentlyToggled = new Map();
 // Wait for DOM to be ready
 document.addEventListener('DOMContentLoaded', function () {
   console.log('Dashboard loaded');
-
-  // Initialize solar widget
-  initializeSolarWidget();
-
-  // Setup uibuilder
-  setupUibuilder();
+  // setTimeout(setupUibuilder(), 1000);
+  setTimeout(() => {
+    setupUibuilder();
+  }, 500);
 });
 
-// Initialize Solar State Widget
-function initializeSolarWidget() {
-  try {
-    // Check if SolarStateWidget class is available
-    if (typeof SolarStateWidget !== 'undefined') {
-      solarWidget = new SolarStateWidget('solarWidget');
-      console.log('Solar widget initialized');
-    } else {
-      console.warn('SolarStateWidget class not found');
-    }
-  } catch (error) {
-    console.error('Error initializing solar widget:', error);
-  }
-}
+setTimeout(() => {
+uibuilder.send({
+  topic: 'dashboard',
+  payload: 'dashboard'
+});
+}, 1000);
 
 // Setup uibuilder communication
 function setupUibuilder() {
@@ -54,21 +44,227 @@ function setupUibuilder() {
   uibuilder.onChange('msg', function (msg) {
     console.log('Received message:', msg);
 
-    if (msg.topic === 'lights') {
-      updateLights(msg.payload);
-    } else if (msg.topic === 'battery') {
-      updateBattery(msg.payload);
+    if (msg.topic === 'battery') {
+      //updateBattery(msg.payload);
     } else if (msg.topic === 'weather') {
       updateWeather(msg.payload);
     } else if (msg.topic === 'solar') {
-      updateSolarWidget(msg.payload);
+      //updateSolarWidget(msg.payload);
+    } else if (msg.topic === 'lightsandmowers') {
+      updateMowers(msg.payload.mowers);
+      updateLights(msg.payload.lights);
     }
-
+    
     // Update timestamp
     updateTimestamp();
   });
 }
 
+// Update Landroid Mowers Display Panel
+function updateMowers(mowers) {
+  const container = document.getElementById('mowerContainer');
+  if (!container || !mowers) { return;
+  }
+
+  // Clear previous cards before building the new batch
+  container.innerHTML = '';
+
+  
+  // Loop natively through our object keys ("top" and "bottom")
+  Object.keys(mowers).forEach(key => {
+    const mower = mowers[key];
+
+    // 1. 🟢 DYNAMIC EMOJI LOGIC FOR MAIN STATE ICON
+    let stateIcon = '🤖'; // Fallback
+
+    if (mower.error && mower.error.id != 0) {
+      stateIcon = '⚠️';
+    } else if (mower.state === 'mowing') {
+      stateIcon = '🚜';
+    } else if (mower.state === 'edging') {
+      stateIcon = '✂️';
+    } else if (mower.state === 'returning') {
+      stateIcon = '🏠';
+    } else if (mower.state === 'docked' || mower.state === 'idle') {
+      // 🟢 Check if it's currently charging at the dock base
+      if (mower.charging === 'on') {
+        // Wraps the lightning bolt in an animated pulsing/glowing CSS wrapper
+        stateIcon = '💤'; // '<span class="mower-charging-animated-icon mower-battery-pulse" style="display: inline-block;">⚡</span>';
+      } else {
+        stateIcon = '💤'; // Sleep emoji if just parked and not drawing active power
+      }
+    }
+
+    // 2. Set structural styles if a machine fault flag is active
+    const isError = mower.error && mower.error.id != 0;
+    let cardBg = isError ? 'rgba(231, 76, 60, 0.15)' : 'rgba(255, 255, 255, 0.04)';
+    let cardBorder = isError ? '2px solid #e74c3c' : '1px solid rgba(255,255,255,0.08)';
+    
+    // 🟢 DYNAMIC BUTTON LOGIC (Fixed attribute nesting)
+    const mState = String(mower.state || 'unknown').toLowerCase();
+    let btnText = 'Start Mowing';
+    let btnCommand = 'startMowing';
+    let btnIcon = 'fa-play';
+    let btnColor = '#2ecc71'; // Green
+    let isBtnDisabled = false; // Switch to a clean boolean flag
+
+    if (mState === 'mowing') {
+      btnText = 'Go Home';
+      btnCommand = 'dock';
+      btnIcon = 'fa-home';
+      btnColor = '#3498db'; // Blue
+    } else if (mState === 'idle' || mState === 'docked') {
+      btnText = 'Start Mowing';
+      btnCommand = 'startMowing';
+      btnIcon = 'fa-play';
+      btnColor = '#2ecc71'; // Green
+    } else {
+      btnText = mState === 'returning' ? 'Returning Home' : 'Unavailable';
+      btnIcon = 'fa-ban';
+      btnColor = '#4a4a4a'; // Grey
+      isBtnDisabled = true;
+    }
+
+    if (isError) {
+      if ( mower.error.id === 99 ) {
+        btnText = 'Rain must clear';
+        btnIcon = 'fa-cloud-rain';
+        btnColor = '#2980b9'; // Belize Hole Blue
+      } else {
+        btnText = 'Clear Fault First';
+        btnIcon = 'fa-exclamation-triangle';
+        btnColor = '#c0392b'; // Dark Red
+      }
+      isBtnDisabled = true;
+    }
+
+    // Determine opacity and cursor types natively based on the boolean state flag
+    const currentOpacity = isBtnDisabled ? "0.7" : "1.0";
+    const currentCursor = isBtnDisabled ? "not-allowed" : "pointer";
+
+    let chargingGraphics = '';
+    let displayState = mower.state || 'Unknown';
+    let stateColour = "#3498db";
+    if (isError) {
+      if(mower.error.id == 99) {
+        cardBg = "#34495e";
+        cardBorder = "2px solid #3498db";
+        // stateColour = "#2980b9";
+        stateColour = "#e74c3c";
+        displayState = "Delayed";
+        stateIcon = '<i class="fa-solid fa-cloud-rain fa-inverse" data-fa-transform="shrink-10 down-2"></i>';
+      } else {
+        stateColour = "#e74c3c";
+        displayState = "Fault";
+      }
+    } else {
+      if (mower.charging === 'on') {
+        chargingGraphics = '<span class="mower-battery-pulse" style="display: inline-flex; align-items: center; color: #2ecc71; margin-left: 2px;">⚡</span>';
+        displayState = "Charging";
+      }
+      if (displayState.toLowerCase() == 'docked') {
+        displayState = 'Home';
+      }
+    }
+
+    let errorDisplay = ''
+    if ( isError ) { 
+      errorDisplay = mower.error.id == 99 ? `
+                      <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
+                        <span style="opacity: 0.65;">Diagnostics:</span>
+                        <span style="color: ${stateColour}; font-weight: bold;">Rain Delayed</span>
+                      </div>
+                  ` : `
+                      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; margin-top: 4px; padding: 6px 10px; background: rgba(231,76,60,0.18); border-radius: 6px; color: #e74c3c; font-weight: bold; font-size: 1rem;">
+                        <span style="flex-basis: 100%; text-align: center; font-size: 1.1rem; margin-bottom: 2px;">Fault</span>
+                        <span style="flex-basis: 100%; text-align: center;font-size: 0.85rem;">${mower.error.label}</span>
+                      </div>
+                  `;
+    }
+
+    // 3. Create the inner HTML content block
+    const cardHtml = `
+      <div class="mower-card" style="flex: 1; padding: 14px; border-radius: 10px; background-color: ${cardBg}; border: ${cardBorder}; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between;">
+
+          <div>
+              <h3 style="margin: 0 0 10px 0; text-transform: capitalize; font-size: 1.05rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 4px; color: #ffffff;">
+                  ${key} Yard Mower
+              </h3>
+              
+              <div style="text-align: center; margin: 12px 0; font-size: 3.2rem; line-height: 1;">
+                  ${stateIcon}
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 6px; font-size: 0.9rem; color: #ffffff; margin-bottom: 12px;">
+                  <div style="display: flex; justify-content: space-between;">
+                      <span style="opacity: 0.65;">Operation:</span>
+                      <span style="font-weight: 600; text-transform: uppercase; color: ${stateColour};">${displayState}</span>
+                  </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="opacity: 0.65;">Battery Power:</span>
+                  <span style="font-weight: 600; display: flex; align-items: center; gap: 4px;">
+                      <span>🔋</span>${mower.battery || '--'}%
+                      ${chargingGraphics}
+                  </span>
+              </div>
+
+                  ${isError ? errorDisplay : `
+                      <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
+                        <span style="opacity: 0.65;">Diagnostics:</span>
+                        <span style="color: ${stateColour};">Healthy</span>
+                      </div>
+                  `}
+
+                  <div style="display: flex; justify-content: space-between; font-size: 0.75rem; opacity: 0.35; margin-top: 6px; border-top: 1px dotted rgba(255,255,255,0.05); padding-top: 4px;">
+                      <span>Refreshed:</span>
+                      <span>${mower.updated || '--:--'}</span>
+                  </div>
+              </div>
+          </div>
+
+          <!-- 🟢 ONE UNIFIED CLEAN STYLE PROPERTY (Resolves attribute conflict) -->
+          <button class="mower-btn" 
+                  ${isBtnDisabled ? 'disabled' : ''}
+                  onclick="triggerMowerAction('${key}', '${btnCommand}')"
+                  style="width: 100%; height: 42px !important; flex-shrink: 0 !important; padding: 10px; border: none; border-radius: 6px; background-color: ${btnColor}; color: #ffffff !important; font-weight: bold; cursor: ${currentCursor}; opacity: ${currentOpacity}; display: flex; align-items: center; justify-content: center; gap: 8px; transition: opacity 0.2s;">
+              <i class="fas ${btnIcon}"></i> ${btnText}
+          </button>
+      </div>
+    `;
+
+    // 4. Inject the compiled string smoothly into your placeholder frame
+    container.insertAdjacentHTML('beforeend', cardHtml);
+  });
+}
+
+// Send command back to Node-RED to fire the startMowing sequence
+// Send dynamic layout commands back to Node-RED websocket loop rails
+function triggerMowerAction(yardKey, commandString) {
+  const deviceId = yardKey === 'bottom' ? '88' : '95';
+  
+  // 🟢 OPTIMISTIC UI LOCKOUT: Find the specific button that was pressed
+  // Locates the button inside the active mower card framework
+  const card = document.querySelector(`[onclick*="triggerMowerAction('${yardKey}'"]`);
+  if (card) {
+      card.disabled = true;
+      card.style.opacity = "0.5";
+      card.style.cursor = "not-allowed";
+      card.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Processing...`;
+  }
+  
+  console.log(`Sending execution command [${commandString}] to ${yardKey} yard mower (ID: ${deviceId})`);
+  
+  // Package payload variables up to Node-RED's backend channel
+  uibuilder.send({
+    topic: 'control',
+    payload: {
+      type: 'mower',
+      deviceId: deviceId,
+      command: commandString 
+    }
+  });
+}
 // Update Lights Display
 function updateLights(lights) {
   const grid = document.getElementById('lightsGrid');
@@ -264,13 +460,4 @@ function updateTimestamp() {
     });
   }
 }
-
-// Request initial data
-setTimeout(() => {
-  uibuilder.send({
-    topic: 'request',
-    payload: 'initialData'
-  });
-}, 1000);
-
 console.log('Dashboard script initialized');

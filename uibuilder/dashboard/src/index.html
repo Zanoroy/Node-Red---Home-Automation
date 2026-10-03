@@ -38,7 +38,7 @@
         <main class="dashboard-main">
             
             <!-- Solar State Widget Section -->
-            <section class="widget-card solar-widget-section">
+            <section class="widget-card solar-widget-section" style="display: none;">
                 <h2 class="widget-title">
                     <i class="fas fa-solar-panel"></i>
                     Energy Flow
@@ -183,26 +183,6 @@
                     </div>
                 </div>
             </section>
-            <!-- Battery Status Section -->
-            <section class="widget-card battery-section">
-                <h2 class="widget-title">
-                    <i class="fas fa-battery-three-quarters"></i>
-                    Battery
-                </h2>
-                <div id="batteryWidget" class="battery-widget">
-                    <div class="battery-visual">
-                        <div class="battery-body">
-                            <div class="battery-fill" id="batteryFill"></div>
-                            <div class="battery-percentage" id="batteryPercentage">--%</div>
-                            <div class="charging-symbol" id="chargingSymbol">⚡</div>
-                        </div>
-                        <div class="battery-terminal"></div>
-                    </div>
-                    <div class="battery-status">
-                        <span id="batteryState" class="battery-state-text">Unknown</span>
-                    </div>
-                </div>
-            </section>
             <!-- Light Controls Section -->
             <section class="widget-card lights-section">
                 <h2 class="widget-title">
@@ -213,7 +193,17 @@
                     <!-- Lights will be populated here -->
                 </div>
             </section>
-
+            <!-- Mower Controls Section -->
+            <section id="mowerSection" class="widget-card mower-section">
+                <h2 class="widget-title">
+                    <i class="fas fa-robot"></i>
+                    Mowers
+                </h2>
+                <div id="mowerContainer" class="mower-container"
+                    style="display: flex; flex-direction: row; gap: 14px; width: 100%; font-family: sans-serif;">
+                    <!-- Cards will be populated here by index.js -->
+                </div>
+            </section>
         </main>
     </div>
 

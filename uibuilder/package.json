@@ -1,5 +1,5 @@
 {
-  "version": "7.4.3",
+  "version": "7.7.4",
   "name": "uib_root",
   "description": "Root configuration and data folder for uibuilder",
   "scripts": {},
@@ -14,6 +14,6 @@
   "path": "/root/.node-red/uibuilder",
   "devDependencies": {},
   "peerDependencies": {},
-  "_id": "uib_root@7.4.3",
+  "_id": "uib_root@7.7.4",
   "dependencies": {}
 }

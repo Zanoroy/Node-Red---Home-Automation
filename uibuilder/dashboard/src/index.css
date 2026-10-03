@@ -302,6 +302,11 @@ body {
     to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
+/* Mower Section */
+.mower-section {
+    grid-column: span 4;
+}
+
 /* Battery Section */
 .battery-section {
     grid-column: span 4;
@@ -397,6 +402,35 @@ body {
 .battery-state-text.discharging { color: var(--danger-color); animation: flash 1.5s infinite; }
 .battery-state-text.idle { color: var(--text-primary); }
 
+/* ========================================================
+   MAIN STATE EMOJI CHARGING HEARTBEAT EFFECT
+   ======================================================== */
+.mower-battery-pulse {
+    animation: emojiPulseHeartbeat 1.6s ease-in-out infinite;
+}
+
+@keyframes emojiPulseHeartbeat {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: scale(1.18);
+        /* Smoothly swells the emojis up by 18% */
+        opacity: 1;
+        filter: drop-shadow(0 0 4px rgba(46, 204, 113, 0.4));
+        /* Adds a soft green glow */
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+}
+/* ========================================================
+   Adjust for specific screen sizes
+   ======================================================== */
 /* Responsive Design */
 @media (max-width: 1200px) {
     .solar-widget-section {
@@ -409,6 +443,10 @@ body {
     }
     
     .lights-section {
+        grid-column: span 12;
+    }
+
+    .mower-section {
         grid-column: span 12;
     }
 }
@@ -437,5 +475,17 @@ body {
     
     .solar-widget-container {
         height: 350px;
+    }
+    /* ========================================================
+    LANDROID MOWER MOBILE RESPONSIVE FIX
+    ======================================================== */
+    /* 1. Force the row container to stack vertically on mobile */
+    #mowerContainer {
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+
+    .mower-section {
+        grid-column: span 10;
     }
 }
