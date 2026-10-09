@@ -4,6 +4,7 @@
 Complete home automation dashboard using `node-red-contrib-uibuilder` with:
 - Solar State Widget (energy flow visualization)
 - Light controls (Hubitat integration)
+- 3D printer monitoring and controls (Hubitat integration)
 - Battery status display
 - Weather information
 - Real-time updates via WebSocket
@@ -102,6 +103,36 @@ http://172.17.254.10:1880/dashboard
 - Glowing effect when lights are on
 - Optimistic UI updates
 
+### 3D Printer Cards
+- Two dedicated printer cards for Hubitat device IDs `85` (Bambu Lab) and `101` (Snapmaker U1)
+- State tracking from driver-specific attributes:
+  - ID 85: `printerStatus`
+  - ID 101: `printState`
+- Card highlights when printer is in error or attention state
+- Displays temperatures, elapsed/remaining time, and active filename (when not idle/standby)
+- Click card to open details modal with available actions:
+  - Pause print
+  - Resume print (when paused)
+  - Stop print
+  - Print last job (when idle)
+- Optional camera snapshot button appears when snapshot URL attributes are provided by the device driver
+
+#### Verified live driver mapping (Maker API)
+- **ID 85 – Bambu Lab Printer**
+  - Status: `printerStatus`
+  - Filename: `currentFile`
+  - Temps: `nozzleTemp`, `bedTemp`
+  - Timing: `printElapsed`, `printRemaining` (HH:MM:SS)
+  - Error: *(no dedicated `error` attribute exposed in current payload)*
+  - Commands exposed: `connect`, `disconnect`, `initialize`, `refresh`
+- **ID 101 – Moonraker Klipper Printer**
+  - Status: `printState`
+  - Filename: `filename`
+  - Temps: `chamberTemp (°C)`, `mcuTemp (°C)`, plus hotend/bed parsed from `aaStatusTile`
+  - Timing: *(no elapsed/remaining attributes exposed in current payload)*
+  - Error: `error`
+  - Commands exposed: `cancel`, `emergencyStop`, `executeGcode`, `firmwareRestart`, `initialize`, `pause`, `refresh`, `resume`, `startLastPrint`, `startPrint`
+
 ### Battery Status
 - Visual battery indicator
 - Color-coded levels (red < 20%, green > 80%)
@@ -121,6 +152,7 @@ http://172.17.254.10:1880/dashboard
 The dashboard automatically pulls data from your existing Node-RED flows:
 
 - **Lights**: `global.hubitatLights` (updated every 5s)
+- **Printers**: Hubitat device data from `Get Hubitat Devices` (`85`, `101`)
 - **Battery**: `global.batteryData` (updated every 5s)
 - **Weather**: `global.weather_data` (updated every 30s)
 - **Solar**: `global.powerGraphData` (updated every 2s)
@@ -133,10 +165,11 @@ Browser <--WebSocket--> UIBuilder Node <--> Node-RED Flow <--> Devices
 
 ### Outgoing (Browser → Node-RED)
 - Light control commands
+- Printer control commands
 - Data refresh requests
 
 ### Incoming (Node-RED → Browser)
-- Light states (topic: 'lights')
+- Lights + mowers + printers (topic: 'lightsandmowers')
 - Battery data (topic: 'battery')
 - Weather data (topic: 'weather')
 - Solar data (topic: 'solar')

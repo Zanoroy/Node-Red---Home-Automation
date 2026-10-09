@@ -193,6 +193,16 @@
                     <!-- Lights will be populated here -->
                 </div>
             </section>
+            <!-- 3D Printers Section -->
+            <section class="widget-card printer-section">
+                <h2 class="widget-title">
+                    <i class="fas fa-print printer-title-icon" aria-hidden="true"></i>
+                    3D Printers
+                </h2>
+                <div id="printerContainer" class="printer-grid">
+                    <!-- Printer cards will be populated here -->
+                </div>
+            </section>
             <!-- Mower Controls Section -->
             <section id="mowerSection" class="widget-card mower-section">
                 <h2 class="widget-title">
@@ -205,6 +215,20 @@
                 </div>
             </section>
         </main>
+    </div>
+
+    <div id="printerModal" class="printer-modal" aria-hidden="true">
+        <div class="printer-modal-card">
+            <button id="printerModalClose" class="printer-modal-close" type="button" aria-label="Close printer details">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 id="printerModalTitle" class="printer-modal-title">Printer</h3>
+            <div id="printerModalBody" class="printer-modal-body"></div>
+            <div id="printerModalActions" class="printer-modal-actions"></div>
+            <div id="printerModalCamera" class="printer-modal-camera" style="display:none;">
+                <img id="printerModalCameraImage" class="printer-camera-image" alt="Printer camera snapshot">
+            </div>
+        </div>
     </div>
 
     <!-- Dashboard JavaScript -->
