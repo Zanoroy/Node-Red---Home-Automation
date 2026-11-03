@@ -24,7 +24,7 @@
             }
         },
         "debug": {
-            "filter": "filterCurrent",
+            "filter": "filterAll",
             "filteredNodes": [
                 "gw_cleanup_debug",
                 "gw_current_debug",

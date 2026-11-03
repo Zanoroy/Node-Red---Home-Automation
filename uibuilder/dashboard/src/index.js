@@ -13,18 +13,13 @@ const recentlyToggled = new Map();
 document.addEventListener('DOMContentLoaded', function () {
   console.log('Dashboard loaded');
   setupPrinterModalEvents();
-  // setTimeout(setupUibuilder(), 1000);
-  setTimeout(() => {
-    setupUibuilder();
-  }, 500);
-});
+  
+  setTimeout(
+    setupUibuilder,
+    800
+  );
 
-setTimeout(() => {
-uibuilder.send({
-  topic: 'dashboard',
-  payload: 'dashboard'
 });
-}, 1000);
 
 // Setup uibuilder communication
 function setupUibuilder() {
@@ -37,6 +32,10 @@ function setupUibuilder() {
     if (connected) {
       statusEl.className = 'status-indicator online';
       statusEl.innerHTML = '<i class="fas fa-circle"></i> Connected';
+      uibuilder.send({
+        topic: 'dashboard',
+        payload: 'dashboard'
+      });      
     } else {
       statusEl.className = 'status-indicator offline';
       statusEl.innerHTML = '<i class="fas fa-circle"></i> Disconnected';
@@ -47,16 +46,12 @@ function setupUibuilder() {
   uibuilder.onChange('msg', function (msg) {
     console.log('Received message:', msg);
 
-    if (msg.topic === 'battery') {
-      //updateBattery(msg.payload);
-    } else if (msg.topic === 'weather') {
-      updateWeather(msg.payload);
-    } else if (msg.topic === 'solar') {
-      //updateSolarWidget(msg.payload);
-    } else if (msg.topic === 'lightsandmowers') {
-      updateMowers(msg.payload.mowers);
-      updateLights(msg.payload.lights);
-      updatePrinters(msg.payload.printers || []);
+    if (msg.topic === 'lightsandmowers') {
+      const payload = msg && typeof msg.payload === 'object' && msg.payload ? msg.payload : {};
+      updateWeather(payload.weather);
+      updateLights(Array.isArray(payload.lights) ? payload.lights : []);
+      updateMowers(payload.mowers && typeof payload.mowers === 'object' ? payload.mowers : {});
+      updatePrinters(Array.isArray(payload.printers) ? payload.printers : []);
     }
     
     // Update timestamp
@@ -131,7 +126,8 @@ function updatePrinters(printers) {
     printerCache[printer.id] = printer;
 
     const statusClass = getPrinterStatusClass(printer);
-    const stateText = escapeHtml(printer.state || 'unknown');
+    const statusText = printer.healthstatus;
+    const stateText = printer.healthstatus.toLowerCase() == 'online' ? escapeHtml(printer.state || 'unknown') :'OFFLINE';
     const nozzle = printer.temperatures && printer.temperatures.nozzle !== null && printer.temperatures.nozzle !== undefined
       ? `${Math.round(printer.temperatures.nozzle*10)/10 }°C` : '--';
     const bed = printer.temperatures && printer.temperatures.bed !== null && printer.temperatures.bed !== undefined
@@ -186,7 +182,7 @@ function updatePrinters(printers) {
     card.innerHTML = `
       <div class="printer-card-title">
         <span class="printer-card-name">${escapeHtml(printer.name || `Printer ${printer.id}`)}</span>
-        <span class="printer-status-pill">${stateText}</span>
+        <span class="printer-status-pill">${statusText}</span>
       </div>
       <div class="printer-meta">
         <div class="printer-meta-row"><span class="printer-meta-label">State:</span><span class="printer-meta-value">${stateText}</span></div>
@@ -210,6 +206,7 @@ function getPrinterStatusClass(printer) {
   if (state.includes('error') || state.includes('fault') || state.includes('offline')) return 'printer-status-error';
   if (state.includes('pause') || state.includes('assist') || state.includes('attention')) return 'printer-status-attention';
   if (state.includes('printing') || state.includes('heating') || state.includes('run')) return 'printer-status-busy';
+  if (printer.healthstatus && printer.healthstatus.toLowerCase() !== 'online' && printer.healthstatus.toLowerCase() !== 'true') return 'printer-status-attention';
   if (printer.isIdle) return 'printer-status-ok';
   return 'printer-status-ok';
 }
@@ -788,6 +785,11 @@ function updateBattery(data) {
 
 // Update Weather Display
 function updateWeather(data) {
+  const weatherData = data && typeof data === 'object' ? data : {};
+  if (data === null || data === undefined) {
+    console.warn('Weather payload unavailable, using placeholder values');
+  }
+
   const tempMain = document.getElementById('currentTemp');
   const weatherDesc = document.getElementById('weatherDesc');
   const feelsLike = document.getElementById('feelsLike');
@@ -799,40 +801,40 @@ function updateWeather(data) {
   if (!tempMain) return;
 
   // Update temperature
-  tempMain.textContent = (data.temperature !== null && data.temperature !== undefined)
-    ? data.temperature + '°C' : '--°C';
+  tempMain.textContent = (weatherData.temperature !== null && weatherData.temperature !== undefined)
+    ? weatherData.temperature + '°C' : '--°C';
 
   // Update description from Google Weather forecast
-  weatherDesc.textContent = data.day_condition || 'Loading...';
+  weatherDesc.textContent = weatherData.day_condition || 'Loading...';
 
   // Update weather icon from Google Weather
-  if (data.weather_icon && weatherIcon) {
-    weatherIcon.src = data.weather_icon;
+  if (weatherData.weather_icon && weatherIcon) {
+    weatherIcon.src = weatherData.weather_icon;
     weatherIcon.style.display = 'block';
   } else if (weatherIcon) {
     weatherIcon.style.display = 'none';
   }
 
   // Update feels like
-  feelsLike.textContent = (data.apparent_temperature !== null && data.apparent_temperature !== undefined)
-    ? data.apparent_temperature + '°C' : '--°C';
+  feelsLike.textContent = (weatherData.apparent_temperature !== null && weatherData.apparent_temperature !== undefined)
+    ? weatherData.apparent_temperature + '°C' : '--°C';
 
   // Update humidity
-  humidity.textContent = (data.humidity !== null && data.humidity !== undefined)
-    ? data.humidity + '%' : '--%';
+  humidity.textContent = (weatherData.humidity !== null && weatherData.humidity !== undefined)
+    ? weatherData.humidity + '%' : '--%';
 
   // Update min/max
-  const minTemp = (data.min_temperature !== null && data.min_temperature !== undefined)
-    ? data.min_temperature : '--';
-  const maxTemp = (data.max_temperature !== null && data.max_temperature !== undefined)
-    ? data.max_temperature : '--';
+  const minTemp = (weatherData.min_temperature !== null && weatherData.min_temperature !== undefined)
+    ? weatherData.min_temperature : '--';
+  const maxTemp = (weatherData.max_temperature !== null && weatherData.max_temperature !== undefined)
+    ? weatherData.max_temperature : '--';
   minMax.textContent = `${minTemp}° / ${maxTemp}°`;
 
   // Update wind with direction arrow
-  const windSpeed = (data.wind_speed !== null && data.wind_speed !== undefined)
-    ? data.wind_speed : '--';
-  const windDirText = data.wind_direction || '';
-  const windDirDegrees = data.wind_direction_degrees;
+  const windSpeed = (weatherData.wind_speed !== null && weatherData.wind_speed !== undefined)
+    ? weatherData.wind_speed : '--';
+  const windDirText = weatherData.wind_direction || '';
+  const windDirDegrees = weatherData.wind_direction_degrees;
   
   // Create wind direction arrow
   let windArrow = '';
@@ -845,10 +847,10 @@ function updateWeather(data) {
   // Update rain chance (from forecast data if available)
   const rainChanceEl = document.getElementById('rainChance');
   if (rainChanceEl) {
-    if (data.precipitation_prob_day !== null && data.precipitation_prob_day !== undefined) {
-      rainChanceEl.textContent = `${data.precipitation_prob_day}%`;
-    } else if (data.rainfall_24hr !== null && data.rainfall_24hr !== undefined) {
-      rainChanceEl.textContent = `${data.rainfall_24hr}mm (24h)`;
+    if (weatherData.precipitation_prob_day !== null && weatherData.precipitation_prob_day !== undefined) {
+      rainChanceEl.textContent = `${weatherData.precipitation_prob_day}%`;
+    } else if (weatherData.rainfall_24hr !== null && weatherData.rainfall_24hr !== undefined) {
+      rainChanceEl.textContent = `${weatherData.rainfall_24hr}mm (24h)`;
     } else {
       rainChanceEl.textContent = '--';
     }

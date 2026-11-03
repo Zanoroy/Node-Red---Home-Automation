@@ -1,0 +1,195 @@
+:root {
+    --camera-primary: #ffd700;
+    --camera-card-bg: linear-gradient(145deg, rgba(45, 55, 72, 0.95), rgba(26, 32, 44, 0.98));
+    --camera-card-border: rgba(255, 255, 255, 0.12);
+    --camera-empty-bg: rgba(15, 15, 35, 0.75);
+}
+
+body {
+    min-height: 100vh;
+}
+
+.dashboard-wrapper {
+    max-width: 1600px;
+    padding: 20px;
+}
+
+.dashboard-main {
+    align-items: start;
+}
+
+.camera-layout {
+    display: grid;
+    grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+    gap: 20px;
+    width: 100%;
+}
+
+.camera-list-panel,
+.camera-player-panel {
+    min-height: 0;
+}
+
+.camera-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+.camera-card {
+    appearance: none;
+    border: 1px solid var(--camera-card-border);
+    background: var(--camera-card-bg);
+    border-radius: 16px;
+    text-align: left;
+    padding: 16px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.camera-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.28);
+    border-color: rgba(255, 255, 255, 0.18);
+}
+
+.camera-card.active {
+    border-color: rgba(255, 215, 0, 0.95);
+    box-shadow: 0 0 0 1px rgba(255, 215, 0, 0.3), 0 12px 28px rgba(255, 202, 40, 0.15);
+}
+
+.camera-card-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.camera-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.camera-name {
+    color: var(--text-primary);
+    font-size: 1.05rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.camera-caption {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.camera-number {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.camera-status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.28);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+}
+
+.camera-card.active .camera-status-dot {
+    background: var(--success-color);
+    box-shadow: 0 0 0 1px rgba(0, 255, 0, 0.25), 0 0 18px rgba(0, 255, 0, 0.45);
+}
+
+.camera-player-shell {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    background: var(--camera-empty-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow);
+    aspect-ratio: 16 / 9;
+    min-height: 360px;
+}
+
+.camera-player-shell video {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background: #000;
+}
+
+.camera-empty-state {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    background: radial-gradient(circle at center, rgba(12, 18, 33, 0.7), rgba(10, 10, 20, 0.95));
+    font-size: 1.15rem;
+    letter-spacing: 0.04em;
+    padding: 40px;
+}
+
+.camera-empty-state i {
+    font-size: 2.4rem;
+    margin-right: 14px;
+    color: var(--camera-primary);
+}
+
+.camera-player-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.camera-toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.stream-toggle {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-primary);
+    border-radius: 10px;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.stream-toggle:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.stream-toggle i {
+    margin-right: 8px;
+}
+
+.quality-toggle.high {
+    border-color: rgba(255, 215, 0, 0.65);
+    background: rgba(255, 215, 0, 0.12);
+}
+
+@media (max-width: 980px) {
+    .camera-layout {
+        grid-template-columns: 1fr;
+    }
+}
