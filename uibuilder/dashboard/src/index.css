@@ -500,6 +500,10 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.35);
 }
 
+.printer-ams-swatch-empty {
+    border-style: dashed;
+}
+
 .printer-meta-value-file {
     white-space: nowrap;
     word-break: normal;
@@ -591,6 +595,72 @@ body {
     opacity: 0.7;
     font-size: 0.85rem;
     text-transform: uppercase;
+}
+
+.snapmaker-extruder-block {
+    grid-column: 1 / -1;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.snapmaker-extruder-header {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.9rem;
+    color: #9fb3c9;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.snapmaker-extruder-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(120px, 1fr));
+    gap: 8px;
+}
+
+.snapmaker-extruder-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.snapmaker-extruder-card-empty {
+    border-style: dashed;
+}
+
+.snapmaker-extruder-index {
+    color: #97aec8;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+}
+
+.snapmaker-extruder-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    color: #cddcf0;
+    font-size: 0.86rem;
+    margin-top: 4px;
+}
+
+.snapmaker-extruder-line span:last-child {
+    color: #eff6ff;
+    font-weight: 600;
+}
+
+.snapmaker-extruder-color {
+    width: 100%;
+    height: 14px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    margin-top: 8px;
+}
+
+.snapmaker-extruder-color-empty {
+    border-style: dashed;
 }
 
 .printer-modal-actions {

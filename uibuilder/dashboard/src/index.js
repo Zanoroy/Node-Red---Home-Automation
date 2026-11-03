@@ -147,6 +147,14 @@ function updatePrinters(printers) {
         : '';
     const errorDisplay = printer.error ? escapeHtml(printer.error) : '';
     const amsSlots = printer.bambuddy && Array.isArray(printer.bambuddy.amsSlots) ? printer.bambuddy.amsSlots.slice(0, 4) : [];
+    const printerFilaments = Array.isArray(printer.filaments) ? printer.filaments : [];
+    const snapmakerFilaments = printer.snapmaker && Array.isArray(printer.snapmaker.filaments)
+      ? printer.snapmaker.filaments
+      : [];
+    const rawFilamentSlots = printerFilaments.length > 0 ? printerFilaments : snapmakerFilaments;
+    const filamentSlots = rawFilamentSlots.length > 0
+      ? Array.from({ length: Math.max(4, rawFilamentSlots.length) }, (_, index) => rawFilamentSlots[index] || { index: index + 1, exists: false })
+      : [];
     const amsDisplay = printer.ams && (printer.ams.filamentType || printer.ams.filamentColor || printer.ams.temperature !== null || printer.ams.humidity !== null)
       ? escapeHtml(`${printer.ams.filamentType || 'AMS'} / ${printer.ams.filamentColor || 'No color'}`)
       : '';
@@ -157,6 +165,22 @@ function updatePrinters(printers) {
         </span>
       `
       : (amsDisplay ? `<span>${amsDisplay}</span>` : '');
+    const filamentDisplayHtml = filamentSlots.length > 0
+      ? `
+        <span class="printer-ams-swatches">
+          ${filamentSlots.map((filament, index) => {
+            const isLoaded = filament && filament.exists !== false;
+            const slotNumber = filament && filament.index !== null && filament.index !== undefined ? filament.index : index + 1;
+            const filamentType = filament && (filament.type || (filament.details && filament.details.type) || 'Filament');
+            const title = isLoaded ? `Slot ${slotNumber} ${filamentType}` : 'Unloaded';
+            const color = isLoaded ? (filament.color || '#3a4654') : 'transparent';
+            const classes = isLoaded ? 'printer-ams-swatch' : 'printer-ams-swatch printer-ams-swatch-empty';
+
+            return `<span class="${classes}" style="background:${escapeHtml(color)}" title="${escapeHtml(title)}"></span>`;
+          }).join('')}
+        </span>
+      `
+      : '';
 
     const card = document.createElement('div');
     card.className = `printer-card ${statusClass}`;
@@ -178,7 +202,7 @@ function updatePrinters(printers) {
       etaDiv = `<div class="printer-meta-row"><span class="printer-meta-label">Estimated finish time:</span><span class="printer-meta-value">${etaTime}</span></div>`;
     }
     let remainingDiv = printer.progress.remainingSec > 0 ? `<div class="printer-meta-row"><span class="printer-meta-label">Remaining:</span><span class="printer-meta-value">${remaining}</span></div>` : '';
-
+    let nozzleDiv = Number(printer.id) === 106 ? `<div class="printer-meta-row"><span class="printer-meta-label">Nozzle:</span><span class="printer-meta-value">${nozzle}${nozzleTarget}</span></div>` : '';
     card.innerHTML = `
       <div class="printer-card-title">
         <span class="printer-card-name">${escapeHtml(printer.name || `Printer ${printer.id}`)}</span>
@@ -186,11 +210,12 @@ function updatePrinters(printers) {
       </div>
       <div class="printer-meta">
         <div class="printer-meta-row"><span class="printer-meta-label">State:</span><span class="printer-meta-value">${stateText}</span></div>
-        <div class="printer-meta-row"><span class="printer-meta-label">Nozzle:</span><span class="printer-meta-value">${nozzle}${nozzleTarget}</span></div>
+        ${nozzleDiv}
         <div class="printer-meta-row"><span class="printer-meta-label">Bed:</span><span class="printer-meta-value">${bed}${bedTarget}</span></div>
         ${remainingDiv}
         ${etaDiv}
         <div class="printer-meta-row"><span class="printer-meta-label">File:</span><span class="printer-meta-value printer-meta-value-file${fileClass}">${fileDisplay}</span></div>
+        ${filamentDisplayHtml ? `<div class="printer-meta-row"><span class="printer-meta-label">Filament:</span><span class="printer-meta-value">${filamentDisplayHtml}</span></div>` : ''}
         ${amsDisplayHtml ? `<div class="printer-meta-row"><span class="printer-meta-label">AMS:</span><span class="printer-meta-value">${amsDisplayHtml}</span></div>` : ''}
         ${printer.error ? `<div class="printer-meta-row"><span class="printer-meta-label">Error:</span><span class="printer-meta-value">${errorDisplay}</span></div>` : ''}
       </div>
@@ -333,6 +358,94 @@ function renderBambuModalBody(printer) {
   `;
 }
 
+function renderSnapmakerModalBody(printer) {
+  const bed = printer.temperatures && printer.temperatures.bed !== null && printer.temperatures.bed !== undefined
+    ? `${printer.temperatures.bed}°C` : '--';
+  const elapsed = formatDuration(printer.progress && printer.progress.elapsedSec);
+  const remaining = formatDuration(printer.progress && printer.progress.remainingSec);
+  const extruders = Array.isArray(printer.extruders) ? printer.extruders : [];
+  const directFilaments = Array.isArray(printer.filaments) ? printer.filaments : [];
+  const snapmakerFilaments = printer.snapmaker && Array.isArray(printer.snapmaker.filaments) ? printer.snapmaker.filaments : [];
+  const filamentsByIndex = new Map();
+
+  snapmakerFilaments.forEach((filament) => {
+    if (!filament) return;
+    const slotIndex = Number(filament.index);
+    if (!Number.isFinite(slotIndex)) return;
+    filamentsByIndex.set(slotIndex, filament);
+  });
+  directFilaments.forEach((filament) => {
+    if (!filament) return;
+    const slotIndex = Number(filament.index);
+    if (!Number.isFinite(slotIndex)) return;
+    filamentsByIndex.set(slotIndex, { ...filamentsByIndex.get(slotIndex), ...filament });
+  });
+
+  const extruderHtml = Array.from({ length: 4 }, (_, index) => {
+    const slotNumber = index + 1;
+    const extruder = extruders.find((entry) => Number(entry && entry.index) === slotNumber) || null;
+    const filament = filamentsByIndex.get(slotNumber) || null;
+    const isLoaded = Boolean(filament && filament.exists !== false);
+    const tempRaw = extruder && (extruder.tempC !== null && extruder.tempC !== undefined ? extruder.tempC : extruder.temp);
+    const targetRaw = extruder && (extruder.targetC !== null && extruder.targetC !== undefined ? extruder.targetC : extruder.target);
+    const temp = tempRaw !== null && tempRaw !== undefined ? `${Math.round(Number(tempRaw) * 10) / 10}°C` : '--';
+    const target = targetRaw !== null && targetRaw !== undefined ? `${Math.round(Number(targetRaw) * 10) / 10}°C` : '--';
+    const filamentType = isLoaded
+      ? (filament.details && filament.details.type) || filament.type || '--'
+      : '--';
+    const swatchColor = isLoaded ? (filament.color || '#3a4654') : 'transparent';
+
+    return `
+      <div class="snapmaker-extruder-card${isLoaded ? '' : ' snapmaker-extruder-card-empty'}">
+        <div class="snapmaker-extruder-index">Extruder ${slotNumber}</div>
+        <div class="snapmaker-extruder-line"><span>Temp</span><span>${escapeHtml(temp)}</span></div>
+        <div class="snapmaker-extruder-line"><span>Target</span><span>${escapeHtml(target)}</span></div>
+        <div class="snapmaker-extruder-line"><span>Filament</span><span>${escapeHtml(String(filamentType))}</span></div>
+        <div class="snapmaker-extruder-line"><span>Status</span><span>${isLoaded ? 'Loaded' : 'Unloaded'}</span></div>
+        <div class="snapmaker-extruder-color${isLoaded ? '' : ' snapmaker-extruder-color-empty'}" style="background:${escapeHtml(swatchColor)}"></div>
+      </div>
+    `;
+  }).join('');
+
+  let etaDiv = '';
+  if (printer.progress && printer.progress.remainingSec > 0) {
+    const etaDate = new Date(Date.now() + printer.progress.remainingSec * 1000);
+
+    let hours = etaDate.getHours();
+    const minutes = String(etaDate.getMinutes()).padStart(2, '0');
+    const seconds = String(etaDate.getSeconds()).padStart(2, '0');
+    const ampm = hours >= 12 ? 'pm' : 'am';
+
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+
+    const etaTime = `${hours}:${minutes}:${seconds} ${ampm}`;
+    etaDiv = `<div class="printer-modal-item"><strong>ETA</strong>${etaTime}</div>`;
+  }
+
+  const elapsedDiv = printer.progress && printer.progress.elapsedSec > 0
+    ? `<div class="printer-modal-item"><strong>Elapsed</strong>${elapsed}</div>`
+    : '';
+  const remainingDiv = printer.progress && printer.progress.remainingSec > 0
+    ? `<div class="printer-modal-item"><strong>Remaining</strong>${remaining}</div>`
+    : '';
+
+  return `
+    <div class="printer-modal-item"><strong>Status</strong>${escapeHtml(printer.state || '--')}</div>
+    <div class="printer-modal-item"><strong>File</strong>${escapeHtml(printer.filename || '--')}</div>
+    <div class="printer-modal-item"><strong>Error</strong>${escapeHtml(printer.error || '--')}</div>
+    <div class="printer-modal-item"><strong>Driver</strong>${escapeHtml(printer.driver || '--')}</div>
+    <div class="printer-modal-item"><strong>Bed Temp</strong>${bed}</div>
+    ${elapsedDiv}
+    ${remainingDiv}
+    ${etaDiv}
+    <div class="snapmaker-extruder-block">
+      <div class="snapmaker-extruder-header">Extruders</div>
+      <div class="snapmaker-extruder-grid">${extruderHtml}</div>
+    </div>
+  `;
+}
+
 function openPrinterModal(printerId) {
   const printer = printerCache[printerId];
   const modal = document.getElementById('printerModal');
@@ -349,9 +462,15 @@ function openPrinterModal(printerId) {
   title.textContent = printer.name || `Printer ${printer.id}`;
 
   const isBambuModal = Number(printer.id) === 106;
+  const isSnapmakerModal = Boolean(
+    (printer.snapmaker && (Array.isArray(printer.extruders) || Array.isArray(printer.filaments)))
+    || String(printer.name || '').toLowerCase().includes('snapmaker')
+  );
   modalCard.classList.toggle('printer-modal-card-bambu', isBambuModal);
   if (isBambuModal) {
     body.innerHTML = renderBambuModalBody(printer);
+  } else if (isSnapmakerModal) {
+    body.innerHTML = renderSnapmakerModalBody(printer);
   } else {
     const nozzle = printer.temperatures && printer.temperatures.nozzle !== null && printer.temperatures.nozzle !== undefined
       ? `${printer.temperatures.nozzle}°C` : '--';
