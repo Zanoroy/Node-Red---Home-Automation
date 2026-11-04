@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getStreamUrl(camera, quality) {
         const streamPath = quality === 'high' ? camera.path : (camera.previewPath || camera.path);
-        return `${getCurrentHostUrl(8888)}/${streamPath}/index.m3u8?cookieCheck=1`;
+        return `${getCurrentHostUrl(8888)}/${streamPath}/index.m3u8`;
     }
 
     function setLastUpdate() {
@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.Hls && window.Hls.isSupported()) {
             hls = new window.Hls({
                 enableWorker: true,
-                lowLatencyMode: true,
+                lowLatencyMode: false,
                 backBufferLength: 30
             });
 

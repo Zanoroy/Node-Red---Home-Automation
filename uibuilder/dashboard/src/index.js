@@ -927,11 +927,19 @@ function updateWeather(data) {
   weatherDesc.textContent = weatherData.day_condition || 'Loading...';
 
   // Update weather icon from Google Weather
-  if (weatherData.weather_icon && weatherIcon) {
-    weatherIcon.src = weatherData.weather_icon;
-    weatherIcon.style.display = 'block';
-  } else if (weatherIcon) {
-    weatherIcon.style.display = 'none';
+  if (weatherIcon) {
+    const iconCandidate = typeof weatherData.weather_icon === 'string'
+      ? weatherData.weather_icon.trim()
+      : '';
+    const isUsableIconUrl = /^(https?:\/\/|\/|\.\/|data:image\/)/i.test(iconCandidate);
+
+    if (isUsableIconUrl) {
+      weatherIcon.src = iconCandidate;
+      weatherIcon.style.display = 'block';
+    } else {
+      weatherIcon.removeAttribute('src');
+      weatherIcon.style.display = 'none';
+    }
   }
 
   // Update feels like
