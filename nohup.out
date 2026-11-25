@@ -23,7 +23,7 @@ Welcome to Node-RED
 20 Sep 20:07:59 - [info] +-----------------------------------------------------
 20 Sep 20:07:59 - [info] Starting flows
 20 Sep 20:08:00 - [info] Started flows
-20 Sep 20:08:00 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 20:08:00 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.9:1883
 20 Sep 20:08:04 - [info] [debug:Battery Data Debug] 
 {
   SOC: 41,
@@ -130,12 +130,12 @@ Welcome to Node-RED
   _msgid: '57534b8e15410552'
 }
 20 Sep 20:23:09 - [info] Stopping flows
-20 Sep 20:23:09 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 20:23:09 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.9:1883
 20 Sep 20:23:09 - [info] Stopped flows
 20 Sep 20:23:09 - [info] Updated flows
 20 Sep 20:23:09 - [info] Starting flows
 20 Sep 20:23:09 - [info] Started flows
-20 Sep 20:23:09 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 20:23:09 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.9:1883
 20 Sep 20:23:36 - [info] [debug:Battery Data Debug] 
 {
   SOC: 38,
@@ -186,12 +186,12 @@ Welcome to Node-RED
   _msgid: 'd4c65bf2822b547e'
 }
 20 Sep 20:29:59 - [info] Stopping flows
-20 Sep 20:30:00 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 20:30:00 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.9:1883
 20 Sep 20:30:00 - [info] Stopped flows
 20 Sep 20:30:00 - [info] Updated flows
 20 Sep 20:30:00 - [info] Starting flows
 20 Sep 20:30:00 - [info] Started flows
-20 Sep 20:30:00 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 20:30:00 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.9:1883
 20 Sep 20:30:03 - [warn] [http request:Get All Hubitat Devices] Warning: msg properties can no longer override set node properties. See bit.ly/nr-override-msg-props
 20 Sep 20:30:03 - [warn] [http request:Get All Hubitat Devices] Warning: msg properties can no longer override set node properties. See bit.ly/nr-override-msg-props
 20 Sep 20:30:09 - [warn] [http request:Get All Hubitat Devices] Warning: msg properties can no longer override set node properties. See bit.ly/nr-override-msg-props
@@ -254,12 +254,12 @@ Welcome to Node-RED
   _msgid: '7099fbfa8d2f3f28'
 }
 20 Sep 20:38:08 - [info] Stopping flows
-20 Sep 20:38:08 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 20:38:08 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.9:1883
 20 Sep 20:38:08 - [info] Stopped flows
 20 Sep 20:38:08 - [info] Updated flows
 20 Sep 20:38:08 - [info] Starting flows
 20 Sep 20:38:08 - [info] Started flows
-20 Sep 20:38:08 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 20:38:08 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.9:1883
 20 Sep 20:38:18 - [info] [debug:Battery Data Debug] 
 {
   SOC: 36,
@@ -356,7 +356,7 @@ Welcome to Node-RED
   _msgid: 'f24774c8ee606e04'
 }
 20 Sep 20:51:39 - [info] Stopping flows
-20 Sep 20:51:39 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 20:51:39 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.9:1883
 20 Sep 20:51:39 - [info] Stopped flows
 20 Sep 20:51:41 - [info] 
 
@@ -383,7 +383,7 @@ Welcome to Node-RED
 20 Sep 20:51:46 - [info] +-----------------------------------------------------
 20 Sep 20:51:46 - [info] Starting flows
 20 Sep 20:51:46 - [info] Started flows
-20 Sep 20:51:46 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 20:51:46 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.9:1883
 20 Sep 20:51:52 - [info] [debug:Battery Data Debug] 
 {
   SOC: 34,
@@ -406,7 +406,7 @@ Welcome to Node-RED
   _msgid: '8e1f0eddc4053f08'
 }
 20 Sep 20:54:07 - [info] Stopping flows
-20 Sep 20:54:07 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 20:54:07 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.9:1883
 20 Sep 20:54:07 - [info] Stopped flows
 20 Sep 20:54:27 - [info] 
 
@@ -433,7 +433,7 @@ Welcome to Node-RED
 20 Sep 20:54:32 - [info] +-----------------------------------------------------
 20 Sep 20:54:32 - [info] Starting flows
 20 Sep 20:54:32 - [info] Started flows
-20 Sep 20:54:32 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 20:54:32 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.9:1883
 20 Sep 20:54:57 - [info] [debug:Battery Data Debug] 
 {
   SOC: 34,
@@ -456,12 +456,12 @@ Welcome to Node-RED
   _msgid: '2d086ccbd44ebe15'
 }
 20 Sep 20:57:59 - [info] Stopping flows
-20 Sep 20:57:59 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 20:57:59 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.9:1883
 20 Sep 20:57:59 - [info] Stopped flows
 20 Sep 20:57:59 - [info] Updated flows
 20 Sep 20:57:59 - [info] Starting flows
 20 Sep 20:57:59 - [info] Started flows
-20 Sep 20:57:59 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 20:57:59 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.9:1883
 20 Sep 20:58:06 - [info] [debug:Battery Data Debug] 
 {
   SOC: 33,
@@ -477,12 +477,12 @@ Welcome to Node-RED
   _msgid: '535b8ba9055fdc8a'
 }
 20 Sep 20:59:12 - [info] Stopping flows
-20 Sep 20:59:12 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 20:59:12 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.9:1883
 20 Sep 20:59:12 - [info] Stopped flows
 20 Sep 20:59:12 - [info] Updated flows
 20 Sep 20:59:12 - [info] Starting flows
 20 Sep 20:59:12 - [info] Started flows
-20 Sep 20:59:12 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 20:59:12 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.9:1883
 20 Sep 21:00:11 - [info] [debug:Battery Data Debug] 
 {
   SOC: 33,
@@ -505,17 +505,17 @@ Welcome to Node-RED
   _msgid: '0176841e49f1bb04'
 }
 20 Sep 21:02:34 - [info] Stopping flows
-20 Sep 21:02:34 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 21:02:34 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.9:1883
 20 Sep 21:02:34 - [info] Stopped flows
 20 Sep 21:02:34 - [info] Updated flows
 20 Sep 21:02:34 - [info] Starting flows
 20 Sep 21:02:34 - [info] Started flows
-20 Sep 21:02:34 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 21:02:34 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.9:1883
 20 Sep 21:02:38 - [error] [template:Battery Display Template] Unclosed section "timestamp" at 11328
 20 Sep 21:02:43 - [error] [template:Battery Display Template] Unclosed section "timestamp" at 11328
 20 Sep 21:02:47 - [error] [template:Battery Display Template] Unclosed section "timestamp" at 11328
 20 Sep 21:02:53 - [info] Stopping flows
-20 Sep 21:02:53 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 21:02:53 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.9:1883
 20 Sep 21:02:53 - [info] Stopped flows
 20 Sep 21:02:57 - [info] 
 
@@ -542,7 +542,7 @@ Welcome to Node-RED
 20 Sep 21:03:01 - [info] +-----------------------------------------------------
 20 Sep 21:03:01 - [info] Starting flows
 20 Sep 21:03:02 - [info] Started flows
-20 Sep 21:03:02 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 21:03:02 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.9:1883
 20 Sep 21:03:12 - [error] [template:Battery Display Template] Unclosed section "timestamp" at 11328
 20 Sep 21:03:15 - [error] [template:Battery Display Template] Unclosed section "timestamp" at 11328
 20 Sep 21:03:21 - [error] [template:Battery Display Template] Unclosed section "timestamp" at 11328
@@ -579,12 +579,12 @@ Welcome to Node-RED
   _msgid: '96b2c6d45d815d3d'
 }
 20 Sep 21:07:12 - [info] Stopping flows
-20 Sep 21:07:12 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 21:07:12 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.9:1883
 20 Sep 21:07:12 - [info] Stopped flows
 20 Sep 21:07:12 - [info] Updated flows
 20 Sep 21:07:12 - [info] Starting flows
 20 Sep 21:07:12 - [info] Started flows
-20 Sep 21:07:12 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 21:07:12 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.9:1883
 20 Sep 21:07:25 - [info] [debug:Battery Data Debug] 
 {
   SOC: 32,
@@ -628,7 +628,7 @@ Welcome to Node-RED
   _msgid: '3563fc1413d27abc'
 }
 20 Sep 21:12:40 - [info] Stopping flows
-20 Sep 21:12:40 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 21:12:40 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.9:1883
 20 Sep 21:12:40 - [info] Stopped flows
 20 Sep 21:12:46 - [info] 
 
@@ -655,7 +655,7 @@ Welcome to Node-RED
 20 Sep 21:12:52 - [info] +-----------------------------------------------------
 20 Sep 21:12:52 - [info] Starting flows
 20 Sep 21:12:52 - [info] Started flows
-20 Sep 21:12:52 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 21:12:52 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.9:1883
 20 Sep 21:13:35 - [info] [debug:Battery Data Debug] 
 {
   SOC: 32,
@@ -671,14 +671,14 @@ Welcome to Node-RED
   _msgid: '58e670e8abb874f7'
 }
 20 Sep 21:15:06 - [info] Stopping flows
-20 Sep 21:15:06 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 21:15:06 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.9:1883
 20 Sep 21:15:06 - [info] Stopped flows
 20 Sep 21:15:06 - [info] Updated flows
 20 Sep 21:15:06 - [info] Starting flows
 20 Sep 21:15:06 - [info] Started flows
-20 Sep 21:15:06 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 21:15:06 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.9:1883
 20 Sep 21:15:10 - [info] Stopping flows
-20 Sep 21:15:10 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 21:15:10 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.9:1883
 20 Sep 21:15:10 - [info] Stopped flows
 20 Sep 21:15:12 - [info] 
 
@@ -705,7 +705,7 @@ Welcome to Node-RED
 20 Sep 21:15:17 - [info] +-----------------------------------------------------
 20 Sep 21:15:17 - [info] Starting flows
 20 Sep 21:15:17 - [info] Started flows
-20 Sep 21:15:17 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 21:15:17 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.9:1883
 20 Sep 21:15:49 - [info] [debug:Battery Data Debug] 
 {
   SOC: 31,
@@ -714,12 +714,12 @@ Welcome to Node-RED
   _msgid: '9866b5a6f865ae5d'
 }
 20 Sep 21:16:04 - [info] Stopping flows
-20 Sep 21:16:04 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 21:16:04 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.9:1883
 20 Sep 21:16:04 - [info] Stopped flows
 20 Sep 21:16:04 - [info] Updated flows
 20 Sep 21:16:04 - [info] Starting flows
 20 Sep 21:16:05 - [info] Started flows
-20 Sep 21:16:05 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 21:16:05 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.9:1883
 20 Sep 21:16:50 - [info] [debug:Battery Data Debug] 
 {
   SOC: 31,
@@ -756,12 +756,12 @@ Welcome to Node-RED
   _msgid: '46fe6fe0669075bd'
 }
 20 Sep 21:21:12 - [info] Stopping flows
-20 Sep 21:21:12 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 21:21:12 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.9:1883
 20 Sep 21:21:12 - [info] Stopped flows
 20 Sep 21:21:12 - [info] Updated flows
 20 Sep 21:21:12 - [info] Starting flows
 20 Sep 21:21:12 - [info] Started flows
-20 Sep 21:21:12 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 21:21:12 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.9:1883
 20 Sep 21:21:12 - [error] [template:Battery Display Template] Unopened section "payload.SOC" at 7552
 20 Sep 21:21:20 - [error] [template:Battery Display Template] Unopened section "payload.SOC" at 7552
 20 Sep 21:21:50 - [error] [template:Battery Display Template] Unopened section "payload.SOC" at 7552
@@ -773,7 +773,7 @@ Welcome to Node-RED
   _msgid: '4dae55e822177cea'
 }
 20 Sep 21:22:15 - [info] Stopping flows
-20 Sep 21:22:15 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 21:22:15 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.9:1883
 20 Sep 21:22:15 - [info] Stopped flows
 20 Sep 21:22:16 - [info] 
 
@@ -800,7 +800,7 @@ Welcome to Node-RED
 20 Sep 21:22:21 - [info] +-----------------------------------------------------
 20 Sep 21:22:21 - [info] Starting flows
 20 Sep 21:22:21 - [info] Started flows
-20 Sep 21:22:21 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 21:22:21 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.9:1883
 20 Sep 21:22:21 - [error] [template:Battery Display Template] Unopened section "payload.SOC" at 7552
 20 Sep 21:22:23 - [error] [template:Battery Display Template] Unopened section "payload.SOC" at 7552
 20 Sep 21:22:34 - [error] [template:Battery Display Template] Unopened section "payload.SOC" at 7552
@@ -859,7 +859,7 @@ Welcome to Node-RED
   _msgid: '0c1a9ec86a314056'
 }
 20 Sep 21:28:29 - [info] Stopping flows
-20 Sep 21:28:29 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 21:28:29 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.9:1883
 20 Sep 21:28:29 - [info] Stopped flows
 20 Sep 21:34:14 - [info] 
 
@@ -886,7 +886,7 @@ Welcome to Node-RED
 20 Sep 21:34:19 - [info] +-----------------------------------------------------
 20 Sep 21:34:19 - [info] Starting flows
 20 Sep 21:34:19 - [info] Started flows
-20 Sep 21:34:19 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.10:1883
+20 Sep 21:34:19 - [info] [mqtt-broker:d4045e31a39c5762] Connected to broker: mqtt://172.17.254.9:1883
 20 Sep 21:34:40 - [info] [debug:Battery Data Debug] 
 {
   SOC: 29,
@@ -909,7 +909,7 @@ Welcome to Node-RED
   _msgid: '0612150d8dc7f33a'
 }
 20 Sep 21:36:49 - [info] Stopping flows
-20 Sep 21:36:49 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.10:1883
+20 Sep 21:36:49 - [info] [mqtt-broker:d4045e31a39c5762] Disconnected from broker: mqtt://172.17.254.9:1883
 20 Sep 21:36:49 - [info] Stopped flows
 20 Sep 21:38:16 - [info] 
 

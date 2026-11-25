@@ -36,7 +36,7 @@ This test page includes:
 
 1. **Test the widget:**
    ```
-   http://172.17.254.10:1880/public/solar-widget-test.html
+   http://172.17.254.9:1880/public/solar-widget-test.html
    ```
 
 2. **Check console:** Press F12 and look for any errors

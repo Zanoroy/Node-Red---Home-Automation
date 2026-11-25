@@ -1696,7 +1696,7 @@
     "showMsgUib": false,
     "title": "",
     "descr": "",
-    "editurl": "vscode://vscode-remote/ssh-remote+172.17.254.10/root/.node-red/uibuilder/dashboard/?windowId=_blank",
+    "editurl": "vscode://vscode-remote/ssh-remote+172.17.254.9/root/.node-red/uibuilder/dashboard/?windowId=_blank",
     "x": 1310,
     "y": 280,
     "wires": [

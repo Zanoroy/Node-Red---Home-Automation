@@ -4,25 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' data: blob: https: http:; connect-src 'self' https: http: ws: wss:; img-src 'self' data: blob: https: http:; media-src 'self' data: blob: https: http:; font-src 'self' data: https: http:; style-src 'self' 'unsafe-inline' data: blob: https: http:; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: https: http:; worker-src 'self' blob: https: http:; frame-src 'self' https: http:;">
-    <link rel="icon" href="data:,">
+    <link rel="icon" type="image/png" href="images/smart-home.png">
     <title>Camera Dashboard</title>
 
     <script src="./uibuilder.iife.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.17/dist/hls.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="stylesheet" href="./index.css">
-    <link rel="stylesheet" href="./cameras.css">
+    <link rel="stylesheet" href="./css/dashboardStyles.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/cameras.css">
 </head>
 <body>
     <div class="dashboard-wrapper">
         <header class="dashboard-header">
             <h1 class="dashboard-title">
-                <i class="fas fa-home"></i>
+                <img src="images/smart-home.png" alt="Home Automation Dashboard Icon" class="dashboard-icon">
                 Home Automation Dashboard
             </h1>
             <div class="header-actions">
                 <a class="header-nav-button" href="./index.html">
-                    <i class="fas fa-table-columns"></i>
+                    <i class="fas fa-home"></i>
                     <span>Dashboard</span>
                 </a>
                 <div class="connection-status">
@@ -72,6 +73,6 @@
         </main>
     </div>
 
-    <script src="./cameras.js"></script>
+    <script src="./js/cameras.js"></script>
 </body>
 </html>

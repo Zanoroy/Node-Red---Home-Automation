@@ -14,7 +14,7 @@ Complete home automation dashboard using `node-red-contrib-uibuilder` with:
 ### Option A: Manual Setup (Recommended)
 
 #### 1. Create UIBuilder Instance
-1. Open Node-RED: `http://172.17.254.10:1880`
+1. Open Node-RED: `http://172.17.254.9:1880`
 2. Create a new flow tab called "UIBuilder Dashboard"
 3. Drag a **uibuilder** node from the palette onto the canvas
 4. Double-click the uibuilder node to configure it:
@@ -67,13 +67,13 @@ If the uibuilder node shows `<no url>` error:
 ### 4. Test Access
 Once deployed, access your dashboard at:
 ```
-http://172.17.254.10:1880/dashboard
+http://172.17.254.9:1880/dashboard
 ```
 
 ### 4. Access Dashboard
 Open your browser to:
 ```
-http://172.17.254.10:1880/dashboard
+http://172.17.254.9:1880/dashboard
 ```
 
 ## File Structure

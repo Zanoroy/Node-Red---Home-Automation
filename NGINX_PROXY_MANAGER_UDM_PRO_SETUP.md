@@ -156,7 +156,7 @@ docker ps | grep nginx-proxy-manager
 ```
 Domain Names: nodered.yourdomain.com
 Scheme: http
-Forward Hostname/IP: <NODE_RED_SERVER_IP> (e.g., 172.17.254.10)
+Forward Hostname/IP: <NODE_RED_SERVER_IP> (e.g., 172.17.254.9)
 Forward Port: 1880
 Cache Assets: ✓
 Block Common Exploits: ✓
@@ -184,7 +184,7 @@ Repeat Step 9 with these settings:
 
 ```
 Domain Names: dashboard.yourdomain.com
-Forward Hostname/IP: 172.17.254.10
+Forward Hostname/IP: 172.17.254.9
 Forward Port: 1880/dashboard  (Note: Use path /dashboard)
 ```
 
@@ -194,7 +194,7 @@ Or set up as a custom location:
 ```
 Define Custom Location: /dashboard
 Scheme: http
-Forward Hostname/IP: 172.17.254.10
+Forward Hostname/IP: 172.17.254.9
 Forward Port: 1880
 Forward Path: /dashboard
 ```
@@ -451,7 +451,7 @@ Nginx Proxy Manager (SSL/Auth)
     ↓
 Internal Network
     ↓
-Node-RED Server (172.17.254.10:1880)
+Node-RED Server (172.17.254.9:1880)
     ↓
 UIBuilder Dashboard (/dashboard)
 ```
@@ -489,7 +489,7 @@ cd /data/custom/npm && docker-compose pull && docker-compose up -d
 pm2 restart 0
 
 # Check Node-RED is running
-curl http://172.17.254.10:1880
+curl http://172.17.254.9:1880
 
 # Test external access
 curl -I https://nodered.yourdomain.com

@@ -1,7 +1,7 @@
 {
     "node-red": {
         "name": "node-red",
-        "version": "4.1.15",
+        "version": "5.0.10",
         "local": false,
         "user": false,
         "nodes": {
@@ -14,7 +14,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/common/05-junction.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/common/05-junction.js"
             },
             "inject": {
                 "name": "inject",
@@ -25,7 +25,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/common/20-inject.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/common/20-inject.js"
             },
             "debug": {
                 "name": "debug",
@@ -36,7 +36,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/common/21-debug.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/common/21-debug.js"
             },
             "complete": {
                 "name": "complete",
@@ -47,7 +47,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/common/24-complete.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/common/24-complete.js"
             },
             "catch": {
                 "name": "catch",
@@ -58,7 +58,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/common/25-catch.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/common/25-catch.js"
             },
             "status": {
                 "name": "status",
@@ -69,7 +69,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/common/25-status.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/common/25-status.js"
             },
             "link": {
                 "name": "link",
@@ -82,7 +82,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/common/60-link.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/common/60-link.js"
             },
             "comment": {
                 "name": "comment",
@@ -93,7 +93,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/common/90-comment.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/common/90-comment.js"
             },
             "global-config": {
                 "name": "global-config",
@@ -104,7 +104,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/common/91-global-config.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/common/91-global-config.js"
             },
             "unknown": {
                 "name": "unknown",
@@ -115,7 +115,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/common/98-unknown.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/common/98-unknown.js"
             },
             "function": {
                 "name": "function",
@@ -126,7 +126,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/function/10-function.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/function/10-function.js"
             },
             "switch": {
                 "name": "switch",
@@ -137,7 +137,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/function/10-switch.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/function/10-switch.js"
             },
             "change": {
                 "name": "change",
@@ -148,7 +148,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/function/15-change.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/function/15-change.js"
             },
             "range": {
                 "name": "range",
@@ -159,7 +159,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/function/16-range.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/function/16-range.js"
             },
             "template": {
                 "name": "template",
@@ -170,7 +170,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/function/80-template.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/function/80-template.js"
             },
             "delay": {
                 "name": "delay",
@@ -181,7 +181,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/function/89-delay.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/function/89-delay.js"
             },
             "trigger": {
                 "name": "trigger",
@@ -192,7 +192,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/function/89-trigger.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/function/89-trigger.js"
             },
             "exec": {
                 "name": "exec",
@@ -203,7 +203,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/function/90-exec.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/function/90-exec.js"
             },
             "rbe": {
                 "name": "rbe",
@@ -214,7 +214,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/function/rbe.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/function/rbe.js"
             },
             "tls": {
                 "name": "tls",
@@ -225,7 +225,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/network/05-tls.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/network/05-tls.js"
             },
             "httpproxy": {
                 "name": "httpproxy",
@@ -236,7 +236,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/network/06-httpproxy.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/network/06-httpproxy.js"
             },
             "mqtt": {
                 "name": "mqtt",
@@ -249,7 +249,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/network/10-mqtt.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/network/10-mqtt.js"
             },
             "httpin": {
                 "name": "httpin",
@@ -261,7 +261,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/network/21-httpin.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/network/21-httpin.js"
             },
             "httprequest": {
                 "name": "httprequest",
@@ -272,7 +272,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/network/21-httprequest.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/network/21-httprequest.js"
             },
             "websocket": {
                 "name": "websocket",
@@ -286,7 +286,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/network/22-websocket.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/network/22-websocket.js"
             },
             "tcpin": {
                 "name": "tcpin",
@@ -299,7 +299,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/network/31-tcpin.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/network/31-tcpin.js"
             },
             "udp": {
                 "name": "udp",
@@ -311,7 +311,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/network/32-udp.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/network/32-udp.js"
             },
             "CSV": {
                 "name": "CSV",
@@ -322,7 +322,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/parsers/70-CSV.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/parsers/70-CSV.js"
             },
             "HTML": {
                 "name": "HTML",
@@ -333,7 +333,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/parsers/70-HTML.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/parsers/70-HTML.js"
             },
             "JSON": {
                 "name": "JSON",
@@ -344,7 +344,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/parsers/70-JSON.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/parsers/70-JSON.js"
             },
             "XML": {
                 "name": "XML",
@@ -355,7 +355,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/parsers/70-XML.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/parsers/70-XML.js"
             },
             "YAML": {
                 "name": "YAML",
@@ -366,7 +366,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/parsers/70-YAML.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/parsers/70-YAML.js"
             },
             "split": {
                 "name": "split",
@@ -378,7 +378,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/sequence/17-split.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/sequence/17-split.js"
             },
             "sort": {
                 "name": "sort",
@@ -389,7 +389,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/sequence/18-sort.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/sequence/18-sort.js"
             },
             "batch": {
                 "name": "batch",
@@ -400,7 +400,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/sequence/19-batch.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/sequence/19-batch.js"
             },
             "file": {
                 "name": "file",
@@ -412,7 +412,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/storage/10-file.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/storage/10-file.js"
             },
             "watch": {
                 "name": "watch",
@@ -423,7 +423,7 @@
                 "local": false,
                 "user": false,
                 "module": "node-red",
-                "file": "/usr/lib/node_modules/node-red/node_modules/@node-red/nodes/core/storage/23-watch.js"
+                "file": "/usr/local/lib/node_modules/node-red/node_modules/@node-red/nodes/core/storage/23-watch.js"
             }
         }
     },
@@ -442,7 +442,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-contrib-mqtt-broker",
-                "file": "/root/.node-red/node_modules/node-red-contrib-mqtt-broker/mosca.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-mqtt-broker/mosca.js"
             }
         }
     },
@@ -461,9 +461,10 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-contrib-aedes",
-                "file": "/root/.node-red/node_modules/node-red-contrib-aedes/aedes.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-aedes/aedes.js"
             }
-        }
+        },
+        "pending_version": "1.4.0"
     },
     "@flowfuse/node-red-dashboard": {
         "name": "@flowfuse/node-red-dashboard",
@@ -480,7 +481,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/config/ui_base.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/config/ui_base.js"
             },
             "ui-page": {
                 "name": "ui-page",
@@ -491,7 +492,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/config/ui_page.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/config/ui_page.js"
             },
             "ui-link": {
                 "name": "ui-link",
@@ -502,7 +503,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/config/ui_link.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/config/ui_link.js"
             },
             "ui-group": {
                 "name": "ui-group",
@@ -513,7 +514,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/config/ui_group.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/config/ui_group.js"
             },
             "ui-theme": {
                 "name": "ui-theme",
@@ -524,7 +525,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/config/ui_theme.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/config/ui_theme.js"
             },
             "ui-form": {
                 "name": "ui-form",
@@ -535,7 +536,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_form.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_form.js"
             },
             "ui-text-input": {
                 "name": "ui-text-input",
@@ -546,7 +547,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_text_input.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_text_input.js"
             },
             "ui-number-input": {
                 "name": "ui-number-input",
@@ -557,7 +558,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_number_input.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_number_input.js"
             },
             "ui-file-input": {
                 "name": "ui-file-input",
@@ -568,7 +569,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_file_input.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_file_input.js"
             },
             "ui-button": {
                 "name": "ui-button",
@@ -579,7 +580,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_button.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_button.js"
             },
             "ui-button-group": {
                 "name": "ui-button-group",
@@ -590,7 +591,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_button_group.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_button_group.js"
             },
             "ui-dropdown": {
                 "name": "ui-dropdown",
@@ -601,7 +602,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_dropdown.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_dropdown.js"
             },
             "ui-radio-group": {
                 "name": "ui-radio-group",
@@ -612,7 +613,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_radio_group.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_radio_group.js"
             },
             "ui-slider": {
                 "name": "ui-slider",
@@ -623,7 +624,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_slider.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_slider.js"
             },
             "ui-spacer": {
                 "name": "ui-spacer",
@@ -634,7 +635,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_spacer.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_spacer.js"
             },
             "ui-switch": {
                 "name": "ui-switch",
@@ -645,7 +646,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_switch.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_switch.js"
             },
             "ui-text": {
                 "name": "ui-text",
@@ -656,7 +657,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_text.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_text.js"
             },
             "ui-table": {
                 "name": "ui-table",
@@ -667,7 +668,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_table.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_table.js"
             },
             "ui-chart": {
                 "name": "ui-chart",
@@ -678,7 +679,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_chart.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_chart.js"
             },
             "ui-gauge": {
                 "name": "ui-gauge",
@@ -689,7 +690,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_gauge.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_gauge.js"
             },
             "ui-notification": {
                 "name": "ui-notification",
@@ -700,7 +701,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_notification.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_notification.js"
             },
             "ui-audio": {
                 "name": "ui-audio",
@@ -711,7 +712,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_audio.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_audio.js"
             },
             "ui-markdown": {
                 "name": "ui-markdown",
@@ -722,7 +723,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_markdown.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_markdown.js"
             },
             "ui-template": {
                 "name": "ui-template",
@@ -733,7 +734,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_template.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_template.js"
             },
             "ui-event": {
                 "name": "ui-event",
@@ -744,7 +745,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_event.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_event.js"
             },
             "ui-control": {
                 "name": "ui-control",
@@ -755,7 +756,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_control.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_control.js"
             },
             "ui-progress": {
                 "name": "ui-progress",
@@ -766,9 +767,10 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_progress.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard/nodes/widgets/ui_progress.js"
             }
-        }
+        },
+        "pending_version": "1.37.0"
     },
     "@flowfuse/node-red-dashboard-2-ui-chat": {
         "name": "@flowfuse/node-red-dashboard-2-ui-chat",
@@ -785,7 +787,7 @@
                 "local": true,
                 "user": false,
                 "module": "@flowfuse/node-red-dashboard-2-ui-chat",
-                "file": "/root/.node-red/node_modules/@flowfuse/node-red-dashboard-2-ui-chat/nodes/ui-chat.js"
+                "file": "/opt/homeautomation-node-red/node_modules/@flowfuse/node-red-dashboard-2-ui-chat/nodes/ui-chat.js"
             }
         }
     },
@@ -804,7 +806,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-contrib-uibuilder",
-                "file": "/root/.node-red/node_modules/node-red-contrib-uibuilder/nodes/markweb/customNode.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-uibuilder/nodes/markweb/customNode.js"
             },
             "uibuilder": {
                 "name": "uibuilder",
@@ -815,7 +817,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-contrib-uibuilder",
-                "file": "/root/.node-red/node_modules/node-red-contrib-uibuilder/nodes/uibuilder/uibuilder.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-uibuilder/nodes/uibuilder/uibuilder.js"
             },
             "uib-cache": {
                 "name": "uib-cache",
@@ -826,7 +828,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-contrib-uibuilder",
-                "file": "/root/.node-red/node_modules/node-red-contrib-uibuilder/nodes/uib-cache/uib-cache.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-uibuilder/nodes/uib-cache/uib-cache.js"
             },
             "uib-element": {
                 "name": "uib-element",
@@ -837,7 +839,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-contrib-uibuilder",
-                "file": "/root/.node-red/node_modules/node-red-contrib-uibuilder/nodes/uib-element/customNode.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-uibuilder/nodes/uib-element/customNode.js"
             },
             "uib-file-list": {
                 "name": "uib-file-list",
@@ -848,7 +850,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-contrib-uibuilder",
-                "file": "/root/.node-red/node_modules/node-red-contrib-uibuilder/nodes/uib-file-list/customNode.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-uibuilder/nodes/uib-file-list/customNode.js"
             },
             "uib-html": {
                 "name": "uib-html",
@@ -859,7 +861,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-contrib-uibuilder",
-                "file": "/root/.node-red/node_modules/node-red-contrib-uibuilder/nodes/uib-html/customNode.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-uibuilder/nodes/uib-html/customNode.js"
             },
             "uib-save": {
                 "name": "uib-save",
@@ -870,7 +872,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-contrib-uibuilder",
-                "file": "/root/.node-red/node_modules/node-red-contrib-uibuilder/nodes/uib-save/customNode.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-uibuilder/nodes/uib-save/customNode.js"
             },
             "uib-sender": {
                 "name": "uib-sender",
@@ -881,7 +883,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-contrib-uibuilder",
-                "file": "/root/.node-red/node_modules/node-red-contrib-uibuilder/nodes/uib-sender/uib-sender.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-uibuilder/nodes/uib-sender/uib-sender.js"
             },
             "uib-sidebar": {
                 "name": "uib-sidebar",
@@ -892,7 +894,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-contrib-uibuilder",
-                "file": "/root/.node-red/node_modules/node-red-contrib-uibuilder/nodes/uib-sidebar/customNode.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-uibuilder/nodes/uib-sidebar/customNode.js"
             },
             "uib-tag": {
                 "name": "uib-tag",
@@ -903,7 +905,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-contrib-uibuilder",
-                "file": "/root/.node-red/node_modules/node-red-contrib-uibuilder/nodes/uib-tag/customNode.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-uibuilder/nodes/uib-tag/customNode.js"
             },
             "uib-update": {
                 "name": "uib-update",
@@ -914,13 +916,13 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-contrib-uibuilder",
-                "file": "/root/.node-red/node_modules/node-red-contrib-uibuilder/nodes/uib-update/customNode.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-uibuilder/nodes/uib-update/customNode.js"
             }
         }
     },
     "node-red-node-sqlite": {
         "name": "node-red-node-sqlite",
-        "version": "2.0.1",
+        "version": "1.1.1",
         "local": true,
         "user": true,
         "nodes": {
@@ -934,9 +936,10 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-node-sqlite",
-                "file": "/root/.node-red/node_modules/node-red-node-sqlite/sqlite.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-node-sqlite/sqlite.js"
             }
-        }
+        },
+        "pending_version": "2.0.1"
     },
     "node-red-dashboard": {
         "name": "node-red-dashboard",
@@ -953,7 +956,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-dashboard",
-                "file": "/root/.node-red/node_modules/node-red-dashboard/nodes/ui_base.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-dashboard/nodes/ui_base.js"
             },
             "ui_button": {
                 "name": "ui_button",
@@ -964,7 +967,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-dashboard",
-                "file": "/root/.node-red/node_modules/node-red-dashboard/nodes/ui_button.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-dashboard/nodes/ui_button.js"
             },
             "ui_dropdown": {
                 "name": "ui_dropdown",
@@ -975,7 +978,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-dashboard",
-                "file": "/root/.node-red/node_modules/node-red-dashboard/nodes/ui_dropdown.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-dashboard/nodes/ui_dropdown.js"
             },
             "ui_switch": {
                 "name": "ui_switch",
@@ -986,7 +989,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-dashboard",
-                "file": "/root/.node-red/node_modules/node-red-dashboard/nodes/ui_switch.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-dashboard/nodes/ui_switch.js"
             },
             "ui_slider": {
                 "name": "ui_slider",
@@ -997,7 +1000,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-dashboard",
-                "file": "/root/.node-red/node_modules/node-red-dashboard/nodes/ui_slider.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-dashboard/nodes/ui_slider.js"
             },
             "ui_numeric": {
                 "name": "ui_numeric",
@@ -1008,7 +1011,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-dashboard",
-                "file": "/root/.node-red/node_modules/node-red-dashboard/nodes/ui_numeric.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-dashboard/nodes/ui_numeric.js"
             },
             "ui_text_input": {
                 "name": "ui_text_input",
@@ -1019,7 +1022,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-dashboard",
-                "file": "/root/.node-red/node_modules/node-red-dashboard/nodes/ui_text_input.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-dashboard/nodes/ui_text_input.js"
             },
             "ui_date_picker": {
                 "name": "ui_date_picker",
@@ -1030,7 +1033,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-dashboard",
-                "file": "/root/.node-red/node_modules/node-red-dashboard/nodes/ui_date_picker.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-dashboard/nodes/ui_date_picker.js"
             },
             "ui_colour_picker": {
                 "name": "ui_colour_picker",
@@ -1041,7 +1044,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-dashboard",
-                "file": "/root/.node-red/node_modules/node-red-dashboard/nodes/ui_colour_picker.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-dashboard/nodes/ui_colour_picker.js"
             },
             "ui_form": {
                 "name": "ui_form",
@@ -1052,7 +1055,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-dashboard",
-                "file": "/root/.node-red/node_modules/node-red-dashboard/nodes/ui_form.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-dashboard/nodes/ui_form.js"
             },
             "ui_text": {
                 "name": "ui_text",
@@ -1063,7 +1066,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-dashboard",
-                "file": "/root/.node-red/node_modules/node-red-dashboard/nodes/ui_text.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-dashboard/nodes/ui_text.js"
             },
             "ui_gauge": {
                 "name": "ui_gauge",
@@ -1074,7 +1077,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-dashboard",
-                "file": "/root/.node-red/node_modules/node-red-dashboard/nodes/ui_gauge.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-dashboard/nodes/ui_gauge.js"
             },
             "ui_chart": {
                 "name": "ui_chart",
@@ -1085,7 +1088,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-dashboard",
-                "file": "/root/.node-red/node_modules/node-red-dashboard/nodes/ui_chart.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-dashboard/nodes/ui_chart.js"
             },
             "ui_audio": {
                 "name": "ui_audio",
@@ -1096,7 +1099,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-dashboard",
-                "file": "/root/.node-red/node_modules/node-red-dashboard/nodes/ui_audio.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-dashboard/nodes/ui_audio.js"
             },
             "ui_toast": {
                 "name": "ui_toast",
@@ -1107,7 +1110,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-dashboard",
-                "file": "/root/.node-red/node_modules/node-red-dashboard/nodes/ui_toast.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-dashboard/nodes/ui_toast.js"
             },
             "ui_ui_control": {
                 "name": "ui_ui_control",
@@ -1118,7 +1121,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-dashboard",
-                "file": "/root/.node-red/node_modules/node-red-dashboard/nodes/ui_ui_control.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-dashboard/nodes/ui_ui_control.js"
             },
             "ui_template": {
                 "name": "ui_template",
@@ -1129,7 +1132,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-dashboard",
-                "file": "/root/.node-red/node_modules/node-red-dashboard/nodes/ui_template.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-dashboard/nodes/ui_template.js"
             },
             "ui_link": {
                 "name": "ui_link",
@@ -1140,7 +1143,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-dashboard",
-                "file": "/root/.node-red/node_modules/node-red-dashboard/nodes/ui_link.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-dashboard/nodes/ui_link.js"
             },
             "ui_tab": {
                 "name": "ui_tab",
@@ -1151,7 +1154,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-dashboard",
-                "file": "/root/.node-red/node_modules/node-red-dashboard/nodes/ui_tab.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-dashboard/nodes/ui_tab.js"
             },
             "ui_group": {
                 "name": "ui_group",
@@ -1162,7 +1165,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-dashboard",
-                "file": "/root/.node-red/node_modules/node-red-dashboard/nodes/ui_group.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-dashboard/nodes/ui_group.js"
             },
             "ui_spacer": {
                 "name": "ui_spacer",
@@ -1173,7 +1176,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-dashboard",
-                "file": "/root/.node-red/node_modules/node-red-dashboard/nodes/ui_spacer.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-dashboard/nodes/ui_spacer.js"
             }
         }
     },
@@ -1193,7 +1196,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-contrib-twc-weather",
-                "file": "/root/.node-red/node_modules/node-red-contrib-twc-weather/pws-current.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-twc-weather/pws-current.js"
             },
             "pws-historical": {
                 "name": "pws-historical",
@@ -1204,7 +1207,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-contrib-twc-weather",
-                "file": "/root/.node-red/node_modules/node-red-contrib-twc-weather/pws-historical.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-twc-weather/pws-historical.js"
             },
             "pws-forecast": {
                 "name": "pws-forecast",
@@ -1215,7 +1218,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-contrib-twc-weather",
-                "file": "/root/.node-red/node_modules/node-red-contrib-twc-weather/pws-forecast.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-twc-weather/pws-forecast.js"
             },
             "pws-recent": {
                 "name": "pws-recent",
@@ -1228,7 +1231,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-contrib-twc-weather",
-                "file": "/root/.node-red/node_modules/node-red-contrib-twc-weather/pws-recent.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-twc-weather/pws-recent.js"
             },
             "twc-health": {
                 "name": "twc-health",
@@ -1239,7 +1242,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-contrib-twc-weather",
-                "file": "/root/.node-red/node_modules/node-red-contrib-twc-weather/twc-health.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-twc-weather/twc-health.js"
             },
             "twc-core": {
                 "name": "twc-core",
@@ -1250,7 +1253,7 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-contrib-twc-weather",
-                "file": "/root/.node-red/node_modules/node-red-contrib-twc-weather/twc-core.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-twc-weather/twc-core.js"
             },
             "twc-nowcast": {
                 "name": "twc-nowcast",
@@ -1261,7 +1264,147 @@
                 "local": true,
                 "user": false,
                 "module": "node-red-contrib-twc-weather",
-                "file": "/root/.node-red/node_modules/node-red-contrib-twc-weather/twc-nowcast.js"
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-twc-weather/twc-nowcast.js"
+            }
+        }
+    },
+    "node-red-contrib-influxdb": {
+        "name": "node-red-contrib-influxdb",
+        "version": "0.7.0",
+        "local": true,
+        "user": true,
+        "nodes": {
+            "influxdb": {
+                "name": "influxdb",
+                "types": [
+                    "influxdb",
+                    "influxdb out",
+                    "influxdb batch",
+                    "influxdb in"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-influxdb",
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-influxdb/influxdb.js"
+            }
+        }
+    },
+    "node-red-contrib-hubitat": {
+        "name": "node-red-contrib-hubitat",
+        "version": "1.10.1",
+        "local": true,
+        "user": true,
+        "nodes": {
+            "command": {
+                "name": "command",
+                "types": [
+                    "hubitat command"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-hubitat",
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-hubitat/nodes/command.js"
+            },
+            "config": {
+                "name": "config",
+                "types": [
+                    "hubitat config"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-hubitat",
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-hubitat/nodes/config.js"
+            },
+            "device": {
+                "name": "device",
+                "types": [
+                    "hubitat device"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-hubitat",
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-hubitat/nodes/device.js"
+            },
+            "event": {
+                "name": "event",
+                "types": [
+                    "hubitat event"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-hubitat",
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-hubitat/nodes/event.js"
+            },
+            "hsm": {
+                "name": "hsm",
+                "types": [
+                    "hubitat hsm"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-hubitat",
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-hubitat/nodes/hsm.js"
+            },
+            "hsm-setter": {
+                "name": "hsm-setter",
+                "types": [
+                    "hubitat hsm-setter"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-hubitat",
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-hubitat/nodes/hsm-setter.js"
+            },
+            "location": {
+                "name": "location",
+                "types": [
+                    "hubitat location"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-hubitat",
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-hubitat/nodes/location.js"
+            },
+            "mode": {
+                "name": "mode",
+                "types": [
+                    "hubitat mode"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-hubitat",
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-hubitat/nodes/mode.js"
+            },
+            "mode-setter": {
+                "name": "mode-setter",
+                "types": [
+                    "hubitat mode-setter"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-hubitat",
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-hubitat/nodes/mode-setter.js"
+            },
+            "request": {
+                "name": "request",
+                "types": [
+                    "hubitat request"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-hubitat",
+                "file": "/opt/homeautomation-node-red/node_modules/node-red-contrib-hubitat/nodes/request.js"
             }
         }
     }

@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="data:,">
+    <!-- <link rel="icon" href="data:,"> -->
+    <link rel="icon" type="image/png" href="images/smart-home.png">
     <title>Home Automation Dashboard</title>
     
     <!-- uibuilder client library v7 -->
@@ -13,21 +14,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     
     <!-- Dashboard Styles -->
-    <link rel="stylesheet" href="./index.css">
+    <link rel="stylesheet" href="./css/dashboardStyles.css">
+    <link rel="stylesheet" href="./css/index.css">
 </head>
 <body>
     <div class="dashboard-wrapper">
         <!-- Header -->
         <header class="dashboard-header">
             <h1 class="dashboard-title">
-                <i class="fas fa-home"></i>
+                <img src="images/smart-home.png" alt="Home Automation Dashboard Icon" class="dashboard-icon">
                 Home Automation Dashboard
             </h1>
             <div class="header-actions">
-                <a class="header-nav-button" href="./cameras.html">
-                    <i class="fas fa-video"></i>
-                    <span>Camera</span>
-                </a>
+                <a class="header-nav-button" href="./cameras.html"><i class="fas fa-video"></i><span>Camera</span></a>
+                <a class="header-nav-button" href="./power.html"><i class="fas fa-bolt"></i><span>Power</span></a>
                 <div class="connection-status">
                     <span id="connectionStatus" class="status-indicator offline">
                         <i class="fas fa-circle"></i> Connecting...
@@ -235,6 +235,6 @@
     </div>
 
     <!-- Dashboard JavaScript -->
-    <script src="./index.js"></script>
+    <script src="./js/index.js"></script>
 </body>
 </html>

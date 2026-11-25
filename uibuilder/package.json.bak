@@ -11,7 +11,7 @@
   "uibuilder": {
     "packages": {}
   },
-  "path": "/root/.node-red/uibuilder",
+  "path": "/opt/homeautomation-node-red/uibuilder",
   "devDependencies": {},
   "peerDependencies": {},
   "_id": "uib_root@7.7.4",

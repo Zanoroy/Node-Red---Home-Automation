@@ -33,7 +33,7 @@ I've created a flow file at: `/root/.node-red/twc-weather-flow.json`
 
 ### Import Steps:
 
-1. Open Node-RED: `http://172.17.254.10:1880`
+1. Open Node-RED: `http://172.17.254.9:1880`
 2. Click **Menu** (☰ top right) → **Import**
 3. Click **"select a file to import"**
 4. Navigate to `/root/.node-red/twc-weather-flow.json`

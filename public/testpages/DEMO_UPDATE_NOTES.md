@@ -56,7 +56,7 @@ The "Simulate Data" button now runs a realistic 24-hour cycle:
 ### 🎯 Test Now:
 
 ```
-http://172.17.254.10:1880/public/solar-state-widget-demo.html
+http://172.17.254.9:1880/public/solar-state-widget-demo.html
 ```
 
 ### 💡 Try This:

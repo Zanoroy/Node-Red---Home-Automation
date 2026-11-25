@@ -2,14 +2,14 @@
 ║                    SOLAR WIDGET - QUICK ACCESS URLS                          ║
 ╚══════════════════════════════════════════════════════════════════════════════╝
 
-📍 YOUR SERVER: http://172.17.254.10:1880
+📍 YOUR SERVER: http://172.17.254.9:1880
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 🎯 DEMO PAGES (Direct Links)
 
   ⭐ COMPLETE DEMO (Best - All Features)
-  http://172.17.254.10:1880/public/solar-widget-complete-demo.html
+  http://172.17.254.9:1880/public/solar-widget-complete-demo.html
   
   📊 Features:
   - 3 widget instances
@@ -21,7 +21,7 @@
   ─────────────────────────────────────────────────────────────────────────────
   
   🧪 SIMPLE TEST
-  http://172.17.254.10:1880/public/solar-widget-test.html
+  http://172.17.254.9:1880/public/solar-widget-test.html
   
   📊 Features:
   - Single widget
@@ -31,7 +31,7 @@
   ─────────────────────────────────────────────────────────────────────────────
   
   📱 ORIGINAL DEMO
-  http://172.17.254.10:1880/public/solar-state-widget-demo.html
+  http://172.17.254.9:1880/public/solar-state-widget-demo.html
   
   📊 Features:
   - Multiple widget sizes
@@ -59,7 +59,7 @@
 🚀 QUICK START
 
   1. Open Complete Demo:
-     http://172.17.254.10:1880/public/solar-widget-complete-demo.html
+     http://172.17.254.9:1880/public/solar-widget-complete-demo.html
   
   2. Try the scenarios:
      - Click "☀️ Peak Solar"
@@ -81,12 +81,12 @@
 💡 URL PATTERN
 
   All public files are accessed via:
-  http://172.17.254.10:1880/public/<filename>
+  http://172.17.254.9:1880/public/<filename>
   
   Examples:
-  ✓ http://172.17.254.10:1880/public/solar-widget-test.html
-  ✓ http://172.17.254.10:1880/public/solar-state-widget.css
-  ✓ http://172.17.254.10:1880/public/images/state_solor.png
+  ✓ http://172.17.254.9:1880/public/solar-widget-test.html
+  ✓ http://172.17.254.9:1880/public/solar-state-widget.css
+  ✓ http://172.17.254.9:1880/public/images/state_solor.png
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 

@@ -10,16 +10,61 @@
                 "view-node-status": true,
                 "view-node-info-icon": true,
                 "view-node-show-label": true,
-                "view-show-tips": true,
+                "view-show-tips": false,
                 "view-show-welcome-tours": true
             },
             "tours": {
-                "welcome": "4.1.0"
+                "welcome": "5.0.10"
             },
             "dialog": {
                 "export": {
                     "pretty": true,
                     "json-view": true
+                }
+            },
+            "sidebar": {
+                "state": {
+                    "v": 4,
+                    "tabs": [],
+                    "primary": {
+                        "width": 581,
+                        "top": {
+                            "tabs": [
+                                "info",
+                                "help",
+                                "config",
+                                "context",
+                                "dashboard-2.0",
+                                "dashboard"
+                            ],
+                            "height": 304,
+                            "hidden": false,
+                            "active": "config"
+                        },
+                        "bottom": {
+                            "tabs": [
+                                "debug"
+                            ],
+                            "hidden": false,
+                            "active": "debug"
+                        }
+                    },
+                    "secondary": {
+                        "width": 210,
+                        "top": {
+                            "tabs": [
+                                "explorer"
+                            ],
+                            "hidden": true
+                        },
+                        "bottom": {
+                            "tabs": [
+                                "palette"
+                            ],
+                            "hidden": false,
+                            "active": "palette"
+                        }
+                    }
                 }
             }
         },
@@ -35,6 +80,6 @@
             ],
             "clearType": "all"
         },
-        "menu-menu-item-sidebar": false
+        "menu-menu-item-sidebar": true
     }
 }

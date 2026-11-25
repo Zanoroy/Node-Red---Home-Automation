@@ -27,7 +27,7 @@
         "id": "d4045e31a39c5762",
         "type": "mqtt-broker",
         "name": "",
-        "broker": "172.17.254.10",
+        "broker": "172.17.254.9",
         "port": 1883,
         "clientid": "",
         "autoConnect": true,
