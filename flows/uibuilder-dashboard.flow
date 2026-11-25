@@ -1,0 +1,83 @@
+[
+    {
+        "id": "uibuilder_dashboard_tab",
+        "type": "tab",
+        "label": "UIBuilder Dashboard",
+        "disabled": false,
+        "info": "UIBuilder-based Home Automation Dashboard\nIntegrates: Solar widget, Lights, Battery, Weather"
+    },
+    {
+        "id": "uibuilder_node",
+        "type": "uibuilder",
+        "z": "uibuilder_dashboard_tab",
+        "name": "Home Dashboard",
+        "topic": "",
+        "url": "dashboard",
+        "okToGo": true,
+        "fwdInMessages": false,
+        "allowScripts": false,
+        "allowStyles": false,
+        "copyIndex": true,
+        "templateFolder": "blank",
+        "extTemplate": "",
+        "showfolder": false,
+        "reload": true,
+        "sourceFolder": "src",
+        "deployedVersion": "7.7.4",
+        "showMsgUib": false,
+        "title": "",
+        "descr": "",
+        "editurl": "vscode://vscode-remote/ssh-remote+172.17.254.9/opt/homeautomation-node-red/uibuilder/dashboard/?windowId=_blank",
+        "x": 950,
+        "y": 140,
+        "wires": [
+            [
+                "cde9888622f46e20"
+            ],
+            []
+        ],
+        "outputLabels": [
+            "Hubitat Evolution Route Switch",
+            ""
+        ]
+    },
+    {
+        "id": "72ae01d06a370f04",
+        "type": "link in",
+        "z": "uibuilder_dashboard_tab",
+        "name": "Link Hubitat in - Web Page",
+        "links": [
+            "fc402e31d4b5da86",
+            "643a5385704dacc9",
+            "785d4858c4013f26"
+        ],
+        "x": 745,
+        "y": 140,
+        "wires": [
+            [
+                "uibuilder_node"
+            ]
+        ]
+    },
+    {
+        "id": "cde9888622f46e20",
+        "type": "link out",
+        "z": "uibuilder_dashboard_tab",
+        "name": "Link out - Hubitat device command",
+        "mode": "link",
+        "links": [
+            "9ff869d0fe556369"
+        ],
+        "x": 1125,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "065226f5ad485c0c",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-uibuilder": "7.7.4"
+        }
+    }
+]

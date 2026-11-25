@@ -18,7 +18,7 @@
             },
             "dialog": {
                 "export": {
-                    "pretty": true,
+                    "pretty": false,
                     "json-view": true
                 }
             },
@@ -37,7 +37,7 @@
                                 "dashboard-2.0",
                                 "dashboard"
                             ],
-                            "height": 302,
+                            "height": 304,
                             "hidden": false,
                             "active": "config"
                         },

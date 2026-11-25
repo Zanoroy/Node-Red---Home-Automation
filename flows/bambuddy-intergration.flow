@@ -1,0 +1,158 @@
+[
+    {
+        "id": "31ec33b35ee8c316",
+        "type": "tab",
+        "label": "Bambuddy Intergration",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "bb_poll_status",
+        "type": "inject",
+        "z": "31ec33b35ee8c316",
+        "name": "Poll BamBuddy (5s)",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.8,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 80,
+        "wires": [
+            [
+                "bb_prepare_list_request"
+            ]
+        ]
+    },
+    {
+        "id": "bb_prepare_list_request",
+        "type": "function",
+        "z": "31ec33b35ee8c316",
+        "name": "Build BamBuddy List Request",
+        "func": "msg.method = 'GET';\nmsg.url = 'http://172.17.2.253:8000/api/v1/printers/';\nmsg.headers = {\n    Authorization: 'Bearer bb_QVP08HyTAfFgkTEEcXPTFa2R8o8biTkOttlIs2CzAvk'\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 80,
+        "wires": [
+            [
+                "bb_fetch_printers"
+            ]
+        ]
+    },
+    {
+        "id": "bb_fetch_printers",
+        "type": "http request",
+        "z": "31ec33b35ee8c316",
+        "name": "Get BamBuddy Printers",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 770,
+        "y": 80,
+        "wires": [
+            [
+                "bb_build_status_request"
+            ]
+        ]
+    },
+    {
+        "id": "bb_build_status_request",
+        "type": "function",
+        "z": "31ec33b35ee8c316",
+        "name": "Build BamBuddy Status Request",
+        "func": "const printers = Array.isArray(msg.payload) ? msg.payload : [];\nconst preferred = printers.find((printer) => String(printer.name || '').toLowerCase() === 'bambulabs p1s')\n    || printers.find((printer) => printer && printer.is_active)\n    || printers[0];\n\nif (!preferred || !preferred.id) return null;\n\nmsg.method = 'GET';\nmsg.url = `http://172.17.2.253:8000/api/v1/printers/${preferred.id}/status`;\nmsg.headers = {\n    Authorization: 'Bearer bb_QVP08HyTAfFgkTEEcXPTFa2R8o8biTkOttlIs2CzAvk'\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1070,
+        "y": 80,
+        "wires": [
+            [
+                "bb_fetch_status"
+            ]
+        ]
+    },
+    {
+        "id": "bb_fetch_status",
+        "type": "http request",
+        "z": "31ec33b35ee8c316",
+        "name": "Get BamBuddy Status",
+        "method": "use",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1340,
+        "y": 80,
+        "wires": [
+            [
+                "bb_store_status",
+                "72e64617edb5d27c"
+            ]
+        ]
+    },
+    {
+        "id": "bb_store_status",
+        "type": "function",
+        "z": "31ec33b35ee8c316",
+        "name": "Store BamBuddy Status",
+        "func": "if (!msg.payload || typeof msg.payload !== 'object') return null;\nglobal.set('bambuddy_status', msg.payload);\nglobal.set('bambuddy_last_updated', Date.now());\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1610,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "72e64617edb5d27c",
+        "type": "debug",
+        "z": "31ec33b35ee8c316",
+        "name": "debug 4",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1560,
+        "y": 180,
+        "wires": []
+    }
+]

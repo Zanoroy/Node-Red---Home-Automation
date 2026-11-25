@@ -1,0 +1,281 @@
+[
+    {
+        "id": "67860df720f06663",
+        "type": "tab",
+        "label": "Power Usage API",
+        "disabled": false,
+        "info": "Authenticated power history API backed by the Node-RED InfluxDB node"
+    },
+    {
+        "id": "4d10fc09a8e6a324",
+        "type": "http in",
+        "z": "67860df720f06663",
+        "name": "GET /api/power",
+        "url": "/api/power",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 160,
+        "y": 120,
+        "wires": [
+            [
+                "d896472bafe5d23c"
+            ]
+        ]
+    },
+    {
+        "id": "d896472bafe5d23c",
+        "type": "function",
+        "z": "67860df720f06663",
+        "name": "Authorize and build Flux query",
+        "func": "function respondError(statusCode, message) {\n  msg.statusCode = statusCode;\n  msg.headers = { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' };\n  msg.payload = { error: message };\n  return [null, msg];\n}\n\nconst fs = global.get('fs');\nif (!fs) return respondError(500, 'Filesystem access is not available in this Node-RED runtime.');\n\nconst sessionsPath = env.get('AUTH_SESSIONS_DB_PATH') || '/var/lib/node-red/auth-sessions.json';\nconst cookieName = env.get('AUTH_COOKIE_NAME') || 'banksiapark_session';\n\nfunction normalizeRole(value) {\n  const normalized = String(value || '').trim().toLowerCase();\n  if (normalized === 'administrator') return 'admin';\n  if (normalized === 'ops') return 'operator';\n  if (normalized === 'view-only') return 'view_only';\n  if (normalized === 'view-only-camera') return 'view_only_camera';\n  return normalized;\n}\n\nfunction getSession(req) {\n  try {\n    const cookies = {};\n    String(req?.headers?.cookie || '').split(';').forEach((entry) => {\n      const index = entry.indexOf('=');\n      if (index < 1) return;\n      cookies[entry.slice(0, index).trim()] = decodeURIComponent(entry.slice(index + 1).trim());\n    });\n    const token = String(cookies[cookieName] || '').trim();\n    if (!token || !fs.existsSync(sessionsPath)) return null;\n    const raw = fs.readFileSync(sessionsPath, 'utf8');\n    const db = raw && raw.trim() ? JSON.parse(raw) : { sessions: {} };\n    const session = db?.sessions?.[token];\n    if (!session) return null;\n    const expiry = Number(session.expiresAt || 0);\n    if (!Number.isFinite(expiry) || expiry <= Date.now()) return null;\n    const roles = Array.isArray(session.roles) ? session.roles.map(normalizeRole) : [];\n    return roles.some((role) => ['admin', 'operator', 'view_only', 'view_only_camera'].includes(role)) ? session : null;\n  } catch (_error) {\n    return null;\n  }\n}\n\nif (!getSession(msg.req)) return respondError(401, 'Authentication required.');\n\nconst ranges = new Set(['1h', '6h', '24h', '7d', '30d']);\nconst requestedRange = String(msg.req?.query?.range || '24h');\nif (!ranges.has(requestedRange)) return respondError(400, 'Unsupported history range.');\n\nconst means = new Set(['1m', '15m', '30m', '1h', '1d', '1w', '1mo']);\nconst requestedMean = String(msg.req?.query?.mean || '1h');\nif (!means.has(requestedMean)) return respondError(400, 'Unsupported averaging interval.');\n\nconst bucket = 'energy_data';\nconst measurement = 'home_power';\nconst field = 'value';\nconst circuitTag = 'device';\n\nfunction fluxString(value) {\n  return `\"${String(value).replace(/\\\\/g, '\\\\\\\\').replace(/\"/g, '\\\\\"').replace(/[\\r\\n]/g, '')}\"`;\n}\n\nmsg.query = [\n  `from(bucket: ${fluxString(bucket)})`,\n  `  |> range(start: -${requestedRange})`,\n  `  |> filter(fn: (r) => r[\"_measurement\"] == ${fluxString(measurement)} and r[\"_field\"] == ${fluxString(field)})`,\n  `  |> aggregateWindow(every: ${requestedMean}, fn: mean, createEmpty: false)`,\n  `  |> keep(columns: [\"_time\", \"_value\", ${fluxString(circuitTag)}])`,\n  '  |> sort(columns: [\"_time\"])'\n].join('\\n');\nmsg.powerCircuitTag = circuitTag;\nmsg.powerMean = requestedMean;\nmsg.powerResponseType = 'readings';\nreturn [msg, null];",
+        "outputs": 2,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 120,
+        "wires": [
+            [
+                "b9bd68ba5483c21c"
+            ],
+            [
+                "1dd49268d9f98e2a"
+            ]
+        ]
+    },
+    {
+        "id": "b9bd68ba5483c21c",
+        "type": "influxdb in",
+        "z": "67860df720f06663",
+        "influxdb": "influxdbPowerConfig",
+        "name": "Run Flux from msg.query",
+        "query": "",
+        "rawOutput": false,
+        "precision": "",
+        "retentionPolicy": "",
+        "org": "HomeAutomation",
+        "x": 770,
+        "y": 180,
+        "wires": [
+            [
+                "7024fc596c80450d"
+            ]
+        ]
+    },
+    {
+        "id": "313c597ffce35352",
+        "type": "function",
+        "z": "67860df720f06663",
+        "name": "Format power readings",
+        "func": "function respond(statusCode, payload) {\n  msg.statusCode = statusCode;\n  msg.headers = { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' };\n  msg.payload = payload;\n  return msg;\n}\n\nconst circuitTag = String(msg.powerCircuitTag || 'device');\nconst source = msg.payload;\nlet sourceRows = [];\n\nif (Array.isArray(source)) {\n  sourceRows = source;\n} else if (source && Array.isArray(source.data)) {\n  sourceRows = source.data;\n} else if (source !== null && source !== undefined && source !== '') {\n  const text = typeof Buffer !== 'undefined' && Buffer.isBuffer(source) ? source.toString('utf8') : String(source);\n  const rows = [];\n  let row = [];\n  let value = '';\n  let quoted = false;\n  for (let index = 0; index < text.length; index += 1) {\n    const character = text[index];\n    if (quoted) {\n      if (character === '\"' && text[index + 1] === '\"') {\n        value += '\"';\n        index += 1;\n      } else if (character === '\"') {\n        quoted = false;\n      } else {\n        value += character;\n      }\n    } else if (character === '\"') {\n      quoted = true;\n    } else if (character === ',') {\n      row.push(value);\n      value = '';\n    } else if (character === '\\n') {\n      row.push(value.replace(/\\r$/, ''));\n      if (row.some((cell) => cell !== '')) rows.push(row);\n      row = [];\n      value = '';\n    } else {\n      value += character;\n    }\n  }\n  if (value !== '' || row.length) {\n    row.push(value.replace(/\\r$/, ''));\n    if (row.some((cell) => cell !== '')) rows.push(row);\n  }\n\n  const headerIndex = rows.findIndex((csvRow) => csvRow.includes('_time') && csvRow.includes('_value') && csvRow.includes(circuitTag));\n  if (headerIndex >= 0) {\n    const headers = rows[headerIndex];\n    const timeIndex = headers.indexOf('_time');\n    const valueIndex = headers.indexOf('_value');\n    const circuitIndex = headers.indexOf(circuitTag);\n    sourceRows = rows.slice(headerIndex + 1).map((csvRow) => ({\n      _time: csvRow[timeIndex],\n      _value: csvRow[valueIndex],\n      [circuitTag]: csvRow[circuitIndex]\n    }));\n  } else {\n    node.warn('InfluxDB power query response did not contain the configured time, value, and circuit columns.');\n    return respond(502, { error: 'Power data columns did not match the configured InfluxDB schema.' });\n  }\n}\n\nconst readings = [];\nfor (const sourceRow of sourceRows) {\n  if (!sourceRow || typeof sourceRow !== 'object') continue;\n  const time = new Date(sourceRow._time ?? sourceRow.time);\n  const power = Number(sourceRow._value ?? sourceRow.value);\n  const circuit = String(sourceRow[circuitTag] ?? sourceRow.circuit ?? '').trim();\n  if (!Number.isFinite(time.getTime()) || !Number.isFinite(power) || !circuit) continue;\n  readings.push({ time: time.toISOString(), circuit, power });\n}\n\nif (sourceRows.length > 0 && readings.length === 0) {\n  const firstRow = sourceRows[0];\n  const columns = firstRow && typeof firstRow === 'object' ? Object.keys(firstRow).sort().join(', ') : '(not an object)';\n  node.warn(`InfluxDB returned ${sourceRows.length} rows, but none matched _time, _value, and ${circuitTag}. Available columns: ${columns}.`);\n}\n\nreadings.sort((left, right) => left.time.localeCompare(right.time));\nreturn respond(200, { ok: true, generatedAt: new Date().toISOString(), mean: msg.powerMean || '1h', readings });",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1590,
+        "y": 140,
+        "wires": [
+            [
+                "1dd49268d9f98e2a"
+            ]
+        ]
+    },
+    {
+        "id": "4e0e6afcb55ed3d7",
+        "type": "catch",
+        "z": "67860df720f06663",
+        "name": "InfluxDB connection errors",
+        "scope": [
+            "b9bd68ba5483c21c"
+        ],
+        "uncaught": false,
+        "x": 1350,
+        "y": 240,
+        "wires": [
+            [
+                "e912539061ab298f"
+            ]
+        ]
+    },
+    {
+        "id": "e912539061ab298f",
+        "type": "function",
+        "z": "67860df720f06663",
+        "name": "Return InfluxDB error",
+        "func": "const error = msg.error && typeof msg.error === 'object' ? msg.error : {};\nconst code = String(error.code || '').slice(0, 40);\nconst detail = String(error.message || 'Unknown InfluxDB node error.')\n  .replace(/(token\\s+)[^\\s,;]+/gi, '$1[redacted]')\n  .replace(/(authorization:\\s*)[^\\s,;]+/gi, '$1[redacted]')\n  .slice(0, 240);\nnode.warn(`InfluxDB power query failed${code ? ` (${code})` : ''}: ${detail}`);\nmsg.statusCode = 502;\nmsg.headers = { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' };\nmsg.payload = { error: 'Unable to query InfluxDB for power data. Check the Node-RED log for details.' };\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1600,
+        "y": 240,
+        "wires": [
+            [
+                "1dd49268d9f98e2a",
+                "a30a9d8a6bf457cf"
+            ]
+        ]
+    },
+    {
+        "id": "1dd49268d9f98e2a",
+        "type": "http response",
+        "z": "67860df720f06663",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1830,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "ac701fbc84979246",
+        "type": "http in",
+        "z": "67860df720f06663",
+        "name": "GET /api/power/top",
+        "url": "/api/power/top",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 160,
+        "y": 300,
+        "wires": [
+            [
+                "678567c52c8711fc"
+            ]
+        ]
+    },
+    {
+        "id": "678567c52c8711fc",
+        "type": "function",
+        "z": "67860df720f06663",
+        "name": "Authorize and build total usage query",
+        "func": "function respondError(statusCode, message) {\n  msg.statusCode = statusCode;\n  msg.headers = { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' };\n  msg.payload = { error: message };\n  return [null, msg];\n}\n\nconst fs = global.get('fs');\nif (!fs) return respondError(500, 'Filesystem access is not available in this Node-RED runtime.');\nconst sessionsPath = env.get('AUTH_SESSIONS_DB_PATH') || '/var/lib/node-red/auth-sessions.json';\nconst cookieName = env.get('AUTH_COOKIE_NAME') || 'banksiapark_session';\n\nfunction normalizeRole(value) {\n  const normalized = String(value || '').trim().toLowerCase();\n  if (normalized === 'administrator') return 'admin';\n  if (normalized === 'ops') return 'operator';\n  if (normalized === 'view-only') return 'view_only';\n  if (normalized === 'view-only-camera') return 'view_only_camera';\n  return normalized;\n}\n\nfunction hasDashboardAccess(req) {\n  try {\n    const cookies = {};\n    String(req?.headers?.cookie || '').split(';').forEach((entry) => {\n      const index = entry.indexOf('=');\n      if (index < 1) return;\n      cookies[entry.slice(0, index).trim()] = decodeURIComponent(entry.slice(index + 1).trim());\n    });\n    const token = String(cookies[cookieName] || '').trim();\n    if (!token || !fs.existsSync(sessionsPath)) return false;\n    const raw = fs.readFileSync(sessionsPath, 'utf8');\n    const db = raw && raw.trim() ? JSON.parse(raw) : { sessions: {} };\n    const session = db?.sessions?.[token];\n    const expiry = Number(session?.expiresAt || 0);\n    if (!session || !Number.isFinite(expiry) || expiry <= Date.now()) return false;\n    const roles = Array.isArray(session.roles) ? session.roles.map(normalizeRole) : [];\n    return roles.some((role) => ['admin', 'operator', 'view_only', 'view_only_camera'].includes(role));\n  } catch (_error) {\n    return false;\n  }\n}\n\nif (!hasDashboardAccess(msg.req)) return respondError(401, 'Authentication required.');\nconst ranges = new Set(['1h', '6h', '24h', '7d', '30d']);\nconst requestedRange = String(msg.req?.query?.range || '24h');\nif (!ranges.has(requestedRange)) return respondError(400, 'Unsupported history range.');\n\nconst bucket = 'energy_data';\nconst measurement = 'home_power';\nconst field = 'value';\nconst circuitTag = 'device';\nfunction fluxString(value) {\n  return `\"${String(value).replace(/\\\\/g, '\\\\\\\\').replace(/\"/g, '\\\\\"').replace(/[\\r\\n]/g, '')}\"`;\n}\n\nmsg.query = [\n  `from(bucket: ${fluxString(bucket)})`,\n  `  |> range(start: -${requestedRange})`,\n  `  |> filter(fn: (r) => r[\"_measurement\"] == ${fluxString(measurement)} and r[\"_field\"] == ${fluxString(field)})`,\n  `  |> aggregateWindow(every: 1m, fn: mean, createEmpty: false)`,\n  '  |> map(fn: (r) => ({r with _value: r._value / 60.0}))',\n  `  |> group(columns: [${fluxString(circuitTag)}])`,\n  '  |> sum(column: \"_value\")'\n].join('\\n');\nmsg.powerCircuitTag = circuitTag;\nmsg.powerRange = requestedRange;\nmsg.powerResponseType = 'top';\nreturn [msg, null];",
+        "outputs": 2,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 300,
+        "wires": [
+            [
+                "b9bd68ba5483c21c"
+            ],
+            [
+                "e2fafb84aa4ec24c"
+            ]
+        ]
+    },
+    {
+        "id": "7024fc596c80450d",
+        "type": "switch",
+        "z": "67860df720f06663",
+        "name": "Route InfluxDB result",
+        "property": "powerResponseType",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "readings",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "top",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 1060,
+        "y": 180,
+        "wires": [
+            [
+                "313c597ffce35352"
+            ],
+            [
+                "0c81e8da4a5cfe40"
+            ]
+        ]
+    },
+    {
+        "id": "0c81e8da4a5cfe40",
+        "type": "function",
+        "z": "67860df720f06663",
+        "name": "Format top circuit energy",
+        "func": "function respond(statusCode, payload) {\n  msg.statusCode = statusCode;\n  msg.headers = { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' };\n  msg.payload = payload;\n  return msg;\n}\n\nconst circuitTag = String(msg.powerCircuitTag || 'device');\nconst source = msg.payload;\nconst rows = Array.isArray(source) ? source : (source && Array.isArray(source.data) ? source.data : []);\nif (!Array.isArray(source) && !(source && Array.isArray(source.data))) {\n  node.warn('InfluxDB top usage query returned an unexpected result shape.');\n  return respond(502, { error: 'Top power usage data could not be read from InfluxDB.' });\n}\n\nconst totals = new Map();\nfor (const row of rows) {\n  if (!row || typeof row !== 'object') continue;\n  const circuit = String(row[circuitTag] ?? row.circuit ?? '').trim();\n  const energyWh = Number(row._value ?? row.value);\n  if (!circuit || !Number.isFinite(energyWh)) continue;\n  totals.set(circuit, (totals.get(circuit) || 0) + energyWh / 1000);\n}\n\nif (rows.length > 0 && totals.size === 0) {\n  const columns = rows[0] && typeof rows[0] === 'object' ? Object.keys(rows[0]).sort().join(', ') : '(not an object)';\n  node.warn(`InfluxDB total usage rows did not include ${circuitTag} and _value columns. Available columns: ${columns}.`);\n  return respond(502, { error: 'Top power usage columns did not match the configured InfluxDB schema.' });\n}\n\nconst devices = Array.from(totals, ([circuit, energyKwh]) => ({ circuit, energyKwh }))\n  .sort((left, right) => right.energyKwh - left.energyKwh)\nreturn respond(200, { ok: true, generatedAt: new Date().toISOString(), range: msg.powerRange, devices });",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1350,
+        "y": 280,
+        "wires": [
+            [
+                "e2fafb84aa4ec24c"
+            ]
+        ]
+    },
+    {
+        "id": "e2fafb84aa4ec24c",
+        "type": "http response",
+        "z": "67860df720f06663",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 1610,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "a30a9d8a6bf457cf",
+        "type": "debug",
+        "z": "67860df720f06663",
+        "name": "debug output for InfluxDB errors Power Usage API Flow",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1990,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "influxdbPowerConfig",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": "8086",
+        "protocol": "http",
+        "database": "",
+        "name": "Home power InfluxDB",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://172.17.2.253:8086",
+        "timeout": "",
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "0225603e13e0a7a8",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-influxdb": "0.7.0"
+        }
+    }
+]
