@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Home Circuit Usage</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./css/dashboardStyles.css" />
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/power.css" />
+  </head>
+  <body>
+    <div class="dashboard-wrapper">
+      <!-- Header -->
+      <header class="dashboard-header">
+          <h1 class="dashboard-title">
+            <i class="fa-solid fa-bolt pageTitleIcon" aria-hidden="true"></i>
+            <span>Home Circuit Usage</span>
+          </h1>
+          <div class="header-actions">
+              <a class="header-nav-button" href="./index.html"><i class="fas fa-home"></i><span>Dashboard</span></a>
+              <a class="header-nav-button" href="./cameras.html" data-nav-capability="camera:view"><i class="fas fa-video"></i><span>Camera</span></a>
+          </div>
+      </header>
+
+      <main class="container-fluid px-3 pb-5">
+        <div class="row g-3 mt-1">
+          <div class="col-12">
+            <section class="dashboardShell p-3">
+              <div class="powerPageHeader">
+                <div>
+                  <h2 class="sectionTitle">Circuit power</h2>
+                  <div class="sectionSubTitle">Average power readings by circuit</div>
+                </div>
+                <div class="powerControls">
+                  <div class="powerControlRow">
+                    <label class="powerControlField" for="powerRange">
+                      <span>History:</span>
+                      <select id="powerRange" class="form-select form-select-sm powerSelect">
+                        <option value="1h">Last hour</option>
+                        <option value="6h">Last 6 hours</option>
+                        <option value="24h" selected>Last 24 hours</option>
+                        <option value="7d">Last 7 days</option>
+                        <option value="30d">Last 30 days</option>
+                      </select>
+                    </label>
+                    <label class="powerControlField" for="powerMean">
+                      <span>Mean/average:</span>
+                      <select id="powerMean" class="form-select form-select-sm powerSelect">
+                        <option value="1m">1 minute</option>
+                        <option value="15m">15 minutes</option>
+                        <option value="30m">30 minutes</option>
+                        <option value="1h" selected>1 hour</option>
+                        <option value="1d">1 day</option>
+                        <option value="1w">1 week</option>
+                        <option value="1mo">Monthly</option>
+                      </select>
+                    </label>
+                    <div class="powerControlField">
+                      <span>Circuit:</span>
+                      <div id="powerCircuitPicker" class="powerCircuitPicker">
+                        <button id="powerCircuitToggle" class="powerCircuitToggle" type="button" aria-expanded="false" aria-controls="powerCircuitMenu">
+                          <span id="powerCircuitLabel">All circuits</span>
+                          <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+                        </button>
+                        <div id="powerCircuitMenu" class="powerCircuitMenu" role="group" aria-label="Select circuits" hidden>
+                          <label class="powerCircuitOption powerCircuitAllOption">
+                            <input id="powerCircuitAll" type="checkbox" checked>
+                            <span>All circuits</span>
+                          </label>
+                          <div id="powerCircuitOptions"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="powerRefreshRow">
+                    <button id="powerRefresh" class="btn btn-outline-light btn-sm" type="button">
+                      <i class="fa-solid fa-rotate" aria-hidden="true"></i>
+                      <span>Refresh</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div id="powerError" class="alert alert-danger d-none mt-3 mb-0" role="alert"></div>
+
+              <div class="row g-3 mt-1">
+                <div class="col-12 col-md-4">
+                  <div class="metricCard powerSummaryCard">
+                    <div id="powerLatestLabel" class="metricLabel">Latest interval mean</div>
+                    <div id="powerLatest" class="powerSummaryValue">--</div>
+                    <div id="powerLatestCircuit" class="powerSummaryHint">Waiting for readings</div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-4">
+                  <div class="metricCard powerSummaryCard">
+                    <div class="metricLabel">Period average</div>
+                    <div id="powerAverage" class="powerSummaryValue">--</div>
+                    <div class="powerSummaryHint">Across selected circuits and intervals</div>
+                  </div>
+                </div>
+                <div class="col-12 col-md-4">
+                  <div class="metricCard powerSummaryCard">
+                    <div class="metricLabel">Period peak</div>
+                    <div id="powerPeak" class="powerSummaryValue">--</div>
+                    <div id="powerPeakCircuit" class="powerSummaryHint">Highest average interval</div>
+                  </div>
+                </div>
+              </div>
+
+              <details id="powerChartPanel" class="powerPanel mt-3" open>
+                <summary class="powerPanelHeader powerPanelSummary">
+                  <span id="powerChartTitle" class="h6 mb-0">Power over time</span>
+                  <span class="powerUnit">Average watts (W)</span>
+                </summary>
+                <div class="powerChartWrap">
+                  <canvas id="powerChart" aria-label="Average power readings over time" role="img"></canvas>
+                  <div id="powerChartNotice" class="powerChartNotice">Loading readings…</div>
+                </div>
+              </details>
+
+              <details id="powerTablePanel" class="powerPanel mt-3">
+                <summary class="powerPanelHeader powerPanelSummary">
+                  <span id="powerReadingsTitle" class="h6 mb-0">Readings</span>
+                  <span class="powerUnit">Newest first · one row per average interval</span>
+                </summary>
+                <div class="powerTableContent">
+                  <div class="powerTableHeader">
+                    <label class="powerSearchWrap">
+                      <span class="visually-hidden">Search readings</span>
+                      <input id="powerSearch" type="search" class="form-control form-control-sm powerSearch" placeholder="Search circuit or time">
+                    </label>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table table-dark table-hover align-middle powerTable mb-0">
+                      <thead>
+                        <tr>
+                          <th scope="col"><button class="powerSortButton" type="button" data-sort="time">Time <span aria-hidden="true"></span></button></th>
+                          <th scope="col"><button class="powerSortButton" type="button" data-sort="circuit">Circuit <span aria-hidden="true"></span></button></th>
+                          <th scope="col" class="text-end"><button class="powerSortButton" type="button" data-sort="power">Average power (W) <span aria-hidden="true"></span></button></th>
+                        </tr>
+                      </thead>
+                      <tbody id="powerReadingsBody">
+                        <tr><td class="powerEmptyState" colspan="3">Loading readings…</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="powerPagination">
+                    <span id="powerRowCount" class="powerUnit">0 readings</span>
+                    <div class="d-flex align-items-center gap-2">
+                      <button id="powerPrevious" class="btn btn-outline-light btn-sm" type="button" disabled>Previous</button>
+                      <span id="powerPage" class="powerUnit">Page 1 of 1</span>
+                      <button id="powerNext" class="btn btn-outline-light btn-sm" type="button" disabled>Next</button>
+                    </div>
+                  </div>
+                </div>
+              </details>
+            </section>
+          </div>
+        </div>
+      </main>
+
+      <aside id="powerTopDrawer" class="powerTopDrawer">
+        <div class="powerTopDrawerPanel">
+          <div class="powerTopDrawerHeader">
+            <h2 class="h6 mb-0">Most power hungry</h2>
+            <span id="powerTopRange" class="powerUnit">Last 24 hours</span>
+          </div>
+          <div id="powerTopStatus" class="powerTopStatus" role="status" aria-live="polite">Loading usage…</div>
+          <ol id="powerTopList" class="powerTopList"></ol>
+        </div>
+        <button id="powerTopDrawerToggle" class="statusDrawerToggle powerTopDrawerToggle" type="button" aria-label="Toggle most power hungry panel" aria-expanded="false">
+          <span id="powerTopDrawerChevron" aria-hidden="true">&#x203A;</span>
+        </button>
+      </aside>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script src="./js/auth.js"></script>
+    <script src="./js/powerDashboard.js"></script>
+  </body>
+</html>

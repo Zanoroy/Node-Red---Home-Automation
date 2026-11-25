@@ -1,0 +1,95 @@
+.loginPage {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1.5rem;
+}
+
+.loginCard {
+  width: min(100%, 420px);
+  margin: 0 auto;
+}
+
+.loginShell {
+  width: 100%;
+  padding: clamp(1.25rem, 5vw, 2rem);
+}
+
+.loginHeader {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.loginHeader h1 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: clamp(1.55rem, 7vw, 2rem);
+  line-height: 1.15;
+  font-weight: 600;
+}
+
+.loginHeader p {
+  margin: 0.45rem 0 0;
+  color: #9ca7bb;
+  font-size: 0.95rem;
+}
+
+.loginField {
+  margin-bottom: 1rem;
+}
+
+.loginField .form-label {
+  margin-bottom: 0.4rem;
+  color: #dbe4f2;
+  font-weight: 600;
+}
+
+.loginField .form-control {
+  min-height: 44px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+}
+
+.loginField .form-control:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 0.2rem rgba(96, 165, 250, 0.18);
+}
+
+.loginRemember {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  margin: 0.25rem 0 1.25rem;
+  min-height: 24px;
+  color: #dbe4f2;
+  white-space: nowrap;
+}
+
+.loginRemember .form-check-input {
+  flex: 0 0 auto;
+  margin: 0;
+  width: 18px;
+  height: 18px;
+}
+
+.loginRemember .form-check-label {
+  padding: 0;
+  cursor: pointer;
+}
+
+.loginSubmit {
+  width: 100%;
+  min-height: 44px;
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .loginPage {
+    padding: 1rem;
+  }
+
+  .loginShell {
+    padding: 1.25rem;
+  }
+}

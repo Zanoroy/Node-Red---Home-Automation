@@ -1,0 +1,108 @@
+[
+  {
+    "id": "authSessionTab",
+    "type": "tab",
+    "label": "Local Auth Session API",
+    "disabled": false,
+    "info": "Local username/password auth with role permissions and cookie sessions"
+  },
+  {
+    "id": "httpInAuthLogin",
+    "type": "http in",
+    "z": "authSessionTab",
+    "name": "POST /api/auth/login",
+    "url": "/api/auth/login",
+    "method": "post",
+    "upload": false,
+    "swaggerDoc": "",
+    "x": 190,
+    "y": 80,
+    "wires": [
+      [
+        "fnHandleLocalAuth"
+      ]
+    ]
+  },
+  {
+    "id": "httpInAuthLogout",
+    "type": "http in",
+    "z": "authSessionTab",
+    "name": "POST /api/auth/logout",
+    "url": "/api/auth/logout",
+    "method": "post",
+    "upload": false,
+    "swaggerDoc": "",
+    "x": 190,
+    "y": 140,
+    "wires": [
+      [
+        "fnHandleLocalAuth"
+      ]
+    ]
+  },
+  {
+    "id": "httpInAuthSessionGet",
+    "type": "http in",
+    "z": "authSessionTab",
+    "name": "GET /api/session",
+    "url": "/api/session",
+    "method": "get",
+    "upload": false,
+    "swaggerDoc": "",
+    "x": 180,
+    "y": 200,
+    "wires": [
+      [
+        "fnHandleLocalAuth"
+      ]
+    ]
+  },
+  {
+    "id": "httpInAuthCheck",
+    "type": "http in",
+    "z": "authSessionTab",
+    "name": "GET /api/auth/check",
+    "url": "/api/auth/check",
+    "method": "get",
+    "upload": false,
+    "swaggerDoc": "",
+    "x": 180,
+    "y": 260,
+    "wires": [
+      [
+        "fnHandleLocalAuth"
+      ]
+    ]
+  },
+  {
+    "id": "fnHandleLocalAuth",
+    "type": "function",
+    "z": "authSessionTab",
+    "name": "handleLocalAuth",
+    "func": "const fs = global.get('fs');\nconst path = global.get('path');\nconst crypto = global.get('crypto');\n\nif (!fs || !path || !crypto) {\n  msg.statusCode = 500;\n  msg.payload = {\n    error: 'Missing fs/path/crypto in functionGlobalContext. Update Node-RED settings.js before using local auth.'\n  };\n  return msg;\n}\n\nconst usersPath = env.get('AUTH_USERS_DB_PATH') || '/var/lib/node-red/auth-users.json';\nconst sessionsPath = env.get('AUTH_SESSIONS_DB_PATH') || '/var/lib/node-red/auth-sessions.json';\nconst cookieName = env.get('AUTH_COOKIE_NAME') || 'banksiapark_session';\nconst cookieDomain = env.get('AUTH_COOKIE_DOMAIN') || '';\nconst cookieSecure = String(env.get('AUTH_COOKIE_SECURE') || 'false').toLowerCase() === 'true';\nconst cookieTtlSecondsRaw = Number(env.get('AUTH_SESSION_TTL_SECONDS') || 43200);\nconst cookieTtlSeconds = Number.isFinite(cookieTtlSecondsRaw) && cookieTtlSecondsRaw > 300 ? Math.round(cookieTtlSecondsRaw) : 43200;\nconst rememberTtlSecondsRaw = Number(env.get('AUTH_REMEMBER_TTL_SECONDS') || 2592000);\nconst rememberTtlSeconds = Number.isFinite(rememberTtlSecondsRaw) && rememberTtlSecondsRaw > cookieTtlSeconds ? Math.round(rememberTtlSecondsRaw) : 2592000;\nconst pbkdf2IterationsRaw = Number(env.get('AUTH_PASSWORD_ITERATIONS') || 210000);\nconst pbkdf2Iterations = Number.isFinite(pbkdf2IterationsRaw) && pbkdf2IterationsRaw > 10000 ? Math.round(pbkdf2IterationsRaw) : 210000;\nconst pbkdf2KeyLengthRaw = Number(env.get('AUTH_PASSWORD_KEYLEN') || 64);\nconst pbkdf2KeyLength = Number.isFinite(pbkdf2KeyLengthRaw) && pbkdf2KeyLengthRaw >= 32 ? Math.round(pbkdf2KeyLengthRaw) : 64;\nconst nowMs = Date.now();\n\nfunction readJson(filePath, fallbackValue) {\n  try {\n    if (!fs.existsSync(filePath)) return fallbackValue;\n    const raw = fs.readFileSync(filePath, 'utf8');\n    if (!raw || !raw.trim()) return fallbackValue;\n    const parsed = JSON.parse(raw);\n    return parsed && typeof parsed === 'object' ? parsed : fallbackValue;\n  } catch (_error) {\n    return fallbackValue;\n  }\n}\n\nfunction writeJson(filePath, value) {\n  const dir = path.dirname(filePath);\n  if (!fs.existsSync(dir)) {\n    fs.mkdirSync(dir, { recursive: true });\n  }\n  fs.writeFileSync(filePath, JSON.stringify(value, null, 2), 'utf8');\n}\n\nfunction parseCookies(req) {\n  const cookieHeader = req?.headers?.cookie;\n  const out = {};\n  String(cookieHeader || '').split(';').forEach((entry) => {\n    const index = entry.indexOf('=');\n    if (index < 1) return;\n    const key = entry.slice(0, index).trim();\n    const value = entry.slice(index + 1).trim();\n    if (!key) return;\n    out[key] = decodeURIComponent(value);\n  });\n  return out;\n}\n\nfunction roleAliases(role) {\n  const normalized = String(role || '').trim().toLowerCase();\n  if (normalized === 'administrator') return 'admin';\n  if (normalized === 'ops') return 'operator';\n  if (normalized === 'view-only') return 'view_only';\n  if (normalized === 'view-only-camera') return 'view_only_camera';\n  return normalized;\n}\n\nfunction normalizeRoles(value) {\n  if (Array.isArray(value)) {\n    return Array.from(new Set(value.map(roleAliases).filter(Boolean)));\n  }\n  const fromString = String(value || '')\n    .split(/[\\s,;]+/)\n    .map((entry) => roleAliases(entry))\n    .filter(Boolean);\n  return Array.from(new Set(fromString));\n}\n\nfunction buildPermissions(roles) {\n  const roleSet = new Set(normalizeRoles(roles));\n  const isAdmin = roleSet.has('admin');\n  const isOperator = roleSet.has('operator');\n  const canViewCameras = isAdmin || isOperator || roleSet.has('view_only_camera');\n  const canViewDashboard = isAdmin || isOperator || roleSet.has('view_only') || canViewCameras;\n  return {\n    admin: isAdmin,\n    dashboardView: canViewDashboard,\n    cameraView: canViewCameras,\n    deviceControl: isAdmin || isOperator\n  };\n}\n\nfunction cookieHeaderValue(token, maxAgeSeconds) {\n  const segments = [\n    `${cookieName}=${encodeURIComponent(token)}`,\n    'Path=/',\n    'HttpOnly',\n    'SameSite=Lax',\n    `Max-Age=${Math.max(0, Math.round(maxAgeSeconds || 0))}`\n  ];\n  if (cookieSecure) segments.push('Secure');\n  if (cookieDomain) segments.push(`Domain=${cookieDomain}`);\n  return segments.join('; ');\n}\n\nfunction loadUsersDb() {\n  const db = readJson(usersPath, { users: [] });\n  const users = Array.isArray(db.users) ? db.users : [];\n  return { ...db, users };\n}\n\nfunction saveSessionsDb(db) {\n  writeJson(sessionsPath, db);\n}\n\nfunction loadSessionsDb() {\n  const db = readJson(sessionsPath, { sessions: {} });\n  const sessions = db && typeof db.sessions === 'object' && db.sessions ? db.sessions : {};\n  return { sessions };\n}\n\nfunction cleanupExpiredSessions(db) {\n  const sessions = db.sessions || {};\n  Object.keys(sessions).forEach((token) => {\n    const expiry = Number(sessions[token]?.expiresAt || 0);\n    if (!Number.isFinite(expiry) || expiry <= nowMs) {\n      delete sessions[token];\n    }\n  });\n}\n\nfunction timingSafeEqualHex(leftHex, rightHex) {\n  const left = Buffer.from(String(leftHex || ''), 'hex');\n  const right = Buffer.from(String(rightHex || ''), 'hex');\n  if (left.length === 0 || right.length === 0 || left.length !== right.length) return false;\n  return crypto.timingSafeEqual(left, right);\n}\n\nfunction ensureBootstrapUser(db) {\n  if (db.users.length > 0) return db;\n  const username = String(env.get('AUTH_BOOTSTRAP_ADMIN_USER') || '').trim();\n  const password = String(env.get('AUTH_BOOTSTRAP_ADMIN_PASSWORD') || '');\n  if (!username || !password) return db;\n\n  const salt = crypto.randomBytes(16).toString('base64url');\n  const passwordHash = crypto.pbkdf2Sync(password, salt, pbkdf2Iterations, pbkdf2KeyLength, 'sha512').toString('hex');\n  db.users = [{\n    username,\n    email: null,\n    roles: ['admin'],\n    enabled: true,\n    salt,\n    passwordHash,\n    iterations: pbkdf2Iterations,\n    keyLength: pbkdf2KeyLength,\n    digest: 'sha512'\n  }];\n  writeJson(usersPath, db);\n  return db;\n}\n\nfunction findUser(db, username) {\n  const normalized = String(username || '').trim().toLowerCase();\n  if (!normalized) return null;\n  return db.users.find((candidate) => String(candidate?.username || '').trim().toLowerCase() === normalized) || null;\n}\n\nfunction verifyPassword(user, password) {\n  const salt = String(user?.salt || '');\n  const expectedHash = String(user?.passwordHash || '');\n  const iterations = Number(user?.iterations || pbkdf2Iterations);\n  const keyLength = Number(user?.keyLength || pbkdf2KeyLength);\n  const digest = String(user?.digest || 'sha512');\n  if (!salt || !expectedHash) return false;\n  const computed = crypto.pbkdf2Sync(String(password || ''), salt, iterations, keyLength, digest).toString('hex');\n  return timingSafeEqualHex(computed, expectedHash);\n}\n\nfunction issueSession(user, remember) {\n  const sessionsDb = loadSessionsDb();\n  cleanupExpiredSessions(sessionsDb);\n\n  const token = crypto.randomBytes(48).toString('base64url');\n  const ttlSeconds = remember ? rememberTtlSeconds : cookieTtlSeconds;\n  const expiresAt = nowMs + ttlSeconds * 1000;\n  const roles = normalizeRoles(user?.roles || user?.role || []);\n\n  sessionsDb.sessions[token] = {\n    username: String(user?.username || ''),\n    email: user?.email || null,\n    roles,\n    createdAt: nowMs,\n    lastSeenAt: nowMs,\n    expiresAt,\n    persistent: Boolean(remember),\n    ttlSeconds\n  };\n\n  saveSessionsDb(sessionsDb);\n  return { token, ttlSeconds, session: sessionsDb.sessions[token] };\n}\n\nfunction readCurrentSession() {\n  const cookies = parseCookies(msg.req);\n  const token = String(cookies[cookieName] || '').trim();\n  if (!token) return { token: null, session: null };\n\n  const sessionsDb = loadSessionsDb();\n  cleanupExpiredSessions(sessionsDb);\n  const session = sessionsDb.sessions[token] || null;\n  if (!session) {\n    saveSessionsDb(sessionsDb);\n    return { token, session: null };\n  }\n\n  session.lastSeenAt = nowMs;\n  const ttlSeconds = session.persistent && Number(session.ttlSeconds) > cookieTtlSeconds\n    ? Number(session.ttlSeconds)\n    : cookieTtlSeconds;\n  session.expiresAt = nowMs + ttlSeconds * 1000;\n  sessionsDb.sessions[token] = session;\n  saveSessionsDb(sessionsDb);\n  return { token, session };\n}\n\nfunction clearCurrentSession() {\n  const cookies = parseCookies(msg.req);\n  const token = String(cookies[cookieName] || '').trim();\n  if (!token) return;\n  const sessionsDb = loadSessionsDb();\n  if (sessionsDb.sessions[token]) {\n    delete sessionsDb.sessions[token];\n    saveSessionsDb(sessionsDb);\n  }\n}\n\nfunction authPayload(session) {\n  const roles = normalizeRoles(session?.roles || []);\n  return {\n    authenticated: true,\n    user: {\n      username: String(session?.username || ''),\n      email: session?.email || null\n    },\n    roles,\n    permissions: buildPermissions(roles)\n  };\n}\n\nconst reqPath = String(msg.req?.path || msg.req?.url || '').split('?')[0];\nconst reqMethod = String(msg.req?.method || msg.method || '').toUpperCase();\n\nif (reqPath === '/api/auth/login' && reqMethod === 'POST') {\n  const usersDb = ensureBootstrapUser(loadUsersDb());\n  if (!Array.isArray(usersDb.users) || usersDb.users.length === 0) {\n    msg.statusCode = 503;\n    msg.payload = {\n      error: 'No local users configured. Create auth-users.json or set AUTH_BOOTSTRAP_ADMIN_USER and AUTH_BOOTSTRAP_ADMIN_PASSWORD.'\n    };\n    return msg;\n  }\n\n  let body = msg.payload;\n  if (typeof body === 'string') {\n    try { body = JSON.parse(body); } catch (_error) { body = {}; }\n  }\n  if (!body || typeof body !== 'object') body = {};\n\n  const username = String(body.username || '').trim();\n  const password = String(body.password || '');\n  if (!username || !password) {\n    msg.statusCode = 400;\n    msg.payload = { error: 'Username and password are required.' };\n    return msg;\n  }\n\n  const user = findUser(usersDb, username);\n  if (!user || user.enabled === false || !verifyPassword(user, password)) {\n    msg.statusCode = 401;\n    msg.payload = { error: 'Invalid username or password.' };\n    return msg;\n  }\n\n  const remember = body.remember === true || body.remember === 'true';\n  const issued = issueSession(user, remember);\n  msg.headers = msg.headers || {};\n  msg.headers['Set-Cookie'] = cookieHeaderValue(issued.token, issued.ttlSeconds);\n  msg.statusCode = 200;\n  msg.payload = authPayload(issued.session);\n  return msg;\n}\n\nif (reqPath === '/api/auth/logout' && reqMethod === 'POST') {\n  clearCurrentSession();\n  msg.headers = msg.headers || {};\n  msg.headers['Set-Cookie'] = cookieHeaderValue('', 0);\n  msg.statusCode = 200;\n  msg.payload = { ok: true };\n  return msg;\n}\n\nif ((reqPath === '/api/session' && reqMethod === 'GET') || (reqPath === '/api/auth/check' && reqMethod === 'GET')) {\n  const current = readCurrentSession();\n  if (!current.session) {\n    msg.statusCode = 401;\n    msg.payload = reqPath === '/api/session'\n      ? { authenticated: false, error: 'Authentication required' }\n      : { ok: false };\n    return msg;\n  }\n\n  const payload = authPayload(current.session);\n  const canAccessDashboard = Boolean(payload.permissions?.dashboardView);\n  if (!canAccessDashboard) {\n    msg.statusCode = 403;\n    msg.payload = reqPath === '/api/session'\n      ? { authenticated: false, error: 'No dashboard role assigned.' }\n      : { ok: false };\n    return msg;\n  }\n\n  msg.statusCode = reqPath === '/api/auth/check' ? 204 : 200;\n  msg.payload = reqPath === '/api/auth/check' ? '' : payload;\n  return msg;\n}\n\nmsg.statusCode = 404;\nmsg.payload = { error: 'Not found' };\nreturn msg;\n",
+    "outputs": 1,
+    "timeout": "",
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 450,
+    "y": 170,
+    "wires": [
+      [
+        "httpResponseLocalAuth"
+      ]
+    ]
+  },
+  {
+    "id": "httpResponseLocalAuth",
+    "type": "http response",
+    "z": "authSessionTab",
+    "name": "",
+    "statusCode": "",
+    "headers": {},
+    "x": 710,
+    "y": 170,
+    "wires": []
+  }
+]
