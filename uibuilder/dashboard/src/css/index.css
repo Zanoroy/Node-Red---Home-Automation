@@ -313,6 +313,204 @@ body {
     font-weight: 500;
 }
 
+.rgb-color-swatch {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 2px solid rgba(255, 255, 255, 0.85);
+    border-radius: 50%;
+    box-shadow: 0 1px 6px rgba(0, 0, 0, 0.65);
+    cursor: pointer;
+}
+
+.rgb-color-swatch:focus-visible,
+.rgb-modal-card button:focus-visible,
+.rgb-modal-hue-slider:focus-visible {
+    outline: 3px solid #60a5fa;
+    outline-offset: 3px;
+}
+
+.rgb-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1300;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
+    background: rgba(5, 8, 18, 0.78);
+}
+
+.rgb-modal-backdrop.is-open {
+    display: flex;
+}
+
+.rgb-modal-card {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: min(540px, 100%);
+    max-height: calc(100vh - 40px);
+    padding: 24px;
+    overflow-y: auto;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 18px;
+    background: #1a202c;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+}
+
+.rgb-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.rgb-modal-title {
+    margin: 0;
+    color: #fff;
+    font-size: 1.15rem;
+}
+
+.rgb-modal-close {
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 1.7rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.rgb-white-swatch {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    min-height: 116px;
+    padding: 14px;
+    border: 2px solid #d1d5db;
+    border-radius: 12px;
+    background: #fff;
+    color: #111827;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+}
+
+.rgb-modal-selected {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    font-size: 0.88rem;
+}
+
+.rgb-modal-preview {
+    width: 24px;
+    height: 24px;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+}
+
+.rgb-modal-hex {
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+}
+
+.rgb-modal-hue-area {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: auto;
+    color: #dbe4f2;
+}
+
+.rgb-modal-hue-slider {
+    width: 100%;
+    height: 76px;
+    margin: 0;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 12px;
+    appearance: none;
+    background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+    cursor: pointer;
+}
+
+.rgb-modal-hue-slider::-webkit-slider-runnable-track {
+    height: 72px;
+    border-radius: 10px;
+    background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+}
+
+.rgb-modal-hue-slider::-moz-range-track {
+    height: 72px;
+    border-radius: 10px;
+    background: linear-gradient(to right, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+}
+
+.rgb-modal-hue-slider::-webkit-slider-thumb {
+    width: 28px;
+    height: 88px;
+    border: 3px solid #fff;
+    border-radius: 9px;
+    appearance: none;
+    background: rgba(20, 24, 36, 0.45);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45);
+}
+
+.rgb-modal-hue-slider::-moz-range-thumb {
+    width: 22px;
+    height: 82px;
+    border: 3px solid #fff;
+    border-radius: 9px;
+    background: rgba(20, 24, 36, 0.45);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45);
+}
+
+.rgb-modal-hue-scale {
+    display: flex;
+    justify-content: space-between;
+    color: #aab4c5;
+    font-size: 0.7rem;
+}
+
+.rgb-modal-hue-value {
+    align-self: flex-end;
+    font-variant-numeric: tabular-nums;
+}
+
+.rgb-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.rgb-modal-actions button {
+    min-height: 40px;
+    padding: 8px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.rgb-modal-cancel {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.rgb-modal-apply {
+    background: #2563eb;
+    color: #fff;
+    font-weight: 700;
+}
+
 .loading-spinner {
     display: none;
     position: absolute;

@@ -8,11 +8,13 @@ const printerCache = {};
 
 // Track recently toggled lights to prevent race condition
 const recentlyToggled = new Map();
+const rgbLightColorCache = new Map();
 
 // Wait for DOM to be ready
 document.addEventListener('DOMContentLoaded', function () {
   console.log('Dashboard loaded');
   setupPrinterModalEvents();
+  setupRgbColorModal();
   
   setTimeout(
     setupUibuilder,
@@ -872,36 +874,242 @@ function updateLights(lights) {
 
   // Update or create tiles
   lights.forEach(light => {
-    const existingTile = existingTiles[light.id];
-    
-    if (existingTile) {
-      // Tile exists - update its state
-      existingTile.classList.remove('on', 'off');
-      existingTile.classList.add(light.state);
-      existingTile.onclick = () => toggleLight(light.id, light.state);
-      // Remove from tracking object
-      delete existingTiles[light.id];
-    } else {
-      // New tile - create it
-      const tile = document.createElement('div');
-      tile.className = `light-tile ${light.state}`;
-      tile.setAttribute('data-device-id', light.id);
-      tile.onclick = () => toggleLight(light.id, light.state);
+    let tile = existingTiles[light.id];
+    const isRgb = light.type === 'light rgb' || light.deviceType === 'light rgb';
 
+    if (!tile) {
+      tile = document.createElement('div');
+      tile.setAttribute('data-device-id', light.id);
       tile.innerHTML = `
             <div class="loading-spinner"></div>
             <div class="light-bulb-container">
                 <i class="fa fa-lightbulb light-bulb"></i>
             </div>
-            <div class="light-label">${light.name}</div>
+            <div class="light-label"></div>
         `;
-
       grid.appendChild(tile);
+    } else {
+      delete existingTiles[light.id];
+    }
+
+    tile.className = `light-tile ${light.state === 'on' ? 'on' : 'off'}${isRgb ? ' light-rgb' : ''}`;
+    tile.onclick = () => toggleLight(light.id, light.state);
+    tile.querySelector('.light-label').textContent = light.name || light.label || `Light ${light.id}`;
+
+    let swatch = tile.querySelector('.rgb-color-swatch');
+    if (isRgb && !swatch) {
+      swatch = document.createElement('button');
+      swatch.type = 'button';
+      swatch.className = 'rgb-color-swatch';
+      swatch.setAttribute('aria-label', `Choose color for ${light.name || light.label || 'RGB light'}`);
+      swatch.addEventListener('click', event => {
+        event.stopPropagation();
+        openRgbColorModal(tile.rgbLight);
+      });
+      swatch.addEventListener('pointerdown', event => event.stopPropagation());
+      tile.appendChild(swatch);
+    } else if (!isRgb && swatch) {
+      swatch.remove();
+    }
+
+    if (isRgb) {
+      tile.rgbLight = light;
+      if (light.state === 'on' || !swatch.style.backgroundColor) {
+        const colorState = getRgbLightColorState(light);
+        updateRgbTileColor(light.id, colorState);
+        tile.style.setProperty('--light-hue', String(colorState.hue * 3.6));
+      }
     }
   });
 
   // Remove any tiles that no longer exist in the light list
   Object.values(existingTiles).forEach(tile => tile.remove());
+}
+
+function getRgbLightColorState(light) {
+  const cached = rgbLightColorCache.get(String(light.id));
+  const hue = Number(light.hue);
+  const saturation = Number(light.saturation);
+  const colorName = String(light.colorName || '').trim().toLowerCase();
+
+  if (colorName === 'white') {
+    const colorState = {
+      hue: Number.isFinite(hue) ? Math.max(0, Math.min(100, hue)) : (cached ? cached.hue : 0),
+      saturation: 0,
+      hex: '#FFFFFF'
+    };
+    rgbLightColorCache.set(String(light.id), colorState);
+    return colorState;
+  }
+
+  if ((colorName === 'rgb' || !colorName) &&
+      light.hue !== null && light.hue !== undefined &&
+      light.saturation !== null && light.saturation !== undefined &&
+      Number.isFinite(hue) && Number.isFinite(saturation)) {
+    const colorState = {
+      hue: Math.max(0, Math.min(100, hue)),
+      saturation: Math.max(0, Math.min(100, saturation)),
+      hex: hsvToHex(hue, saturation)
+    };
+    rgbLightColorCache.set(String(light.id), colorState);
+    return colorState;
+  }
+
+  if (colorName === 'rgb' && cached && cached.saturation === 0) {
+    const colorState = { hue: 0, saturation: 100, hex: null };
+    rgbLightColorCache.set(String(light.id), colorState);
+    return colorState;
+  }
+
+  return cached || { hue: 0, saturation: 0, hex: null };
+}
+
+function hsvToHex(hue, saturation) {
+  const h = ((Number(hue) % 100) + 100) % 100 / 100 * 6;
+  const s = Math.max(0, Math.min(100, Number(saturation))) / 100;
+  const chroma = s;
+  const x = chroma * (1 - Math.abs((h % 2) - 1));
+  const sector = Math.floor(h);
+  const [r, g, b] = sector === 0 ? [chroma, x, 0]
+    : sector === 1 ? [x, chroma, 0]
+      : sector === 2 ? [0, chroma, x]
+        : sector === 3 ? [0, x, chroma]
+          : sector === 4 ? [x, 0, chroma]
+            : [chroma, 0, x];
+  const toHex = value => Math.round((value + 1 - chroma) * 255).toString(16).padStart(2, '0');
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`.toUpperCase();
+}
+
+function openRgbColorModal(light) {
+  if (!light) return;
+
+  const modal = document.getElementById('rgbColorModal');
+  const slider = modal.querySelector('.rgb-modal-hue-slider');
+  const title = modal.querySelector('.rgb-modal-title');
+  const colorState = getRgbLightColorState(light);
+  const hue = light.hue !== null && light.hue !== undefined && Number.isFinite(Number(light.hue))
+    ? Number(light.hue)
+    : colorState.hue;
+
+  modal.rgbLight = light;
+  title.textContent = light.name || light.label || `Light ${light.id}`;
+  slider.value = String(Math.max(0, Math.min(100, hue)));
+  updateRgbModalPreview(modal, Number(slider.value));
+  modal.classList.add('is-open');
+  modal.setAttribute('aria-hidden', 'false');
+  modal.querySelector('.rgb-modal-close').focus();
+}
+
+function updateRgbModalPreview(modal, hue) {
+  const color = hsvToHex(hue, 100);
+  modal.querySelector('.rgb-modal-preview').style.backgroundColor = color;
+  modal.querySelector('.rgb-modal-hex').textContent = color;
+  modal.querySelector('.rgb-modal-hue-value').textContent = `${Math.round(hue * 3.6)}°`;
+  modal.style.setProperty('--modal-hue', String(hue * 3.6));
+}
+
+function closeRgbColorModal() {
+  const modal = document.getElementById('rgbColorModal');
+  if (!modal) return;
+  modal.classList.remove('is-open');
+  modal.setAttribute('aria-hidden', 'true');
+  modal.rgbLight = null;
+}
+
+function setupRgbColorModal() {
+  if (document.getElementById('rgbColorModal')) return;
+
+  const modal = document.createElement('div');
+  modal.id = 'rgbColorModal';
+  modal.className = 'rgb-modal-backdrop';
+  modal.setAttribute('aria-hidden', 'true');
+  modal.innerHTML = `
+    <section class="rgb-modal-card" role="dialog" aria-modal="true" aria-labelledby="rgbModalTitle">
+      <header class="rgb-modal-header">
+        <h2 class="rgb-modal-title" id="rgbModalTitle">RGB Light</h2>
+        <button class="rgb-modal-close" type="button" aria-label="Close color selector">&times;</button>
+      </header>
+      <button class="rgb-white-swatch" type="button">
+        <span class="rgb-white-chip" aria-hidden="true"></span>
+        <span>Set white</span>
+      </button>
+      <div class="rgb-modal-selected">
+        <span class="rgb-modal-preview" aria-hidden="true"></span>
+        <span class="rgb-modal-hex">#FFFFFF</span>
+      </div>
+      <div class="rgb-modal-hue-area">
+        <label for="rgbModalHue">Choose a color</label>
+        <input class="rgb-modal-hue-slider" id="rgbModalHue" type="range" min="0" max="100" step="1" value="0" aria-label="Choose light hue">
+        <div class="rgb-modal-hue-scale"><span>Red</span><span>Green</span><span>Blue</span><span>Red</span></div>
+        <span class="rgb-modal-hue-value">0°</span>
+      </div>
+      <footer class="rgb-modal-actions">
+        <button class="rgb-modal-cancel" type="button">Cancel</button>
+        <button class="rgb-modal-apply" type="button">Apply color</button>
+      </footer>
+    </section>
+  `;
+  document.body.appendChild(modal);
+
+  const slider = modal.querySelector('.rgb-modal-hue-slider');
+  slider.addEventListener('input', () => updateRgbModalPreview(modal, Number(slider.value)));
+  modal.querySelector('.rgb-modal-close').addEventListener('click', closeRgbColorModal);
+  modal.querySelector('.rgb-modal-cancel').addEventListener('click', closeRgbColorModal);
+  modal.addEventListener('click', event => {
+    if (event.target === modal) closeRgbColorModal();
+  });
+  modal.querySelector('.rgb-white-swatch').addEventListener('click', () => {
+    const light = modal.rgbLight;
+    if (!light) return;
+    const previous = getRgbLightColorState(light);
+    const colorState = { hue: previous.hue, saturation: 0, hex: '#FFFFFF' };
+    rgbLightColorCache.set(String(light.id), colorState);
+    updateRgbTileColor(light.id, colorState);
+    setLightColor(light, colorState.hue, 0);
+    closeRgbColorModal();
+  });
+  modal.querySelector('.rgb-modal-apply').addEventListener('click', () => {
+    const light = modal.rgbLight;
+    if (!light) return;
+    const hue = Number(slider.value);
+    const colorState = { hue, saturation: 100, hex: hsvToHex(hue, 100) };
+    rgbLightColorCache.set(String(light.id), colorState);
+    updateRgbTileColor(light.id, colorState);
+    setLightColor(light, hue, 100);
+    closeRgbColorModal();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && modal.classList.contains('is-open')) closeRgbColorModal();
+  });
+}
+
+function updateRgbTileColor(deviceId, colorState) {
+  const tile = document.querySelector(`[data-device-id="${deviceId}"]`);
+  if (!tile) return;
+  const swatch = tile.querySelector('.rgb-color-swatch');
+  if (!swatch) return;
+  swatch.style.backgroundColor = colorState.hex || '#6b7280';
+  tile.style.setProperty('--light-hue', String(colorState.hue * 3.6));
+}
+
+function setLightColor(light, hue, saturation) {
+  const argument = {
+    hue: Math.round(hue),
+    saturation: Math.round(saturation)
+  };
+  if (light.level !== null && light.level !== undefined && Number.isFinite(Number(light.level))) {
+    argument.level = Math.max(0, Math.min(100, Math.round(Number(light.level))));
+  }
+
+  uibuilder.send({
+    topic: 'control',
+    payload: {
+      type: 'light',
+      deviceId: light.id,
+      command: 'setColor',
+      argument
+    }
+  });
 }
 
 // Toggle Light

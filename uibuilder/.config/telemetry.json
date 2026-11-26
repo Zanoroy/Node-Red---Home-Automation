@@ -36,7 +36,7 @@
     {
       "family": "Firefox",
       "version": "160.0",
-      "count": 307
+      "count": 312
     },
     {
       "family": "Chrome Mobile",
@@ -46,7 +46,7 @@
     {
       "family": "Chrome Mobile",
       "version": "158.0",
-      "count": 6
+      "count": 15
     },
     {
       "family": "Chrome",
@@ -67,6 +67,11 @@
       "family": "Edge",
       "version": "158.0",
       "count": 2
+    },
+    {
+      "family": "Firefox",
+      "version": "161.0",
+      "count": 125
     }
   ]
 }
