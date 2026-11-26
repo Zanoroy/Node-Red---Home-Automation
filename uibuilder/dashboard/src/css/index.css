@@ -117,20 +117,6 @@ body {
     color: var(--text-muted);
 }
 
-@media (max-width: 900px) {
-    .dashboard-header {
-        flex-direction: column;
-        gap: 14px;
-        align-items: flex-start;
-    }
-
-    .header-actions {
-        width: 100%;
-        justify-content: space-between;
-        flex-wrap: wrap;
-    }
-}
-
 /* Main Grid Layout */
 .dashboard-main {
     display: grid;
@@ -181,19 +167,21 @@ body {
 }
 
 /* Weather Section */
-.weather-section {
-    grid-column: span 4;
-}
+/* .weather-section {
+    grid-column: span 12;
+} */
 
 .weather-widget {
     padding: 10px;
 }
 
 .weather-main {
+    width: 100%;
     display: flex;
     align-items: center;
     gap: 20px;
     margin-bottom: 20px;
+    justify-content: center;
 }
 
 .weather-icon {
@@ -214,9 +202,10 @@ body {
 }
 
 .weather-details {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+    /* display: grid; */
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+    
 }
 
 .weather-detail-item {
@@ -249,7 +238,7 @@ body {
 
 /* Lights Section */
 .lights-section {
-    grid-column: span 8;
+    grid-column: span 12;
 }
 
 .lights-grid {
@@ -307,6 +296,67 @@ body {
 }
 
 .light-label {
+    margin-top: 12px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Switches Section */
+.switch-section {
+    grid-column: span 12;
+}
+
+.switch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+}
+
+.switch-tile {
+    background: linear-gradient(145deg, #2d3748, #1a202c);
+    border-radius: 16px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow);
+    border: 2px solid var(--border-color);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.switch-tile:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.switch-tile.on {
+    background: linear-gradient(145deg, #4a5568, #2d3748);
+    border-color: var(--accent-color);
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+}
+
+.switch-tile.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.switch-image {
+    font-size: 3rem;
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.switch-tile.on .switch-image {
+    color: var(--accent-color);
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8),
+                 0 0 40px rgba(255, 215, 0, 0.5);
+    animation: glow 2s ease-in-out infinite;
+}
+
+.switch-label {
     margin-top: 12px;
     font-size: 0.9rem;
     color: var(--text-secondary);
@@ -1301,11 +1351,10 @@ body {
    Adjust for specific screen sizes
    ======================================================== */
 /* Responsive Design */
-@media (max-width: 1200px) {
+@media (min-width: 768px) {
     .solar-widget-section {
         grid-column: span 12;
-    }
-    
+    }   
     .weather-section,
     .battery-section,
     .printer-section {
@@ -1319,8 +1368,25 @@ body {
     .mower-section {
         grid-column: span 12;
     }
-}
+    .weather-details {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
 
+}
+@media (max-width: 900px) {
+    .dashboard-header {
+        flex-direction: column;
+        gap: 14px;
+        align-items: flex-start;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+}
 @media (max-width: 768px) {
     .dashboard-header {
         flex-direction: column;
@@ -1336,12 +1402,14 @@ body {
     .weather-section,
     .battery-section,
     .lights-section,
+    .switch-section,
     .mower-section,
     .printer-section {
         grid-column: span 12;
     }
     
     .lights-grid,
+    .switch-grid,
     .mower-section,
     .printer-section{
         grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
@@ -1350,6 +1418,11 @@ body {
     .solar-widget-container {
         height: 350px;
     }
+
+    .weather-details {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
     /* ========================================================
     LANDROID MOWER MOBILE RESPONSIVE FIX
     ======================================================== */
@@ -1375,3 +1448,8 @@ body {
         grid-template-columns: repeat(2, minmax(110px, 1fr));
     }
 }
+/* @media (max-width: 418px) {
+    .weather-details {
+        display: none;
+    }
+} */

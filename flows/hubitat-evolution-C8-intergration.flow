@@ -1,6 +1,6 @@
 [
     {
-        "id": "4a8f9e79502edb05",
+        "id": "5d8b12643fcaadb1",
         "type": "tab",
         "label": "Hubitat Evolution C-8 Pro - Intergration",
         "disabled": false,
@@ -8,9 +8,9 @@
         "env": []
     },
     {
-        "id": "poll_lights",
+        "id": "c38294a393d63561",
         "type": "inject",
-        "z": "4a8f9e79502edb05",
+        "z": "5d8b12643fcaadb1",
         "name": "Poll Lights (5s)",
         "props": [
             {
@@ -28,14 +28,14 @@
         "y": 100,
         "wires": [
             [
-                "780cf47c163869ed"
+                "0b92306136d59085"
             ]
         ]
     },
     {
-        "id": "fetch_hubitat_devices",
+        "id": "1d4039757f120d7d",
         "type": "http request",
-        "z": "4a8f9e79502edb05",
+        "z": "5d8b12643fcaadb1",
         "name": "Get Hubitat Devices",
         "method": "GET",
         "ret": "obj",
@@ -52,32 +52,30 @@
         "y": 500,
         "wires": [
             [
-                "09fcde02b17469ca",
-                "device_inventory_link_out"
+                "881bfa96a55cfc14",
+                "43fd4e33cfe5aa7d"
             ]
         ]
     },
     {
-        "id": "filter_lights",
+        "id": "9ebf5f202048332f",
         "type": "link in",
-        "z": "4a8f9e79502edb05",
+        "z": "5d8b12643fcaadb1",
         "name": "Formatted device summary in",
-        "links": [
-            "device_summary_out"
-        ],
+        "links": [],
         "x": 800,
         "y": 500,
         "wires": [
             [
-                "fc402e31d4b5da86",
-                "0058dcf3df83e74a"
+                "53e5d1fd8be5523b",
+                "81bf4f20694ae3a3"
             ]
         ]
     },
     {
-        "id": "fc402e31d4b5da86",
+        "id": "53e5d1fd8be5523b",
         "type": "link out",
-        "z": "4a8f9e79502edb05",
+        "z": "5d8b12643fcaadb1",
         "name": "Link Hubitat out",
         "mode": "link",
         "links": [
@@ -88,9 +86,9 @@
         "wires": []
     },
     {
-        "id": "9ff869d0fe556369",
+        "id": "4148a2356a96aed0",
         "type": "link in",
-        "z": "4a8f9e79502edb05",
+        "z": "5d8b12643fcaadb1",
         "name": "Link in - Hubitat device command",
         "links": [
             "cde9888622f46e20"
@@ -99,15 +97,15 @@
         "y": 200,
         "wires": [
             [
-                "handle_ui_output",
-                "36dd242448ac09f5"
+                "a39bf2444ff5baa8",
+                "c076f29baf408225"
             ]
         ]
     },
     {
-        "id": "handle_ui_output",
+        "id": "a39bf2444ff5baa8",
         "type": "switch",
-        "z": "4a8f9e79502edb05",
+        "z": "5d8b12643fcaadb1",
         "name": "Route UI Commands",
         "property": "topic",
         "propertyType": "msg",
@@ -130,19 +128,19 @@
         "y": 220,
         "wires": [
             [
-                "handle_control"
+                "b09f11c02f096e94"
             ],
             [
-                "fetch_lights"
+                "8c7c6b9334cb9f1e"
             ]
         ]
     },
     {
-        "id": "handle_control",
+        "id": "b09f11c02f096e94",
         "type": "function",
-        "z": "4a8f9e79502edb05",
+        "z": "5d8b12643fcaadb1",
         "name": "Handle Light Control",
-        "func": "// Extract control payload\nconst control = msg.payload;\n\nconst baseUrl = 'http://172.17.98.214/apps/api/93/devices';\nconst accessToken = 'c978917f-7089-4041-937f-414a0bb2ab6d';\n\nif (!control || !control.type || !control.deviceId || !control.command) {\n    return null;\n}\n\nif (control.type === 'light' || control.type === 'mower' || control.type === 'printer') {\n    let commandArgument = '';\n    if (control.command === 'setColor') {\n        const color = control.argument;\n        const hue = Number(color && color.hue);\n        const saturation = Number(color && color.saturation);\n        const hasLevel = color && color.level !== undefined && color.level !== null;\n        const level = hasLevel ? Number(color.level) : null;\n        if (control.type !== 'light' || !color || typeof color !== 'object' || Array.isArray(color) ||\n            !Number.isFinite(hue) || hue < 0 || hue > 100 ||\n            !Number.isFinite(saturation) || saturation < 0 || saturation > 100 ||\n            (hasLevel && (!Number.isFinite(level) || level < 0 || level > 100))) {\n            node.error('Invalid setColor command: expected a light with hue and saturation from 0 to 100, and an optional level from 0 to 100.', msg);\n            return null;\n        }\n        const colorMap = { hue: Math.round(hue), saturation: Math.round(saturation) };\n        if (hasLevel) colorMap.level = Math.round(level);\n        commandArgument = `/${encodeURIComponent(JSON.stringify(colorMap))}`;\n    } else if (control.command === 'setHue' || control.command === 'setSaturation') {\n        const value = Number(control.argument);\n        if (control.type !== 'light' || !Number.isFinite(value) || value < 0 || value > 100) {\n            node.error('Invalid color command: expected a light and a hue or saturation value from 0 to 100.', msg);\n            return null;\n        }\n        commandArgument = `/${Math.round(value)}`;\n    }\n\n    const deviceUrl = `${baseUrl}/${encodeURIComponent(String(control.deviceId))}/${encodeURIComponent(String(control.command))}${commandArgument}`;\n    if (control.command === 'setColor') {\n        msg.url = deviceUrl;\n        msg.method = 'POST';\n        const headers = msg.headers && typeof msg.headers === 'object' ? msg.headers : {};\n        msg.headers = Object.assign({}, headers, { Authorization: `Bearer ${accessToken}` });\n        msg.payload = '';\n    } else {\n        msg.url = `${deviceUrl}?access_token=${accessToken}`;\n        msg.method = 'GET';\n    }\n    msg.deviceId = control.deviceId;\n    msg.command = control.command;\n    return msg;\n}\n\nreturn null;",
+        "func": "// Extract control payload\nconst control = msg.payload;\n\nconst baseUrl = 'http://172.17.98.214/apps/api/93/devices';\nconst accessToken = 'c978917f-7089-4041-937f-414a0bb2ab6d';\n\nif (!control || !control.type || !control.deviceId || !control.command) {\n    return null;\n}\n\nif (control.type === 'light' || control.type === 'mower' || control.type === 'printer' || control.type === 'switch') {\n    let commandArgument = '';\n    if (control.command === 'setColor') {\n        const color = control.argument;\n        const hue = Number(color && color.hue);\n        const saturation = Number(color && color.saturation);\n        const hasLevel = color && color.level !== undefined && color.level !== null;\n        const level = hasLevel ? Number(color.level) : null;\n        if (control.type !== 'light' || !color || typeof color !== 'object' || Array.isArray(color) ||\n            !Number.isFinite(hue) || hue < 0 || hue > 100 ||\n            !Number.isFinite(saturation) || saturation < 0 || saturation > 100 ||\n            (hasLevel && (!Number.isFinite(level) || level < 0 || level > 100))) {\n            node.error('Invalid setColor command: expected a light with hue and saturation from 0 to 100, and an optional level from 0 to 100.', msg);\n            return null;\n        }\n        const colorMap = { hue: Math.round(hue), saturation: Math.round(saturation) };\n        if (hasLevel) colorMap.level = Math.round(level);\n        commandArgument = `/${encodeURIComponent(JSON.stringify(colorMap))}`;\n    } else if (control.command === 'setHue' || control.command === 'setSaturation') {\n        const value = Number(control.argument);\n        if (control.type !== 'light' || !Number.isFinite(value) || value < 0 || value > 100) {\n            node.error('Invalid color command: expected a light and a hue or saturation value from 0 to 100.', msg);\n            return null;\n        }\n        commandArgument = `/${Math.round(value)}`;\n    }\n\n    const deviceUrl = `${baseUrl}/${encodeURIComponent(String(control.deviceId))}/${encodeURIComponent(String(control.command))}${commandArgument}`;\n    if (control.command === 'setColor') {\n        msg.url = deviceUrl;\n        msg.method = 'POST';\n        const headers = msg.headers && typeof msg.headers === 'object' ? msg.headers : {};\n        msg.headers = Object.assign({}, headers, { Authorization: `Bearer ${accessToken}` });\n        msg.payload = '';\n    } else {\n        msg.url = `${deviceUrl}?access_token=${accessToken}`;\n        msg.method = 'GET';\n    }\n    msg.deviceId = control.deviceId;\n    msg.command = control.command;\n    return msg;\n}\n\nreturn null;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -153,14 +151,14 @@
         "y": 200,
         "wires": [
             [
-                "send_to_hubitat"
+                "4814d193c1ce1e2b"
             ]
         ]
     },
     {
-        "id": "send_to_hubitat",
+        "id": "4814d193c1ce1e2b",
         "type": "http request",
-        "z": "4a8f9e79502edb05",
+        "z": "5d8b12643fcaadb1",
         "name": "Send to Hubitat",
         "method": "use",
         "ret": "txt",
@@ -176,14 +174,14 @@
         "y": 200,
         "wires": [
             [
-                "trigger_lights_update"
+                "a1bc3eb0d34bf187"
             ]
         ]
     },
     {
-        "id": "trigger_lights_update",
+        "id": "a1bc3eb0d34bf187",
         "type": "function",
-        "z": "4a8f9e79502edb05",
+        "z": "5d8b12643fcaadb1",
         "name": "Trigger Update",
         "func": "msg.payload = new Date().getTime();\nreturn msg;",
         "outputs": 1,
@@ -199,9 +197,9 @@
         ]
     },
     {
-        "id": "fetch_lights",
+        "id": "8c7c6b9334cb9f1e",
         "type": "function",
-        "z": "4a8f9e79502edb05",
+        "z": "5d8b12643fcaadb1",
         "name": "Get Lights and mowers from Flow",
         "func": "const hubitat_devices = global.get('hubitat_devices') || [];\nmsg.topic = 'hubitat_devices';\nmsg.payload = hubitat_devices;\nreturn msg;",
         "outputs": 1,
@@ -214,15 +212,15 @@
         "y": 260,
         "wires": [
             [
-                "643a5385704dacc9",
-                "a105a14779a26a26"
+                "3087545d21ad9ee2",
+                "b433e4a0ea3c6dc7"
             ]
         ]
     },
     {
-        "id": "643a5385704dacc9",
+        "id": "3087545d21ad9ee2",
         "type": "link out",
-        "z": "4a8f9e79502edb05",
+        "z": "5d8b12643fcaadb1",
         "name": "link out - Refresh webpage",
         "mode": "link",
         "links": [
@@ -233,9 +231,9 @@
         "wires": []
     },
     {
-        "id": "0058dcf3df83e74a",
+        "id": "81bf4f20694ae3a3",
         "type": "debug",
-        "z": "4a8f9e79502edb05",
+        "z": "5d8b12643fcaadb1",
         "name": "dbg (Device filtered):",
         "active": false,
         "tosidebar": true,
@@ -250,9 +248,9 @@
         "wires": []
     },
     {
-        "id": "09fcde02b17469ca",
+        "id": "881bfa96a55cfc14",
         "type": "debug",
-        "z": "4a8f9e79502edb05",
+        "z": "5d8b12643fcaadb1",
         "name": "dbg (get device out):",
         "active": false,
         "tosidebar": true,
@@ -267,9 +265,9 @@
         "wires": []
     },
     {
-        "id": "8b0b81da663b0752",
+        "id": "f5bbf67a209159df",
         "type": "debug",
-        "z": "4a8f9e79502edb05",
+        "z": "5d8b12643fcaadb1",
         "name": "debug 3",
         "active": false,
         "tosidebar": true,
@@ -284,9 +282,9 @@
         "wires": []
     },
     {
-        "id": "dc76cd84c25bc3d5",
+        "id": "ab17a3aee903880a",
         "type": "http request",
-        "z": "4a8f9e79502edb05",
+        "z": "5d8b12643fcaadb1",
         "name": "Get Hubitat Energy Devices",
         "method": "GET",
         "ret": "obj",
@@ -303,14 +301,14 @@
         "y": 320,
         "wires": [
             [
-                "a41ecdf812da6ba8"
+                "ebab2ffa01c4c237"
             ]
         ]
     },
     {
-        "id": "9cca127ea605913f",
+        "id": "7176c910a902ec35",
         "type": "inject",
-        "z": "4a8f9e79502edb05",
+        "z": "5d8b12643fcaadb1",
         "name": "Poll energy usage (1 minute)",
         "props": [
             {
@@ -328,14 +326,14 @@
         "y": 320,
         "wires": [
             [
-                "dc76cd84c25bc3d5"
+                "ab17a3aee903880a"
             ]
         ]
     },
     {
-        "id": "7e60b3adc0a80664",
+        "id": "bbb0585f93f356a5",
         "type": "influxdb batch",
-        "z": "4a8f9e79502edb05",
+        "z": "5d8b12643fcaadb1",
         "influxdb": "230d7539dd8d1424",
         "precision": "",
         "retentionPolicy": "",
@@ -350,9 +348,9 @@
         "wires": []
     },
     {
-        "id": "a41ecdf812da6ba8",
+        "id": "ebab2ffa01c4c237",
         "type": "function",
-        "z": "4a8f9e79502edb05",
+        "z": "5d8b12643fcaadb1",
         "name": "Database Perperation - Node-RED",
         "func": "// Ensure we received a valid array from the Maker API\nif (!Array.isArray(msg.payload)) {\n    node.error(\"Emporia Pull Error: Received payload is not a valid JSON array.\");\n    return null;\n}\n\nlet databasePoints = [];\n\n// Loop through every device returned by the Maker API pull\nmsg.payload.forEach(device => {\n    if (device.attributes && device.attributes.power !== undefined && device.attributes.power !== null) {\n        \n        // Grab the human-friendly circuit label\n        const deviceName = device.label || device.name || \"Circuit_\" + device.id;\n        \n        // Parse the raw power string safely into a signed integer (-1641, 406, 0)\n        const watts = parseInt(device.attributes.power, 10);\n        \n        if (isNaN(watts)) return;\n\n        const wattsText = watts.toString();\n\n        // Exact official schema structure for the Node-RED InfluxDB Batch node\n        databasePoints.push({\n            measurement: \"home_power\",\n            fields: {\n                value: watts,       // Integer metric data type\n                valueStr: wattsText // Text metric data type\n            },\n            tags: {\n                device: deviceName  // Indexes your 16 individual clamps cleanly\n            }\n        });\n    }\n});\n\n// If we populated circuits, pass the array straight to the Batch node\nif (databasePoints.length > 0) {\n    msg.payload = databasePoints;\n    return msg;\n}\n\nreturn null;\n",
         "outputs": 1,
@@ -365,15 +363,15 @@
         "y": 320,
         "wires": [
             [
-                "7e60b3adc0a80664",
-                "8b0b81da663b0752"
+                "bbb0585f93f356a5",
+                "f5bbf67a209159df"
             ]
         ]
     },
     {
-        "id": "36dd242448ac09f5",
+        "id": "c076f29baf408225",
         "type": "debug",
-        "z": "4a8f9e79502edb05",
+        "z": "5d8b12643fcaadb1",
         "name": "WS - Command Received",
         "active": false,
         "tosidebar": true,
@@ -388,9 +386,9 @@
         "wires": []
     },
     {
-        "id": "a105a14779a26a26",
+        "id": "b433e4a0ea3c6dc7",
         "type": "debug",
-        "z": "4a8f9e79502edb05",
+        "z": "5d8b12643fcaadb1",
         "name": "DBG: Sending",
         "active": false,
         "tosidebar": true,
@@ -405,32 +403,45 @@
         "wires": []
     },
     {
-        "id": "8c6f5c819fc28bfb",
+        "id": "e65831b3fb258361",
         "type": "link in",
-        "z": "4a8f9e79502edb05",
+        "z": "5d8b12643fcaadb1",
         "name": "Run-Filter-In",
         "links": [
-            "780cf47c163869ed"
+            "0b92306136d59085"
         ],
         "x": 275,
         "y": 500,
         "wires": [
             [
-                "fetch_hubitat_devices"
+                "1d4039757f120d7d"
             ]
         ]
     },
     {
-        "id": "780cf47c163869ed",
+        "id": "0b92306136d59085",
         "type": "link out",
-        "z": "4a8f9e79502edb05",
+        "z": "5d8b12643fcaadb1",
         "name": "Get Hubitat Devices - OUT",
         "mode": "link",
         "links": [
-            "8c6f5c819fc28bfb"
+            "e65831b3fb258361"
         ],
         "x": 375,
         "y": 100,
+        "wires": []
+    },
+    {
+        "id": "43fd4e33cfe5aa7d",
+        "type": "link out",
+        "z": "5d8b12643fcaadb1",
+        "name": "MakerAPI inventory to device flow",
+        "mode": "link",
+        "links": [
+            "device_inventory_in"
+        ],
+        "x": 700,
+        "y": 500,
         "wires": []
     },
     {
@@ -449,24 +460,11 @@
         "rejectUnauthorized": true
     },
     {
-        "id": "ca2b6a867487ce8a",
+        "id": "306569f872e04df2",
         "type": "global-config",
         "env": [],
         "modules": {
             "node-red-contrib-influxdb": "0.7.0"
         }
-    },
-    {
-        "id": "device_inventory_link_out",
-        "type": "link out",
-        "z": "4a8f9e79502edb05",
-        "name": "MakerAPI inventory to device flow",
-        "mode": "link",
-        "links": [
-            "device_inventory_in"
-        ],
-        "x": 700,
-        "y": 500,
-        "wires": []
     }
 ]

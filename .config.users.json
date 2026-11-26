@@ -27,7 +27,7 @@
                     "v": 4,
                     "tabs": [],
                     "primary": {
-                        "width": 581,
+                        "width": 800,
                         "top": {
                             "tabs": [
                                 "info",
@@ -37,7 +37,7 @@
                                 "dashboard-2.0",
                                 "dashboard"
                             ],
-                            "height": 304,
+                            "height": 306,
                             "hidden": false,
                             "active": "config"
                         },

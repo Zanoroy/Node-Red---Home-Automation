@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
   console.log('Dashboard loaded');
   setupPrinterModalEvents();
   setupRgbColorModal();
-  
+
   setTimeout(
     setupUibuilder,
     800
@@ -37,7 +37,7 @@ function setupUibuilder() {
       uibuilder.send({
         topic: 'dashboard',
         payload: 'dashboard'
-      });      
+      });
     } else {
       statusEl.className = 'status-indicator offline';
       statusEl.innerHTML = '<i class="fas fa-circle"></i> Disconnected';
@@ -52,10 +52,11 @@ function setupUibuilder() {
       const payload = msg && typeof msg.payload === 'object' && msg.payload ? msg.payload : {};
       updateWeather(payload.weather);
       updateLights(Array.isArray(payload.lights) ? payload.lights : []);
+      updateSwitches(Array.isArray(payload.switches) ? payload.switches : []);
       updateMowers(payload.mowers && typeof payload.mowers === 'object' ? payload.mowers : {});
       updatePrinters(Array.isArray(payload.printers) ? payload.printers : []);
     }
-    
+
     // Update timestamp
     updateTimestamp();
   });
@@ -132,15 +133,15 @@ function updatePrinters(printers) {
 
     const statusClass = getPrinterStatusClass(printer);
     const statusText = printer.healthstatus;
-    const stateText = printer.healthstatus.toLowerCase() == 'online' ? escapeHtml(printer.state || 'unknown') :'OFFLINE';
+    const stateText = printer.healthstatus.toLowerCase() == 'online' ? escapeHtml(printer.state || 'unknown') : 'OFFLINE';
     const nozzle = printer.temperatures && printer.temperatures.nozzle !== null && printer.temperatures.nozzle !== undefined
-      ? `${Math.round(printer.temperatures.nozzle*10)/10 }°C` : '--';
+      ? `${Math.round(printer.temperatures.nozzle * 10) / 10}°C` : '--';
     const bed = printer.temperatures && printer.temperatures.bed !== null && printer.temperatures.bed !== undefined
-      ? `${Math.round(printer.temperatures.bed*10)/10}°C` : '--';
+      ? `${Math.round(printer.temperatures.bed * 10) / 10}°C` : '--';
     const nozzleTarget = printer.temperatures && printer.temperatures.nozzletarget !== null && printer.temperatures.nozzleTarget !== undefined && printer.temperatures.nozzleTarget > 0
-      ? `/${Math.round(printer.temperatures.nozzletarget*10)/10}°C` : '';
+      ? `/${Math.round(printer.temperatures.nozzletarget * 10) / 10}°C` : '';
     const bedTarget = printer.temperatures && printer.temperatures.bedtarget !== null && printer.temperatures.bedtarget !== undefined && printer.temperatures.bedtarget > 0
-      ? `/${Math.round(printer.temperatures.bedtarget*10)/10}°C` : '';
+      ? `/${Math.round(printer.temperatures.bedtarget * 10) / 10}°C` : '';
     const remaining = formatDuration(printer.progress && printer.progress.remainingSec);
     const elapsed = formatDuration(printer.progress && printer.progress.elapsedSec);
     const fileRaw = printer.filename ? String(printer.filename) : '--';
@@ -166,16 +167,16 @@ function updatePrinters(printers) {
     const amsDisplayHtml = amsSlots.length > 0
       ? `
         <span class="printer-ams-swatches">
-          ${amsSlots.map((slot, index) => { 
-            const isLoaded = slot && slot.exists !== false;
-            const slotNumber = slot && slot.index !== null && slot.index !== undefined ? slot.index : index + 1;
-            const filamentType = slot && (slot.type || 'Unloaded/Empty');
-            const title = isLoaded ? `Slot ${slotNumber} ${filamentType}` : `Slot ${slotNumber} Unloaded`;
-            const color = isLoaded ? (slot.color || '#3a4654') : 'transparent';
-            const classes = isLoaded ? 'printer-ams-swatch' : 'printer-ams-swatch printer-ams-swatch-empty';
-            return `<span class="${classes}" style="background:${escapeHtml(color)}" title="${escapeHtml(title)}"></span>`;
-            //return `<span class="printer-ams-swatch" style="background:${escapeHtml(slot.color || '#3a4654')}" title="${escapeHtml(slot || '' || slot.type || 'Empty/Unloaded')}"></span>`;
-          }).join('')}
+          ${amsSlots.map((slot, index) => {
+        const isLoaded = slot && slot.exists !== false;
+        const slotNumber = slot && slot.index !== null && slot.index !== undefined ? slot.index : index + 1;
+        const filamentType = slot && (slot.type || 'Unloaded/Empty');
+        const title = isLoaded ? `Slot ${slotNumber} ${filamentType}` : `Slot ${slotNumber} Unloaded`;
+        const color = isLoaded ? (slot.color || '#3a4654') : 'transparent';
+        const classes = isLoaded ? 'printer-ams-swatch' : 'printer-ams-swatch printer-ams-swatch-empty';
+        return `<span class="${classes}" style="background:${escapeHtml(color)}" title="${escapeHtml(title)}"></span>`;
+        //return `<span class="printer-ams-swatch" style="background:${escapeHtml(slot.color || '#3a4654')}" title="${escapeHtml(slot || '' || slot.type || 'Empty/Unloaded')}"></span>`;
+      }).join('')}
         </span>
       `
       : (amsDisplay ? `<span>${amsDisplay}</span>` : '');
@@ -183,15 +184,15 @@ function updatePrinters(printers) {
       ? `
         <span class="printer-ams-swatches">
           ${filamentSlots.map((filament, index) => {
-            const isLoaded = filament && filament.exists !== false;
-            const slotNumber = filament && filament.index !== null && filament.index !== undefined ? filament.index : index + 1;
-            const filamentType = filament && (filament.type || (filament.details && filament.details.type) || 'Filament');
-            const title = isLoaded ? `Slot ${slotNumber} ${filamentType}` : 'Unloaded';
-            const color = isLoaded ? (filament.color || '#3a4654') : 'transparent';
-            const classes = isLoaded ? 'printer-ams-swatch' : 'printer-ams-swatch printer-ams-swatch-empty';
+        const isLoaded = filament && filament.exists !== false;
+        const slotNumber = filament && filament.index !== null && filament.index !== undefined ? filament.index : index + 1;
+        const filamentType = filament && (filament.type || (filament.details && filament.details.type) || 'Filament');
+        const title = isLoaded ? `Slot ${slotNumber} ${filamentType}` : 'Unloaded';
+        const color = isLoaded ? (filament.color || '#3a4654') : 'transparent';
+        const classes = isLoaded ? 'printer-ams-swatch' : 'printer-ams-swatch printer-ams-swatch-empty';
 
-            return `<span class="${classes}" style="background:${escapeHtml(color)}" title="${escapeHtml(title)}"></span>`;
-          }).join('')}
+        return `<span class="${classes}" style="background:${escapeHtml(color)}" title="${escapeHtml(title)}"></span>`;
+      }).join('')}
         </span>
       `
       : '';
@@ -309,7 +310,7 @@ function renderBambuModalBody(printer) {
       <div class="bambu-slot">
         <div class="bambu-slot-index">${slot.index}</div>
         <div class="bambu-slot-type">${escapeHtml(slot.type || 'Empty')}</div>
-        <div class="bambu-slot-k">${slot.kFactor !== null && slot.kFactor !== undefined ? `K ${Math.round(slot.kFactor*1000)/1000}` : '--'}</div>
+        <div class="bambu-slot-k">${slot.kFactor !== null && slot.kFactor !== undefined ? `K ${Math.round(slot.kFactor * 1000) / 1000}` : '--'}</div>
       <div class="bambu-slot-color-box" style="background:${escapeHtml(slot.color || '#3a4654')}"></div>
       </div>
     `).join('')
@@ -658,13 +659,14 @@ function sendPrinterCommand(printerId, actionKey) {
 // Update Landroid Mowers Display Panel
 function updateMowers(mowers) {
   const container = document.getElementById('mowerContainer');
-  if (!container || !mowers) { return;
+  if (!container || !mowers) {
+    return;
   }
 
   // Clear previous cards before building the new batch
   container.innerHTML = '';
 
-  
+
   // Loop natively through our object keys ("top" and "bottom")
   Object.keys(mowers).forEach(key => {
     const mower = mowers[key];
@@ -694,7 +696,7 @@ function updateMowers(mowers) {
     const isError = mower.error && mower.error.id != 0;
     let cardBg = isError ? 'rgba(231, 76, 60, 0.15)' : 'rgba(255, 255, 255, 0.04)';
     let cardBorder = isError ? '2px solid #e74c3c' : '1px solid rgba(255,255,255,0.08)';
-    
+
     // 🟢 DYNAMIC BUTTON LOGIC (Fixed attribute nesting)
     const mState = String(mower.state || 'unknown').toLowerCase();
     let btnText = 'Start Mowing';
@@ -721,7 +723,7 @@ function updateMowers(mowers) {
     }
 
     if (isError) {
-      if ( mower.error.id === 99 ) {
+      if (mower.error.id === 99) {
         btnText = 'Rain must clear';
         btnIcon = 'fa-cloud-rain';
         btnColor = '#2980b9'; // Belize Hole Blue
@@ -741,7 +743,7 @@ function updateMowers(mowers) {
     let displayState = mower.state || 'Unknown';
     let stateColour = "#3498db";
     if (isError) {
-      if(mower.error.id == 99) {
+      if (mower.error.id == 99) {
         cardBg = "#34495e";
         cardBorder = "2px solid #3498db";
         // stateColour = "#2980b9";
@@ -763,7 +765,7 @@ function updateMowers(mowers) {
     }
 
     let errorDisplay = ''
-    if ( isError ) { 
+    if (isError) {
       errorDisplay = mower.error.id == 99 ? `
                       <div style="display: flex; justify-content: space-between; font-size: 0.85rem;">
                         <span style="opacity: 0.65;">Diagnostics:</span>
@@ -837,30 +839,93 @@ function updateMowers(mowers) {
 // Send dynamic layout commands back to Node-RED websocket loop rails
 function triggerMowerAction(yardKey, commandString) {
   const deviceId = yardKey === 'bottom' ? '88' : '95';
-  
+
   // 🟢 OPTIMISTIC UI LOCKOUT: Find the specific button that was pressed
   // Locates the button inside the active mower card framework
   const card = document.querySelector(`[onclick*="triggerMowerAction('${yardKey}'"]`);
   if (card) {
-      card.disabled = true;
-      card.style.opacity = "0.5";
-      card.style.cursor = "not-allowed";
-      card.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Processing...`;
+    card.disabled = true;
+    card.style.opacity = "0.5";
+    card.style.cursor = "not-allowed";
+    card.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Processing...`;
   }
-  
+
   console.log(`Sending execution command [${commandString}] to ${yardKey} yard mower (ID: ${deviceId})`);
-  
+
   // Package payload variables up to Node-RED's backend channel
   uibuilder.send({
     topic: 'control',
     payload: {
       type: 'mower',
       deviceId: deviceId,
-      command: commandString 
+      command: commandString
     }
   });
 }
 // Update Lights Display
+function updateSwitches(switches) {
+  const grid = document.getElementById('switchGrid');
+  if (!grid) return;
+
+  const existingTiles = new Map();
+  grid.querySelectorAll('.switch-tile').forEach(tile => {
+    existingTiles.set(tile.dataset.deviceId, tile);
+  });
+
+  (Array.isArray(switches) ? switches : []).forEach(device => {
+    if (!device || device.id === null || device.id === undefined) return;
+
+    const deviceId = String(device.id);
+    const state = String(device.state || '').toLowerCase() === 'on' ? 'on' : 'off';
+    const label = device.name || device.label || `Switch ${deviceId}`;
+    let tile = existingTiles.get(deviceId);
+
+    if (!tile) {
+      tile = document.createElement('div');
+      tile.dataset.deviceId = deviceId;
+      tile.innerHTML = `
+        <i class="fas fa-power-off switch-image" aria-hidden="true"></i>
+        <div class="switch-label"></div>
+      `;
+      grid.appendChild(tile);
+    } else {
+      existingTiles.delete(deviceId);
+    }
+
+    tile.className = `switch-tile ${state}`;
+    tile.querySelector('.switch-label').textContent = label;
+    tile.setAttribute('role', 'button');
+    tile.setAttribute('tabindex', '0');
+    tile.setAttribute('aria-pressed', String(state === 'on'));
+    tile.onclick = () => toggleSwitch(tile, deviceId, state);
+    tile.onkeydown = event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        tile.click();
+      }
+    };
+  });
+
+  existingTiles.forEach(tile => tile.remove());
+}
+
+function toggleSwitch(tile, deviceId, currentState) {
+  const newState = currentState === 'on' ? 'off' : 'on';
+  tile.classList.remove('on', 'off');
+  tile.classList.add(newState);
+  tile.setAttribute('aria-pressed', String(newState === 'on'));
+  tile.onclick = () => toggleSwitch(tile, deviceId, newState);
+
+  uibuilder.send({
+    topic: 'control',
+    payload: {
+      type: 'switch',
+      deviceId,
+      command: newState
+    }
+  });
+}
+
 function updateLights(lights) {
   const grid = document.getElementById('lightsGrid');
   if (!grid) return;
@@ -943,9 +1008,9 @@ function getRgbLightColorState(light) {
   }
 
   if ((colorName === 'rgb' || !colorName) &&
-      light.hue !== null && light.hue !== undefined &&
-      light.saturation !== null && light.saturation !== undefined &&
-      Number.isFinite(hue) && Number.isFinite(saturation)) {
+    light.hue !== null && light.hue !== undefined &&
+    light.saturation !== null && light.saturation !== undefined &&
+    Number.isFinite(hue) && Number.isFinite(saturation)) {
     const colorState = {
       hue: Math.max(0, Math.min(100, hue)),
       saturation: Math.max(0, Math.min(100, saturation)),
@@ -1088,7 +1153,8 @@ function updateRgbTileColor(deviceId, colorState) {
   if (!tile) return;
   const swatch = tile.querySelector('.rgb-color-swatch');
   if (!swatch) return;
-  swatch.style.backgroundColor = colorState.hex || '#6b7280';
+  swatch.dataset.lastknownhex = colorState.hex || '#ffffff';
+  swatch.style.backgroundColor = tile.classList.contains('off') ? '#666' : (colorState.hex || '#6b7280');
   tile.style.setProperty('--light-hue', String(colorState.hue * 3.6));
 }
 
@@ -1124,6 +1190,15 @@ function toggleLight(deviceId, currentState) {
   tile.classList.remove('on', 'off');
   tile.classList.add(newState);
   tile.onclick = () => toggleLight(deviceId, newState);
+
+  const swatch = tile.querySelector('.rgb-color-swatch');
+  if (swatch) {
+    if(newState == 'on') {
+      swatch.style.backgroundColor = swatch.dataset.lastknownhex ?? '#ffffff';
+    } else {
+      swatch.style.backgroundColor = '#666';
+    }
+  }
 
   // Send command to Node-RED
   uibuilder.send({
@@ -1204,7 +1279,7 @@ function updateWeather(data) {
     const isUsableIconUrl = /^(https?:\/\/|\/|\.\/|data:image\/)/i.test(iconCandidate);
 
     if (isUsableIconUrl) {
-      weatherIcon.src = iconCandidate.endsWith('.svg') ? iconCandidate : iconCandidate + ".svg" ;
+      weatherIcon.src = iconCandidate.endsWith('.svg') ? iconCandidate : iconCandidate + ".svg";
       weatherIcon.style.display = 'block';
     } else {
       weatherIcon.removeAttribute('src');
@@ -1232,13 +1307,13 @@ function updateWeather(data) {
     ? weatherData.wind_speed : '--';
   const windDirText = weatherData.wind_direction || '';
   const windDirDegrees = weatherData.wind_direction_degrees;
-  
+
   // Create wind direction arrow
   let windArrow = '';
   if (windDirDegrees !== null && windDirDegrees !== undefined) {
     windArrow = `<span class="wind-arrow" style="display:inline-block; transform:rotate(${windDirDegrees}deg);">↓</span> `;
   }
-  
+
   wind.innerHTML = `${windArrow}${windSpeed} km/h ${windDirText}`;
 
   // Update rain chance (from forecast data if available)
